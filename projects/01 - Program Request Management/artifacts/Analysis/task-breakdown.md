@@ -2,17 +2,24 @@
 
 ## Project Overview
 - **Project**: Program Request Management 
-- **Total Tasks**: 32
-- **Estimated Timeline**: 18 weeks (4.5 months)
-- **Critical Path Length**: 16 tasks (14 weeks)
+- **Strategy**: Human interface first, then implement automation
+- **Phase 1 (MVP) Tasks**: 28
+- **Future Phase Tasks**: 8 (automation features)
+- **MVP Timeline**: 15 weeks (3.75 months)
+- **Critical Path Length**: 14 tasks (12 weeks)
 - **Parallel Development Tracks**: 4
+
+## Strategy Update
+
+**Implementation Approach**: All automation features moved to future phases. MVP focuses on manual interfaces to enable quick deployment and requirements validation.
 
 ## Phase Breakdown
 
 ### Phase 1: Foundation & Infrastructure (3.0 weeks)
-**Description**: Project setup, architecture design, and core infrastructure  
+**Description**: Project setup, architecture design, and core infrastructure for manual interfaces  
 **Dependencies**: None  
 **Duration**: 3.0 weeks  
+**Focus**: Manual interface foundation
 
 #### Tasks
 - **T001** - Project Setup and Blazor Architecture (*development*, *high*, 2.0 days)
@@ -173,14 +180,14 @@
 **Duration**: 2.5 weeks  
 
 #### Tasks
-- **T017** - State Diagram Import Service (*development*, *high*, 3.5 days)
-  - **Description**: Implement automated import service for state diagrams with parsing, validation, and data extraction capabilities
+- **T017** - ~~State Diagram Import Service~~ **Manual State Data Entry Interface** (*development*, *high*, 2.5 days)
+  - **Description**: Create manual interface for engineers to input state diagram data with validation and structured data entry forms
   - **Acceptance Criteria**:
-    - [ ] Structured data is extracted and stored from common diagram formats
-    - [ ] Validation errors and warnings are identified and reported  
-    - [ ] Detailed error messages guide manual intervention when import fails
+    - [ ] Form-based interface allows structured data entry for state diagrams
+    - [ ] Validation rules ensure data completeness and accuracy  
+    - [ ] Interface provides clear guidance for required data fields
   - **Dependencies**: T007, T002
-  - **Deliverables**: State diagram import service, Diagram parsing algorithms, Data extraction logic, Import validation system
+  - **Deliverables**: Manual data entry interface, Input validation forms, Data structure guidance, Entry completion tracking
 
 - **T018** - Data Validation Interface (*development*, *high*, 3.0 days)
   - **Description**: Create interactive validation interface with tree view, diagram view, and data detail panels for engineer data validation

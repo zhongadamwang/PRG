@@ -3,11 +3,31 @@
 # Collaboration: Program Request Management
 
 ## Collaboration Overview
-This document defines the interaction patterns, communication flows, and collaboration sequences for the Program Request Management process. It covers both human-to-human and human-to-system interactions throughout the complete workflow lifecycle.
+This document defines the interaction patterns, communication flows, and collaboration sequences for the Program Request Management process. **Phase 1 Focus**: It covers human-to-system interactions through web interfaces and manual workflows, with automation patterns planned for future phases.
 
 ## Primary Interaction Patterns
 
-### 1. Request Intake and Initial Processing
+### 1. Manual Request Creation and Initial Processing *(Phase 1 - MVP)*
+
+```mermaid
+sequenceDiagram
+    participant U as User/Manager
+    participant WI as Web Interface
+    participant PRS as Program Request System
+    participant M as Manager
+
+    U->>WI: Access request creation form
+    WI->>U: Display structured input form
+    U->>WI: Complete request details and upload files
+    WI->>PRS: Validate and submit request data
+    PRS->>PRS: Create request entity (status: Open)
+    PRS->>WI: Generate request confirmation
+    WI->>U: Display success confirmation with request ID
+    PRS->>M: Send dashboard notification of new request
+    M->>WI: Access request dashboard for review
+```
+
+### Future Phase: Automated Request Intake *(Automation Enhancement)*
 
 ```mermaid
 sequenceDiagram
@@ -27,41 +47,81 @@ sequenceDiagram
     M->>PRS: Review request details and triage options
 ```
 
-### 2. Assignment and Acknowledgment Flow
+### 2. Manual Assignment and Acknowledgment Flow *(Phase 1 - MVP)*
 
 ```mermaid
 sequenceDiagram
     participant M as Manager
+    participant WI as Web Interface
     participant PRS as Program Request System
-    participant NT as Notification System
-    participant ET as Engineering Team  
+    participant DB as Dashboard
     participant E as Assigned Engineer
 
-    M->>PRS: Assign request to specific engineer
+    M->>WI: Access assignment interface
+    WI->>M: Display available requests and engineer workloads
+    M->>WI: Assign request to specific engineer
+    WI->>PRS: Process assignment
     PRS->>PRS: Update request status to "Assigned"
-    PRS->>NT: Trigger assignment notification
-    NT->>ET: Send team notification (all members)
-    NT->>E: Send assignment notification with action buttons
+    PRS->>DB: Update team dashboard
+    DB->>E: Show assignment notification in dashboard
     
     alt Engineer Accepts
-        E->>PRS: Click "Accept" in email/system
+        E->>WI: Click "Accept" in web interface
+        WI->>PRS: Process acceptance
         PRS->>PRS: Update status to "Acknowledged" 
-        PRS->>NT: Send acceptance confirmation
-        NT->>M: Notify manager of acceptance
+        PRS->>DB: Update dashboard status
+        DB->>M: Show acceptance confirmation
     else Engineer Declines  
-        E->>PRS: Click "Decline" with reason
+        E->>WI: Click "Decline" with reason in web form
+        WI->>PRS: Process decline with reason
         PRS->>PRS: Update status back to "Open"
-        PRS->>M: Send decline notification with reason
-        M->>PRS: Reassign or modify request
+        PRS->>DB: Update dashboard with decline reason
+        DB->>M: Show decline notification
+        M->>WI: Reassign or modify request
     else Engineer Reassigns
-        E->>PRS: Select "Reassign" with target engineer
+        E->>WI: Select "Reassign" with target engineer
+        WI->>PRS: Process reassignment
         PRS->>PRS: Update assignment to new engineer
-        PRS->>NT: Send reassignment notifications
-        NT->>E: Notify new assigned engineer
+        PRS->>DB: Update dashboard notifications
+        DB->>E: Notify new assigned engineer
     end
 ```
 
-### 3. Data Validation and Work Process
+### 3. Manual Data Entry and Validation Process *(Phase 1 - MVP)*
+
+```mermaid
+sequenceDiagram
+    participant E as Engineer
+    participant WI as Web Interface
+    participant DEF as Data Entry Forms
+    participant PRS as Program Request System
+    participant VE as Validation Engine
+
+    E->>WI: Access data entry interface
+    WI->>DEF: Load structured data entry forms
+    DEF->>E: Display form fields with validation rules
+    E->>DEF: Enter state diagram data manually
+    
+    loop Data Entry and Validation
+        E->>DEF: Input data element
+        DEF->>VE: Validate against business rules
+        alt Data Valid
+            VE->>DEF: Confirm validation success
+            DEF->>E: Show validation checkmark
+        else Data Invalid
+            VE->>DEF: Return validation errors
+            DEF->>E: Display error messages and guidance
+            E->>DEF: Correct data entry
+        end
+    end
+    
+    E->>DEF: Submit completed data set
+    DEF->>PRS: Save validated data
+    PRS->>PRS: Update status to "Ready for Job Design"
+    PRS->>WI: Confirm data entry completion
+```
+
+### Future Phase: Automated Data Processing *(Automation Enhancement)*
 
 ```mermaid
 sequenceDiagram

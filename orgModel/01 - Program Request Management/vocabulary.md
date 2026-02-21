@@ -4,17 +4,20 @@
 
 ## Domain Terminology Standards
 
-This vocabulary establishes canonical terminology for the Program Request Management process to ensure consistent communication across stakeholders, documentation, and system interfaces.
+This vocabulary establishes canonical terminology for the Program Request Management process to ensure consistent communication across stakeholders, documentation, and system interfaces. **Phase 1 Focus**: Terminology prioritizes manual interface concepts with automation terms designated for future phases.
 
 ## Core Process Terms
 
 ### Request Management
-| Term | Definition | Aliases | Context |
-|------|------------|---------|---------|
-| **Program Request** | A formal request for engineering work to develop technical programs based on client specifications | Request, Ticket, Work Order | Primary workflow entity |
-| **Request Status** | Current state of a request in the workflow process | Status, State, Phase | Workflow tracking |
-| **Request ID** | Unique identifier assigned to each program request | Ticket Number, Reference ID | System identification |
-| **Client** | External organization or internal department requesting engineering work | Customer, Requestor | Business relationship |
+| Term | Definition | Aliases | Context | **Phase** |
+|------|------------|---------|---------|----------|
+| **Program Request** | A formal request for engineering work to develop technical programs based on client specifications | Request, Ticket, Work Order | Primary workflow entity | Phase 1 |
+| **Manual Request Creation** | Web form-based interface for creating new program requests | Request Form, Manual Entry | Phase 1 interface method | Phase 1 |
+| **Request Status** | Current state of a request in the workflow process | Status, State, Phase | Workflow tracking | Phase 1 |
+| **Request ID** | Unique identifier assigned to each program request | Ticket Number, Reference ID | System identification | Phase 1 |
+| **Client** | External organization or internal department requesting engineering work | Customer, Requestor | Business relationship | Phase 1 |
+| **State Diagram Data** | Technical engineering data entered manually through structured forms | State Data, Technical Data | Manual data entry context | Phase 1 |
+| **Automated Request Processing** | Future capability for email-based request creation | Email Integration, Auto-Processing | Future automation feature | Future |
 
 ### Workflow States  
 | Term | Definition | Entry Condition | Exit Condition |
@@ -28,12 +31,14 @@ This vocabulary establishes canonical terminology for the Program Request Manage
 | **Program Ready** | Approved work package ready for operational deployment | Review approval | Process completion |
 
 ### Assignment and Responsibility
-| Term | Definition | Scope | Authority Level |
-|------|------------|-------|----------------|
-| **Assignment** | Allocation of a request to a specific engineer for completion | Single engineer per request | Manager decision |
-| **Acknowledgment** | Engineer's formal acceptance of assignment responsibility | Assigned engineer only | Engineer choice |
-| **Reassignment** | Transfer of request from one engineer to another | Current assignee or manager | Engineer or manager action |
-| **Escalation** | Process intervention when SLAs are not met | System or manual trigger | Management intervention |
+| Term | Definition | Scope | Authority Level | **Phase** |
+|------|------------|-------|----------------|----------|
+| **Assignment** | Allocation of a request to a specific engineer for completion via web interface | Single engineer per request | Manager decision | Phase 1 |
+| **Web-based Acknowledgment** | Engineer's formal acceptance of assignment responsibility through dashboard | Assigned engineer only | Engineer choice via web interface | Phase 1 |
+| **Manual Assignment** | Manager assigns requests through web interface with engineer workload visibility | Manager-initiated process | Manager authority | Phase 1 |
+| **Reassignment** | Transfer of request from one engineer to another via web interface | Current assignee or manager | Engineer or manager action | Phase 1 |
+| **Manual Escalation** | Process intervention when SLAs are not met, handled through management dashboard | System reports, manual action | Management intervention | Phase 1 |
+| **Email-based Acknowledgment** | Future capability for engineers to respond via email buttons | Future automation feature | Future system capability | Future |
 
 ## Actor and Role Definitions
 
@@ -46,22 +51,33 @@ This vocabulary establishes canonical terminology for the Program Request Manage
 | **System Administrator** | System configuration, user management, integration support | Full system control | Administrative configuration |
 
 ### System Actors
-| System | Function | Interface Type | Integration Level |
-|--------|----------|----------------|------------------|
-| **Email Integration** | Automated request intake and stakeholder notifications | SMTP/IMAP | Deep integration |
-| **State Diagram Import** | Technical document parsing and data extraction | File processing | Service integration |
-| **Authentication Directory** | User identity and role management | LDAP/SAML | Security integration |
-| **Notification System** | Multi-channel communication and alerts | REST/Webhook | Service integration |
+
+#### Phase 1 Systems (Manual Interface)
+| System | Function | Interface Type | Integration Level | **Phase** |
+|--------|----------|----------------|------------------|----------|
+| **Web Application Interface** | Manual request creation and workflow management | Web forms/dashboard | Core system | Phase 1 |
+| **Authentication Directory** | User identity and role management | LDAP/SAML | Security integration | Phase 1 |
+| **Data Entry Interface** | Structured manual data entry for state diagrams | Web forms | Form validation | Phase 1 |
+| **Dashboard System** | Real-time status tracking and notifications | Web UI | User interface | Phase 1 |
+
+#### Future Systems (Automation Enhancement)
+| System | Function | Interface Type | Integration Level | **Phase** |
+|--------|----------|----------------|------------------|----------|
+| **Email Integration** | Automated request intake and stakeholder notifications | SMTP/IMAP | Deep integration | Future |
+| **State Diagram Import** | Technical document parsing and data extraction | File processing | Service integration | Future |
+| **Notification System** | Multi-channel communication and alerts | REST/Webhook | Service integration | Future |
 
 ## Data and Information Terms
 
 ### Data Management
-| Term | Definition | Data Type | Validation Requirements |
-|------|------------|-----------|----------------------|
-| **State Diagram** | Engineering document containing technical specifications | PDF/CAD file | Automated parsing with human validation |
-| **Data Element** | Individual data point extracted from state diagrams | Structured data | Mandatory engineer validation before use |
-| **Validation** | Process of verifying and correcting extracted data | Interactive process | 100% completion required |
-| **Work Package** | Complete set of deliverables for peer review | Document collection | Quality standards compliance |
+| Term | Definition | Data Type | Validation Requirements | **Phase** |
+|------|------------|-----------|----------------------|----------|
+| **State Diagram** | Engineering document uploaded for manual data entry | PDF/CAD file | Manual entry with form validation | Phase 1 |
+| **State Diagram Data** | Technical specifications entered manually from uploaded diagrams | Structured form data | Manual validation during entry | Phase 1 |
+| **Data Element** | Individual data point entered through structured forms | Form input data | Real-time form validation | Phase 1 |
+| **Manual Data Entry** | Process of inputting state diagram information through web forms | Interactive forms | 100% completion check | Phase 1 |
+| **Work Package** | Complete set of deliverables for peer review | Document collection | Quality standards compliance | Phase 1 |
+| **Automated Data Extraction** | Future capability to parse state diagrams automatically | Parsed data | Future automated validation | Future |
 
 ### Quality and Process Control  
 | Term | Definition | Success Criteria | Measurement |
@@ -92,12 +108,21 @@ This vocabulary establishes canonical terminology for the Program Request Manage
 ## Business and Performance Terms
 
 ### Metrics and Performance
-| Term | Definition | Measurement Unit | Target Value |
-|------|------------|-----------------|--------------|
-| **Throughput** | Number of requests processed per time period | Requests per day/week | 80% improvement over manual |
-| **Response Time** | Time from trigger to required action | Hours or days | <4h acknowledgment, <24h review |
-| **First-Pass Quality** | Percentage of work approved without rework | Percentage | >85% approval rate |
-| **SLA Compliance** | Percentage of activities completed within target time | Percentage | >95% compliance |
+
+#### Phase 1 (Manual Interface Metrics)
+| Term | Definition | Measurement Unit | Target Value | **Phase** |
+|------|------------|-----------------|--------------|----------|
+| **Manual Processing Efficiency** | Speed of manual request creation and data entry | Requests per hour | 2-3 requests per hour | Phase 1 |
+| **Form Completion Time** | Time to complete manual request forms | Minutes per request | <15 minutes average | Phase 1 |
+| **Response Time** | Time from trigger to required action | Hours or days | <4h acknowledgment, <24h review | Phase 1 |
+| **First-Pass Quality** | Percentage of work approved without rework | Percentage | >85% approval rate | Phase 1 |
+| **SLA Compliance** | Percentage of activities completed within target time | Percentage | >95% compliance | Phase 1 |
+
+#### Future Phase (Automation Metrics)  
+| Term | Definition | Measurement Unit | Target Value | **Phase** |
+|------|------------|-----------------|--------------|----------|
+| **Throughput** | Number of requests processed per time period | Requests per day/week | 80% improvement over manual baseline | Future |
+| **Automated Processing Time** | Time for automated parsing and validation | Minutes per request | <5 minutes processing | Future |
 
 ### Business Value
 | Term | Definition | Impact Area | Measurement Method |

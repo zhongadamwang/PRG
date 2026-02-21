@@ -2,39 +2,44 @@
 
 **Project**: PRG-01  
 **Generated**: 2026-02-20T16:00:00Z  
+**Updated**: 2026-02-21T00:00:00Z (Strategy Update)  
 **Source**: requirements.json, goals.json  
 **Total Entities**: 12 | **Total Concepts**: 18  
 **Confidence**: 87%
+
+## Strategy Update
+
+**Implementation Approach**: Human interface first, then implement automation. Manual interface concepts prioritized for MVP development.
 
 ## Domain Areas
 
 ### Core Workflow
 **Key Entities**: Request, Assignment  
-**Core Concepts**: Assignment Workflow, Status Management, Escalation  
-**Primary Processes**: Request Creation, Assignment, Status Progression
+**Core Concepts**: Manual Assignment Workflow, Status Management, Manual Escalation  
+**Primary Processes**: Manual Request Creation, Assignment, Status Progression
 
 ### User Management  
 **Key Entities**: Engineer, Manager  
-**Core Concepts**: Role-based Access, Team Management  
-**Primary Processes**: User Authentication, Role Assignment, Team Coordination
+**Core Concepts**: Role-based Access, Team Management, Manual Coordination  
+**Primary Processes**: User Authentication, Role Assignment, Manual Team Coordination
 
 ### Data Management
 **Key Entities**: StateData  
-**Core Concepts**: Data Validation, Data Import  
-**Primary Processes**: Data Import, Validation, Correction
+**Core Concepts**: Manual Data Entry, Data Validation, Form-based Input  
+**Primary Processes**: Manual Data Entry, Validation, Correction
 
 ### Quality Control
 **Key Entities**: Review  
-**Core Concepts**: Peer Review, Quality Assurance  
-**Primary Processes**: Review Submission, Review Assignment, Approval
+**Core Concepts**: Peer Review, Quality Assurance, Manual Review Assignment  
+**Primary Processes**: Review Submission, Manual Review Assignment, Approval
 
 ### Communication
 **Key Entities**: Notification  
-**Core Concepts**: Email Integration, Action Buttons  
-**Primary Processes**: Notification Delivery, Action Processing
+**Core Concepts**: Web Interface Notifications, Manual Action Processing  
+**Primary Processes**: Web Notification Delivery, Manual Action Processing
 
-### Automation
-**Core Concepts**: Automated Triage, Escalation Rules  
+### Future Domain Areas (Automation Phase)
+**Core Concepts**: Automated Triage, Email Integration, Escalation Rules  
 **Primary Processes**: Auto-assignment, Timeout Handling, Rule Processing
 
 ## Core Entities

@@ -3,46 +3,61 @@
 # Test Case List: Program Request Management
 
 ## Test Coverage Overview
-This document provides a comprehensive test case registry for the Program Request Management process, covering functional workflows, integration points, performance requirements, and quality assurance scenarios.
+This document provides a comprehensive test case registry for the Program Request Management process, covering functional workflows, integration points, performance requirements, and quality assurance scenarios. **Phase 1 Focus**: Test cases prioritize manual interface functionality with automation tests planned for future phases.
 
 ## Test Categories
 
-### Category 1: Request Intake and Creation (TC-01-*)
-| Test Case ID | Test Name | Priority | Type | Coverage |
-|-------------|-----------|----------|------|-----------|
-| TC-01-001 | Email Request Auto-Generation | High | Integration | R-001 |
-| TC-01-002 | State Diagram Import Success | High | Integration | R-002 |  
-| TC-01-003 | Request Creation with Missing Data | Medium | Negative | R-001, R-002 |
-| TC-01-004 | Initial Status Assignment | High | Functional | R-004 |
-| TC-01-005 | Multiple Email Processing | Medium | Load | R-001 |
-| TC-01-006 | Invalid Email Format Handling | Medium | Negative | R-001 |
-| TC-01-007 | State Diagram Parsing Failures | Medium | Error | R-002 |
-| TC-01-008 | Duplicate Request Prevention | Low | Business | System |
+### Category 1: Request Creation and Management - Phase 1 (TC-01-*)
+| Test Case ID | Test Name | Priority | Type | Coverage | **Phase** |
+|-------------|-----------|----------|------|-----------|----------|
+| TC-01-001 | Manual Request Creation Form | High | Functional | Manual Interface | **Phase 1** |
+| TC-01-002 | Manual State Data Entry Interface | High | Functional | Manual Data Entry | **Phase 1** |  
+| TC-01-003 | Request Form Validation | Medium | Validation | Form Completeness | **Phase 1** |
+| TC-01-004 | Initial Status Assignment | High | Functional | R-004 | **Phase 1** |
+| TC-01-005 | File Upload and Attachment Management | Medium | Integration | File Handling | **Phase 1** |
+| TC-01-006 | Manual Request Assessment | Medium | Functional | Manager Review | **Phase 1** |
+| TC-01-007 | Request Categorization and Priority | Medium | Business | Manual Classification | **Phase 1** |
+| TC-01-008 | Duplicate Request Prevention | Low | Business | System | **Phase 1** |
 
-### Category 2: Assignment and Acknowledgment (TC-02-*)  
-| Test Case ID | Test Name | Priority | Type | Coverage |
-|-------------|-----------|----------|------|-----------|
-| TC-02-001 | Manager Assignment Process | High | Functional | R-005, R-006 |
-| TC-02-002 | Team-Wide Assignment Notification | High | Integration | R-007 |
-| TC-02-003 | Engineer Accept Assignment | High | Functional | R-008, R-009 |
-| TC-02-004 | Engineer Decline Assignment | High | Functional | R-008, R-010 |
-| TC-02-005 | Engineer Reassign Request | Medium | Functional | R-011 |
-| TC-02-006 | Assignment Button Visibility Control | Medium | Security | R-012 |
-| TC-02-007 | Assignment SLA Escalation | Medium | Temporal | Escalation |
-| TC-02-008 | Concurrent Assignment Attempts | Low | Concurrency | System |
-| TC-02-009 | Assignment to Unavailable Engineer | Medium | Negative | Business |
+### Category 1-Future: Automated Request Processing (TC-01-F-*)
+| Test Case ID | Test Name | Priority | Type | Coverage | **Phase** |
+|-------------|-----------|----------|------|-----------|----------|
+| TC-01-F-001 | ~~Email Request Auto-Generation~~ | High | Integration | R-001 | **Future** |
+| TC-01-F-002 | ~~State Diagram Import Success~~ | High | Integration | R-002 | **Future** |
+| TC-01-F-003 | ~~Invalid Email Format Handling~~ | Medium | Negative | R-001 | **Future** |
+| TC-01-F-004 | ~~State Diagram Parsing Failures~~ | Medium | Error | R-002 | **Future** |
 
-### Category 3: Data Validation Process (TC-03-*)
-| Test Case ID | Test Name | Priority | Type | Coverage |
-|-------------|-----------|----------|------|-----------|
-| TC-03-001 | Data Validation Interface Launch | High | Functional | R-013, R-016 |
-| TC-03-002 | Three-Panel Validation Display | High | UI | R-014 |
-| TC-03-003 | Data Correction and Save | High | Functional | R-015 |
-| TC-03-004 | Validation Progress Tracking | Medium | Functional | R-016 |
-| TC-03-005 | Validation Completion Trigger | High | Workflow | R-016 |
-| TC-03-006 | Complex Data Validation Scenarios | Medium | Business | R-015 |
-| TC-03-007 | Validation Interface Performance | Medium | Performance | R-014 |
-| TC-03-008 | Concurrent Validation Prevention | Low | Concurrency | System |
+### Category 2: Assignment and Acknowledgment - Phase 1 (TC-02-*)  
+| Test Case ID | Test Name | Priority | Type | Coverage | **Phase** |
+|-------------|-----------|----------|------|-----------|----------|
+| TC-02-001 | Manager Web Assignment Process | High | Functional | R-005, R-006 | **Phase 1** |
+| TC-02-002 | Dashboard Assignment Notifications | High | Integration | R-007 | **Phase 1** |
+| TC-02-003 | Engineer Web Accept Assignment | High | Functional | R-008, R-009 | **Phase 1** |
+| TC-02-004 | Engineer Web Decline Assignment | High | Functional | R-008, R-010 | **Phase 1** |
+| TC-02-005 | Engineer Web Reassign Request | Medium | Functional | R-011 | **Phase 1** |
+| TC-02-006 | Assignment Dashboard Visibility Control | Medium | Security | R-012 | **Phase 1** |
+| TC-02-007 | Manual Assignment SLA Management | Medium | Manual Process | Escalation | **Phase 1** |
+| TC-02-008 | Concurrent Assignment Attempts | Low | Concurrency | System | **Phase 1** |
+| TC-02-009 | Assignment to Unavailable Engineer | Medium | Negative | Business | **Phase 1** |
+
+### Category 3: Manual Data Entry and Validation - Phase 1 (TC-03-*)
+| Test Case ID | Test Name | Priority | Type | Coverage | **Phase** |
+|-------------|-----------|----------|------|-----------|----------|
+| TC-03-001 | Manual Data Entry Interface Launch | High | Functional | Manual Interface | **Phase 1** |
+| TC-03-002 | Structured Data Entry Forms | High | UI | Manual Forms | **Phase 1** |
+| TC-03-003 | Manual Data Entry and Validation | High | Functional | Form Validation | **Phase 1** |
+| TC-03-004 | Data Entry Progress Tracking | Medium | Functional | R-016 | **Phase 1** |
+| TC-03-005 | Data Entry Completion Trigger | High | Workflow | R-016 | **Phase 1** |
+| TC-03-006 | Complex Manual Data Entry Scenarios | Medium | Business | Manual Entry | **Phase 1** |
+| TC-03-007 | Data Entry Form Performance | Medium | Performance | Web Forms | **Phase 1** |
+| TC-03-008 | Concurrent Data Entry Prevention | Low | Concurrency | System | **Phase 1** |
+
+### Category 3-Future: Automated Data Validation (TC-03-F-*)
+| Test Case ID | Test Name | Priority | Type | Coverage | **Phase** |
+|-------------|-----------|----------|------|-----------|----------|
+| TC-03-F-001 | ~~Data Validation Interface Launch~~ | High | Functional | R-013, R-016 | **Future** |
+| TC-03-F-002 | ~~Three-Panel Validation Display~~ | High | UI | R-014 | **Future** |
+| TC-03-F-003 | ~~Automated Data Correction~~ | High | Functional | R-015 | **Future** |
 
 ### Category 4: Review and Approval (TC-04-*)
 | Test Case ID | Test Name | Priority | Type | Coverage |

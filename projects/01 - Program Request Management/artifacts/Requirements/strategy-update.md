@@ -1,0 +1,1 @@
+For the Program Request Management System, all automations are for ideal situation, however we need to provide human interface for all functions first. The implement strategy is human interface first, then implement the automation. So, we can build an MVP with human data entry quickly to verify the requirements. 

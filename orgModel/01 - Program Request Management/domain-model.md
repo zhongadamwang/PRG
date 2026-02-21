@@ -52,23 +52,35 @@
 
 ### System Actors
 
-#### Email Integration System
-- **Type**: External System
-- **Purpose**: Automated request intake and stakeholder notifications
-- **Interfaces**: SMTP/IMAP for email processing, webhook callbacks for status updates
-- **Key Functions**: Parse incoming emails, extract attachments, send formatted notifications
-
-#### State Diagram Import System  
-- **Type**: External System
-- **Purpose**: Extract engineering data from technical diagrams and documents
-- **Interfaces**: File processing APIs, data validation services
-- **Key Functions**: Parse technical documents, extract structured data, provide validation interfaces
+#### Web Application Interface
+- **Type**: Internal System
+- **Purpose**: Provide manual interfaces for all workflow functions
+- **Interfaces**: Web forms, dashboards, notification panels, data entry interfaces
+- **Key Functions**: Manual request creation, assignment management, data entry, status tracking
+- **Phase**: 1 (MVP)
 
 #### Authentication Directory
 - **Type**: External System (Active Directory)
 - **Purpose**: User identity management and role-based access control
 - **Interfaces**: LDAP/SAML authentication, group membership APIs
 - **Key Functions**: Authenticate users, provide role information, manage team memberships
+- **Phase**: 1 (MVP)
+
+### Future Phase System Actors (Automation Enhancement)
+
+#### Email Integration System
+- **Type**: External System
+- **Purpose**: Automated request intake and stakeholder notifications
+- **Interfaces**: SMTP/IMAP for email processing, webhook callbacks for status updates
+- **Key Functions**: Parse incoming emails, extract attachments, send formatted notifications
+- **Phase**: Future (Automation)
+
+#### State Diagram Import System  
+- **Type**: External System
+- **Purpose**: Extract engineering data from technical diagrams and documents
+- **Interfaces**: File processing APIs, data validation services
+- **Key Functions**: Parse technical documents, extract structured data, provide validation interfaces
+- **Phase**: Future (Automation)
 
 ## Domain Class Model
 

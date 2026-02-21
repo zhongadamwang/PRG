@@ -3,20 +3,28 @@
 # Process: Program Request Management
 
 ## Process Overview
-The Program Request Management process defines the complete workflow for processing engineering program requests from initial email submission through final program delivery. The process emphasizes automation, clear status tracking, collaborative assignment management, and structured quality assurance.
+The Program Request Management process defines the complete workflow for processing engineering program requests from initial submission through final program delivery. **Phase 1 Strategy**: The process emphasizes manual interfaces for all functions, clear status tracking, collaborative assignment management, and structured quality assurance to enable MVP validation before automation investment.
 
 ## Process Goals
-- Achieve 80% reduction in manual processing through automation
+
+### Phase 1 (MVP - Manual Interface)
+- Provide efficient manual interfaces for all workflow functions
+- Enable rapid MVP deployment and requirement validation
 - Provide real-time visibility into request status for all stakeholders  
-- Enable efficient engineer workload management
-- Ensure quality control through mandatory peer review
+- Enable efficient engineer workload management through web interfaces
+- Ensure quality control through manual peer review workflows
 - Generate complete job design ready for operational deployment
+- **Validate workflow effectiveness before automation investment**
+
+### Future Phase (Automation Enhancement)
+- Achieve 80% reduction in manual processing through automation
+- Implement intelligent auto-triage and escalation systems
 
 ## Workflow States
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Open : Email Received
+        [*] --> Open : Manual Request Creation
     Open --> Assigned : Manager Assignment
     Assigned --> Open : Engineer Declines
     Assigned --> Acknowledged : Engineer Accepts
@@ -27,7 +35,7 @@ stateDiagram-v2
     Review --> ProgramReady : Review Approved
     ProgramReady --> [*] : Process Complete
     
-    Open --> Open : Escalation Timeout
+    Open --> Open : Manual Escalation
     Assigned --> Open : Reassignment
 ```
 
@@ -47,25 +55,32 @@ stateDiagram-v2
 
 ### 1. Request Intake and Creation
 
-**Activity**: Automated Email Processing
-- **Trigger**: Email received at designated request inbox
+**Activity**: Manual Request Creation Interface
+- **Trigger**: User accesses request creation form
+- **Actor**: Manager or authorized user
+- **Actions**:
+  - Complete structured request form with client and project information
+  - Upload state diagram files and attachments
+  - Enter initial priority and categorization
+  - Submit request for processing
 - **System Actions**:
-  - Parse email content and attachments
-  - Extract client and project information
-  - Import associated state diagram data
+  - Validate form completeness and data integrity
   - Generate unique request identifier
+  - Store request with "Open" status
+  - **Future**: Automated email parsing (Phase 2)
 - **Outputs**: 
-  - New request in "Open" status
-  - Parsed data in draft state requiring validation
-- **SLA**: <5 minutes
+  - New request in "Open" status ready for assignment
+- **SLA**: <15 minutes for form completion
 
 **Activity**: Initial Request Assessment  
 - **Trigger**: Request created in Open status
-- **System Actions**:
+- **Actor**: Manager
+- **Actions**:
+  - Review request details and attachments
   - Categorize request type and complexity
-  - Identify potential engineer matches based on client/skills
-  - Set preliminary priority based on content analysis
-- **Outputs**: Request ready for assignment with suggested assignments
+  - Identify potential engineer matches based on workload and expertise
+  - Set priority based on business requirements
+- **Outputs**: Request ready for assignment with manager assessment
 
 ### 2. Assignment and Acknowledgment
 
@@ -84,51 +99,58 @@ stateDiagram-v2
 
 **Activity**: Engineer Response
 - **Actor**: Assigned Engineer 
-- **Trigger**: Request assigned notification received
+- **Trigger**: Request assigned notification received via web interface
 - **Actions Available**:
-  - **Accept**: Acknowledge assignment and proceed
-  - **Decline**: Reject with reason (returns to Open)
-  - **Reassign**: Transfer to another engineer with justification
+  - **Accept**: Acknowledge assignment and proceed via web interface
+  - **Decline**: Reject with reason through web form (returns to Open)
+  - **Reassign**: Transfer to another engineer with justification via web interface
 - **System Actions**:
-  - Process response selection via email buttons  
+  - Process response selection via web interface
   - Update status based on engineer choice
-  - Send follow-up notifications to stakeholders
+  - Send follow-up notifications via system dashboard
+  - **Future**: Email button integration (Phase 2)
 - **SLA**: <4 hours
 
 **Activity**: Escalation Management
 - **Trigger**: No engineer response within SLA
+- **Actions**:
+  - Manual escalation alert via dashboard notifications
+  - Manager review of unacknowledged assignments
+  - Manual reassignment based on workload assessment
 - **System Actions**:
-  - Send escalation alert to manager
   - Log unacknowledged status for reporting
-  - Optionally auto-reassign based on escalation rules
+  - Generate escalation reports for management review
+  - **Future**: Auto-escalation and auto-reassignment (Phase 2)
 - **Manual Actions**: Manager intervention and reassignment
 
 ### 3. Data Validation and Work Process
 
-**Activity**: Data Validation Setup  
+**Activity**: Manual Data Entry Setup  
 - **Actor**: Engineer
 - **Trigger**: Request acknowledgment completed
 - **Actions**:
-  - Open data validation interface
-  - Review three-panel view: data tree, state diagram, data details
-  - Identify parsing discrepancies or data gaps
+  - Access manual data entry interface
+  - Review uploaded state diagram files and documentation
+  - Begin structured data entry using guided forms
 - **System Actions**:
   - Change status to "In Progress" upon interface access
-  - Lock data for validation to prevent concurrent editing
-  - Provide correction tools and validation support
+  - Provide data entry forms with validation rules
+  - Track data entry progress and completeness
+  - **Future**: Automated parsing assistance (Phase 2)
 
-**Activity**: Data Validation and Correction
+**Activity**: Manual Data Entry and Validation
 - **Actor**: Engineer
 - **Process**:
-  1. Review automatically parsed data against state diagram
-  2. Identify and flag inconsistencies or errors
-  3. Make corrections using provided tools
-  4. Validate corrected data against business rules
-  5. Approve final validated dataset for job design
+  1. Enter state diagram data using structured forms
+  2. Validate entries against business rules and constraints
+  3. Review and cross-check data for completeness
+  4. Use validation interface to ensure data accuracy
+  5. Approve final dataset for job design
 - **System Actions**:
-  - Track validation progress and completion
-  - Generate audit trail of corrections made
-  - Unlock data for job design work once validated
+  - Provide real-time validation feedback
+  - Generate audit trail of data entries
+  - Lock data for job design work once validated
+  - **Future**: Automated parsing with manual correction (Phase 2)
 
 **Activity**: Job Design Development
 - **Actor**: Engineer  

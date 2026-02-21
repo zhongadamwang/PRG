@@ -6,19 +6,24 @@
 - Sanjel Engineering Request Process Diagram (REV 2).pdf
 - Program request Management tool Phase 1.docx
 **Generated**: 2026-02-20T15:30:00Z  
+**Updated**: 2026-02-21T00:00:00Z (Strategy Update)  
 **Total Requirements**: 47
+
+## Strategy Update
+
+**Implementation Approach**: Human interface first, then implement automation. All automation features are targeted for future phases while manual alternatives drive MVP development.
 
 ## Executive Summary
 
-Analysis of requirements documents reveals a comprehensive program request management workflow spanning from initial request submission through engineering completion, with potential future expansion to sales and operations. The system requires status tracking, assignment management, validation workflows, and stakeholder notifications.
+Analysis of requirements documents reveals a comprehensive program request management workflow spanning from initial request submission through engineering completion. **Updated Strategy**: The system will prioritize manual interfaces for all functions to enable quick MVP development and requirement validation, with automation features implemented in subsequent phases. This approach reduces initial complexity while validating workflows before automation investment.
 
 ## Core Requirements
 
-| ID | Section | Text | Tags | Confidence | Source |
-|----|---------|------|------|------------|---------|
-| R-001 | Request Creation | System SHALL automatically generate requests from incoming emails to designated request inbox | functional | high | transcript-workflow |
-| R-002 | Request Creation | System SHALL import state diagram data automatically during request creation | functional | high | transcript-workflow |
-| R-003 | Status Management | System SHALL support request status progression: Open → Assigned → Acknowledged → In Progress → Awaiting Review → Review → Program Ready | functional | high | transcript-workflow |
+| ID | Section | Text | Tags | Confidence | Source | **Phase** |
+|----|---------|------|------|------------|---------|--------|
+| R-001 | Request Creation | ~~System SHALL automatically generate requests from incoming emails~~ **MVP: Manual request creation interface SHALL be provided** | functional | high | transcript-workflow | **Phase 1 (Manual)** |
+| R-002 | Request Creation | ~~System SHALL import state diagram data automatically~~ **MVP: Manual state diagram data entry interface SHALL be provided** | functional | high | transcript-workflow | **Phase 1 (Manual)** |
+| R-003 | Status Management | System SHALL support request status progression: Open → Assigned → Acknowledged → In Progress → Awaiting Review → Review → Program Ready | functional | high | transcript-workflow | **Phase 1** |
 | R-004 | Status Management | New requests SHALL default to "Open" status when not yet assigned | functional | high | transcript-workflow |
 | R-005 | Assignment Process | System SHALL allow managers to assign requests to specific engineers | functional | high | transcript-workflow |
 | R-006 | Assignment Process | System SHALL change status to "Assigned" when manager assigns request to engineer | functional | high | transcript-workflow |
@@ -48,8 +53,8 @@ Analysis of requirements documents reveals a comprehensive program request manag
 | R-030 | Security | System SHALL support role-based access control for assignment privileges | functional | high | transcript-workflow |
 | R-031 | Integration | System SHALL integrate with existing team management tools for user lists | nonfunctional | medium | transcript-workflow |
 | R-032 | Integration | System SHALL potentially integrate with Bamboo HR for team member data | nonfunctional | low | transcript-workflow |
-| R-033 | Automation | System SHALL support automated request triaging based on client lists | functional | medium | transcript-workflow |
-| R-034 | Automation | Managers SHALL retain override capability for automated triage decisions | functional | medium | transcript-workflow |
+| R-033 | Automation | ~~System SHALL support automated request triaging based on client lists~~ **Future Phase: Automation Enhancement** | functional | medium | transcript-workflow | **Future Phase** |
+| R-034 | Automation | ~~Managers SHALL retain override capability for automated triage decisions~~ **Future Phase: Manual triage in Phase 1** | functional | medium | transcript-workflow | **Future Phase** |
 | R-035 | Work Separation | System SHALL separate job design work from pricing work | functional | high | transcript-workflow |
 | R-036 | Work Separation | Engineering phase SHALL focus only on job design completion | functional | high | transcript-workflow |
 | R-037 | Program Generation | System SHALL save complete program when engineering work is finished | functional | high | transcript-workflow |
