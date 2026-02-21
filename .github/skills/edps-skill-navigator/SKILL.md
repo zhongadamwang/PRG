@@ -83,10 +83,20 @@ Navigator: Analyzes current project state and suggests:
 ```copilot-pattern
 # User Intent Recognition
 "analyze requirements" → requirements-ingest + goals-extract
+"merge requirements" → requirements-merge
 "understand domain" → domain-extractconcepts + domain-alignentities  
 "create diagrams" → diagram-generatecollaboration
-"plan project" → project-planning-tracking + process-scopemin
+"plan project" → plan-derivetasks + plan-estimateeffort + plan-buildschedule
+"estimate effort" → plan-estimateeffort
+"create tasks" → plan-derivetasks
+"build schedule" → plan-buildschedule
+"track project" → project-planning-tracking + process-scopemin
 "track changes" → change-management
+"update organization model" → orgmodel-update
+"integrate models" → model-integration
+"update top requirements" → process-findtopandupdate
+"test integration" → integration-testing
+"validate workflows" → integration-testing
 ```
 
 ### Conversational Flows
@@ -98,6 +108,28 @@ Navigator:
 3. "Great! Now let's process your requirements. Please provide your requirements document..."
 4. [Invokes requirements-ingest]
 5. "Excellent! I've processed your requirements. Would you like me to extract goals and success criteria next?"
+
+User: "I need to plan my project and estimate effort"
+Navigator:
+1. "I'll help you create a comprehensive project plan. Let me start by deriving tasks from your requirements..."
+2. [Invokes plan-derivetasks]
+3. "Perfect! I've identified the key tasks. Now let me estimate effort for each task..."
+4. [Invokes plan-estimateeffort]
+5. "Great estimates! Now I'll build a detailed schedule with dependencies..."
+6. [Invokes plan-buildschedule]
+7. "Your project plan is ready! Would you like me to integrate this with your organizational model?"
+
+User: "I need to integrate new processes with our existing organizational model"
+Navigator:
+1. "I'll help you integrate your processes safely. Let me start by merging the process models..."
+2. [Invokes process-merge]
+3. "Process merge complete. Now I'll find and update top-level requirements that may be affected..."
+4. [Invokes process-findtopandupdate]
+5. "Updates identified. Now I'll integrate the changes into your organizational model..."
+6. [Invokes model-integration]
+7. "Integration complete! Let me update the organizational documentation..."
+8. [Invokes orgmodel-update]
+9. "Everything is updated. Would you like me to run integration tests to validate the changes?"
 ```
 
 ### Context-Aware Assistance
@@ -112,6 +144,7 @@ Navigator:
 ```
 Requirements Processing:
 ├── requirements-ingest       # Normalize and structure requirements
+├── requirements-merge        # Combine multiple requirement sources
 ├── goals-extract            # Extract business goals and success criteria
 └── process-w5h             # Comprehensive requirements analysis
 
@@ -121,8 +154,12 @@ Domain Analysis:
 └── domain-proposenewconcepts # Suggest domain extensions
 
 Process & Planning:
-├── process-merge           # Integrate multiple requirement sources
+├── process-merge           # Integrate process models with organizational models
+├── process-findtopandupdate # Update top-level requirements based on analysis
 ├── process-scopemin        # Identify minimum viable scope
+├── plan-derivetasks        # Convert requirements into actionable tasks
+├── plan-estimateeffort     # Provide effort estimates for development tasks
+├── plan-buildschedule      # Generate project schedules with dependencies
 ├── project-planning-tracking # Plan and track project milestones
 └── project-status-reporting # Generate status reports
 
@@ -131,8 +168,13 @@ Visualization & Documentation:
 ├── project-document-management   # Manage project documentation structure
 └── change-management            # Track and document changes
 
-Quality & Integration:
-└── skill-creator               # Create new skills when needed
+Model & Integration Management:
+├── model-integration       # Integrate new models into existing structures
+├── orgmodel-update        # Update organizational model documents
+└── integration-testing     # Validate end-to-end skill workflows
+
+Quality & Development:
+└── skill-creator          # Create new skills when needed
 ```
 
 ### Workflow Templates
@@ -141,13 +183,27 @@ Complete Project Initiation:
 project-document-management → requirements-ingest → goals-extract → process-w5h → domain-extractconcepts
 
 Requirements Analysis Deep Dive:
-requirements-ingest → goals-extract → process-w5h → process-scopemin
+requirements-ingest → goals-extract → process-w5h → process-scopemin → requirements-merge (if multiple sources)
 
 Domain Modeling Workflow:
 domain-extractconcepts → domain-alignentities → domain-proposenewconcepts → diagram-generatecollaboration
 
+Project Planning Workflow:
+goals-extract → process-scopemin → plan-derivetasks → plan-estimateeffort → plan-buildschedule
+
+Process Integration Workflow:
+process-merge → process-findtopandupdate → model-integration → orgmodel-update
+
 Change Management Cycle:
-change-management → [affected skill execution] → project-status-reporting
+change-management → [affected skill execution] → orgmodel-update → project-status-reporting
+
+End-to-End Organization Integration:
+requirements-ingest → domain-extractconcepts → model-integration → orgmodel-update → integration-testing
+
+Complete Development Lifecycle:
+project-document-management → requirements-ingest → goals-extract → process-w5h → 
+domain-extractconcepts → plan-derivetasks → plan-estimateeffort → plan-buildschedule → 
+diagram-generatecollaboration → integration-testing
 ```
 
 ## Implementation Guidelines
@@ -192,7 +248,7 @@ change-management → [affected skill execution] → project-status-reporting
 
 ---
 
-**Version**: 1.0.0
-**Last Updated**: 2026-02-17
+**Version**: 1.1.0
+**Last Updated**: 2026-02-21
 **Compatibility**: GitHub Copilot, VS Code, EDPS v1.x
 **Maintainer**: EDPS Development Team
