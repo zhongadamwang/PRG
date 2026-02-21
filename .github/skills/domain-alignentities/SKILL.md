@@ -363,3 +363,54 @@ Terms not in organizational vocabulary that could be valuable additions.
 - **Low (0.2-0.49)**: Weak match requiring human review
 
 For detailed alignment patterns and conflict resolution strategies, see [alignment-patterns.md](references/alignment-patterns.md).
+
+## Usage Pattern
+```
+1. Call after domain-extractconcepts skill completion
+2. Load domain-concepts.json from project artifacts
+3. Analyze against organizational domain models and vocabularies
+4. Generate alignment analysis and recommendations
+5. Create domain-alignment.json and domain-alignment.md
+6. Update domain-model.md class diagrams with aligned concepts (optional)
+7. Feed results to domain-proposenewconcepts and model-integration skills
+```
+
+## Integration with Diagram Updates
+When alignment results indicate changes to domain models, this skill can trigger class diagram updates:
+
+### Diagram Update Integration
+```json
+{
+  "update_class_diagrams": true,
+  "target_domain_models": ["orgModel/01-skill-dev/domain-model.md"],
+  "alignment_mode": "rename|merge|extend|create_new",
+  "preserve_styling": true
+}
+```
+
+### Class Diagram Alignment Process
+1. **Identify diagram impacts** from entity and operation alignments
+2. **Generate updated class diagrams** reflecting organizational standards
+3. **Update domain-model.md** with aligned entity names and relationships
+4. **Maintain diagram consistency** across organizational models
+5. **Preserve existing styling** and layout where possible
+
+## Cross-Skill Integration
+
+### Input Dependencies:
+- domain-extractconcepts skill → domain-concepts.json
+- Organizational domain models (orgModel/**/*domain-model.md)
+- Organizational vocabularies (orgModel/**/*vocabulary.md)
+
+### Output Consumers:
+- domain-proposenewconcepts skill ← domain-alignment.json
+- model-integration skill ← domain-alignment.json
+- diagram-generatecollaboration skill ← alignment results (for diagram updates)
+- orgmodel-update skill ← alignment recommendations
+
+### Diagram Generation Integration:
+When updating domain models based on alignment results:
+- Entity alignments trigger class diagram updates
+- Operation alignments modify method signatures in diagrams
+- Terminology standardization updates entity and attribute names
+- Relationship alignments adjust diagram associations

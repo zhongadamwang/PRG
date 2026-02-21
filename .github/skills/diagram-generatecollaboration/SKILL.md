@@ -22,6 +22,7 @@ Transform analyzed domain concepts and requirements into clear, actionable colla
 **Files Generated:**
 - `projects/[project-name]/artifacts/Analysis/collaboration-diagrams.md` - Markdown with embedded Mermaid diagrams
 - `projects/[project-name]/artifacts/Analysis/collaboration-diagrams.json` - Structured diagram metadata
+- `orgModel/**/domain-model.md` - Updated organizational domain models with embedded class diagrams (when domain-model integration is requested)
 
 ### Markdown Structure (`collaboration-diagrams.md`)
 ```markdown
@@ -292,12 +293,49 @@ end
 5. Generate collaboration diagrams for key interaction patterns
 6. Output markdown file with embedded Mermaid diagrams and JSON metadata
 7. Update project documentation with visual collaboration and domain models
+8. For domain model integration: Update orgModel/**/domain-model.md with generated class diagrams
+```
+
+## Domain Model Integration Mode
+When called with `domain_model_integration: true`, this skill:
+
+1. **Extracts existing domain model structure** from `orgModel/**/domain-model.md`
+2. **Generates enhanced class diagrams** based on textual domain descriptions
+3. **Updates domain-model.md** by adding or replacing the "Domain Class Diagram" section
+4. **Maintains consistency** with existing textual domain descriptions
+5. **Preserves traceability** links to requirements and domain concepts
+
+### Integration Input Parameters
+```json
+{
+  "domain_model_integration": true,
+  "target_domain_model": "orgModel/01-skill-dev/domain-model.md",
+  "diagram_placement": "after_title|before_actors|replace_existing",
+  "sync_with_text": true
+}
 ```
 
 ## Integration Notes
-- Class diagrams complement textual domain models and requirements documentation
-- Collaboration diagrams complement domain models and requirements documentation
-- Generated diagrams can inform architecture and design decisions
-- Domain class diagrams should align with organizational domain model standards
-- Supports iterative refinement as requirements evolve
-- Compatible with VS Code Mermaid preview and documentation workflows
+- **Domain Model Sync**: Class diagrams complement and enhance textual domain models
+- **Cross-Skill Integration**: Works with domain-extractconcepts, domain-alignentities, and orgmodel-update
+- **Bidirectional Updates**: Can generate diagrams from text or update text from aligned concepts
+- **Organizational Standards**: Domain class diagrams align with organizational domain model standards
+- **Iterative Refinement**: Supports incremental updates as requirements and domain understanding evolve
+- **VS Code Compatible**: All diagrams render properly in VS Code Mermaid preview
+
+## Cross-Skill Workflow Integration
+
+### With domain-extractconcepts:
+- Consume `domain-concepts.json` as primary input
+- Generate class diagrams from extracted entities and relationships
+- Maintain entity IDs and traceability to source requirements
+
+### With domain-alignentities:
+- Use alignment results to update class diagrams with organizational standards
+- Incorporate entity mappings and terminology standardization
+- Reflect alignment recommendations in diagram structure
+
+### With orgmodel-update:
+- Coordinate domain-model.md updates to avoid conflicts
+- Ensure diagram updates align with organizational model changes
+- Support rollback capabilities for diagram modifications

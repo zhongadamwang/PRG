@@ -262,9 +262,11 @@ Systematically identify and extract domain entities, business concepts, terminol
 ### Validation Checks
 - **Entity completeness**: All major business objects identified
 - **Attribute coverage**: Key properties captured for each entity
+- **Operation completeness**: Essential behaviors and methods identified
 - **Relationship consistency**: Bidirectional associations properly mapped
 - **Terminology accuracy**: Definitions align with business context
 - **Traceability integrity**: All extractions linked to source requirements
+- **Diagram readiness**: Entities structured for effective class diagram generation
 
 ### Confidence Scoring
 - **High (0.8-1.0)**: Explicitly stated in requirements with clear definitions
@@ -272,3 +274,52 @@ Systematically identify and extract domain entities, business concepts, terminol
 - **Low (0.2-0.49)**: Inferred from context or weakly supported
 
 For detailed extraction patterns and advanced analysis techniques, see [extraction-patterns.md](references/extraction-patterns.md).
+
+## Usage Pattern
+```
+1. Call after requirements-ingest skill completion
+2. Load requirements.json and optional goals.json
+3. Extract domain entities, concepts, terminology, and relationships
+4. Generate structured domain-concepts.json for programmatic use
+5. Create human-readable domain-concepts.md documentation
+6. Trigger diagram-generatecollaboration skill for visual domain modeling (optional)
+7. Feed results to domain-alignentities skill for organizational alignment
+```
+
+## Integration with Diagram Generation
+This skill can trigger automatic class diagram generation through integration with the diagram-generatecollaboration skill:
+
+### Diagram Integration Parameters
+```json
+{
+  "generate_class_diagram": true,
+  "update_domain_model": "orgModel/01-skill-dev/domain-model.md",
+  "diagram_style": "comprehensive|overview|focused",
+  "include_operations": true
+}
+```
+
+### Class Diagram Generation Flow
+1. **Extract entities with operations** - Capture both static and behavioral aspects
+2. **Generate domain-concepts.json** - Include detailed entity metadata
+3. **Call diagram-generatecollaboration** - Create class diagram from extracted concepts
+4. **Update domain-model.md** - Embed generated diagram in organizational model
+5. **Maintain traceability** - Link diagram elements back to source requirements
+
+## Cross-Skill Integration
+
+### Input Dependencies:
+- requirements-ingest skill → requirements.json
+- goals-extract skill → goals.json (optional)
+
+### Output Consumers:
+- domain-alignentities skill ← domain-concepts.json
+- diagram-generatecollaboration skill ← domain-concepts.json (for class diagrams)
+- domain-proposenewconcepts skill ← domain-concepts.json
+
+### Diagram Generation Integration:
+When integrated with diagram-generatecollaboration skill:
+- Extracted entities automatically generate class diagram elements
+- Operations and attributes populate class diagram structure
+- Relationships become diagram associations and inheritance
+- Domain areas organize diagram layout and grouping

@@ -14,9 +14,10 @@ Maintain the orgModel hierarchy with systematic updates to process documentation
 ## Inputs
 - **Primary**: `projects/[project-name]/artifacts/Analysis/domain-concepts.json` (from domain-extractconcepts skill)
 - **Secondary**: `projects/[project-name]/artifacts/Analysis/domain-alignment.json` (from domain-alignentities skill)
-- **Optional**: `projects/[project-name]/artifacts/Analysis/collaboration-diagrams.json` (from diagram-generatecollaboration skill)
+- **Tertiary**: `projects/[project-name]/artifacts/Analysis/collaboration-diagrams.json` (from diagram-generatecollaboration skill)
 - **Context**: `projects/[project-name]/artifacts/Analysis/requirements.json` (for traceability)
 - **Existing**: `orgModel/[NN] - [Process Name]/` (existing organizational model content)
+- **Diagram Updates**: Class diagram updates triggered by domain alignment results
 
 ## Outputs
 **Files Updated/Generated:**
@@ -274,7 +275,58 @@ sequenceDiagram
 - Add new terminology while maintaining consistency
 - Extend test coverage without duplicating existing cases
 
+### Domain Model Updates with Class Diagrams
+When updating `domain-model.md`, this skill now integrates with diagram generation:
+
+#### Class Diagram Integration Process
+1. **Extract existing entities** from textual domain model descriptions
+2. **Apply alignment results** from domain-alignentities skill
+3. **Generate/update class diagram** reflecting aligned domain structure
+4. **Embed diagram** in domain-model.md following organizational patterns
+5. **Sync diagram with textual descriptions** to ensure consistency
+
+#### domain-model.md Enhanced Structure
+```markdown
+<!-- Identifier: D-[NN] -->
+
+# [Process Name] Domain Model
+
+## Domain Class Diagram
+
+```mermaid
+classDiagram
+    class Entity:::category {
+        +attribute: Type
+        +operation()
+    }
+    
+    Entity --> RelatedEntity
+```
+
+## Actors
+[Textual descriptions of actors shown in diagram]
+
+## Core Entities  
+[Textual descriptions of entities with attributes and operations]
+
+## Key Relationships
+[Textual descriptions of relationships shown in diagram]
+```
+
+#### Diagram-Text Synchronization
+- **Entity alignment**: Ensure diagram entities match textual descriptions
+- **Attribute consistency**: Sync diagram attributes with detailed attribute lists  
+- **Operation alignment**: Match diagram operations with described behaviors
+- **Relationship validation**: Verify diagram associations match textual relationships
+- **Styling consistency**: Apply organizational diagram styling standards
+
 ### 4. Validation and Integrity Checks
+
+**Integration with Diagram Generation**:
+- **Trigger diagram updates** when domain alignment results indicate changes
+- **Coordinate with diagram-generatecollaboration** skill for class diagram generation
+- **Maintain diagram version consistency** across organizational models
+- **Preserve custom diagram styling** and layout preferences
 
 **Cross-Reference Validation**:
 - Verify all internal links to process documents remain valid
@@ -338,5 +390,6 @@ sequenceDiagram
 ---
 
 **Dependencies**: domain-extractconcepts, domain-alignentities, diagram-generatecollaboration
-**Integration**: GitHub Copilot, VS Code environment, EDPS skill framework
+**Integration**: GitHub Copilot, VS Code environment, EDPS skill framework, Mermaid class diagram generation
 **Maintenance**: Update templates based on organizational model evolution
+**Diagram Support**: Automatic class diagram generation and synchronization with textual domain models
