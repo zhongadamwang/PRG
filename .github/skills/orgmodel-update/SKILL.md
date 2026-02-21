@@ -1,0 +1,342 @@
+---
+name: orgmodel-update
+description: Manage updates to organizational model documents and folder structures. Updates orgModel hierarchy including process documentation, domain models, collaboration diagrams, and test cases based on requirements processing results and domain analysis outputs.
+license: MIT
+---
+
+# OrgModel Update
+
+Systematically manages updates to organizational model documents and folder structures based on analysis outputs from requirements processing and domain modeling.
+
+## Intent
+Maintain the orgModel hierarchy with systematic updates to process documentation, domain models, collaboration diagrams, and test cases. Ensures organizational models remain current with evolving requirements while preserving existing content structure and maintaining cross-reference integrity.
+
+## Inputs
+- **Primary**: `projects/[project-name]/artifacts/Analysis/domain-concepts.json` (from domain-extractconcepts skill)
+- **Secondary**: `projects/[project-name]/artifacts/Analysis/domain-alignment.json` (from domain-alignentities skill)
+- **Optional**: `projects/[project-name]/artifacts/Analysis/collaboration-diagrams.json` (from diagram-generatecollaboration skill)
+- **Context**: `projects/[project-name]/artifacts/Analysis/requirements.json` (for traceability)
+- **Existing**: `orgModel/[NN] - [Process Name]/` (existing organizational model content)
+
+## Outputs
+**Files Updated/Generated:**
+- `orgModel/[NN] - [Process Name]/main.md` - Updated process overview with new elements
+- `orgModel/[NN] - [Process Name]/domain-model.md` - Updated domain model with aligned entities
+- `orgModel/[NN] - [Process Name]/process.md` - Updated process flow documentation  
+- `orgModel/[NN] - [Process Name]/collaboration.md` - Updated collaboration diagrams
+- `orgModel/[NN] - [Process Name]/vocabulary.md` - Updated terminology consistency mapping
+- `orgModel/[NN] - [Process Name]/test-case-list.md` - Updated test case master list
+- `projects/[project-name]/artifacts/Analysis/orgmodel-update-summary.md` - Change summary and validation report
+
+### Update Summary Structure (`orgmodel-update-summary.md`)
+```markdown
+# OrgModel Update Summary
+
+**Project**: [Project Name]  
+**Generated**: [ISO8601 timestamp]  
+**Process Model**: [NN] - [Process Name]  
+**Source Analysis**: [source file references]
+
+## Changes Applied
+
+### Structure Updates
+- [ ] Created new orgModel folder: `orgModel/[NN] - [Process Name]/`
+- [ ] Updated existing structure with [N] new elements
+- [ ] Preserved [N] existing elements
+
+### Document Updates
+- [ ] **main.md**: [summary of changes]
+- [ ] **domain-model.md**: Added [N] entities, [N] concepts
+- [ ] **process.md**: Updated with [N] new activities/flows  
+- [ ] **collaboration.md**: Added [N] new interaction patterns
+- [ ] **vocabulary.md**: Added [N] terms, aligned [N] existing terms
+- [ ] **test-case-list.md**: Added [N] test cases, updated [N] existing
+
+### Validation Results
+- [ ] Cross-reference integrity maintained
+- [ ] Terminology consistency verified
+- [ ] Process flow completeness validated
+- [ ] Test coverage assessment completed
+
+## Next Steps
+- Review updated orgModel for completeness
+- Validate process flows with stakeholders
+- Update dependent organizational models
+- Schedule integration testing
+```
+
+## Core Functions
+
+### 1. OrgModel Structure Management
+
+**Create/Update Process Folder**
+```
+orgModel/[NN] - [Process Name]/
+├── main.md               # Process overview with navigation
+├── domain-model.md       # Actors, systems, entities from domain analysis
+├── process.md            # Process flows, activities, decision points
+├── collaboration.md      # Entity interactions and sequence diagrams  
+├── vocabulary.md         # Canonical terminology mapping
+├── test-case-list.md     # Comprehensive test case registry
+└── test-cases/           # Individual test case files (if testing required)
+    └── tc-[proc-id]-[sequence].md
+```
+
+**Numbering Convention**: Use next available NN sequence number in orgModel folder structure
+
+### 2. Content Generation Patterns
+
+#### main.md Structure
+```markdown
+<!-- Identifier: I-[NN] -->
+
+# [NN] - [Process Name]
+
+## Purpose
+[Business purpose derived from requirements analysis]
+
+## Process Flow  
+See [process.md](process.md) for detailed activity diagram.
+
+## Collaborations
+See [collaboration.md](collaboration.md) for entity interactions.
+
+## Domain Model
+See [domain-model.md](domain-model.md) for actors and entities.
+
+## Sub-Processes
+[List nested processes identified from analysis]
+
+## Test Coverage
+See [test-case-list.md](test-case-list.md) for verification test cases.
+
+## Related Changes
+<!-- Traceability to source requirements and changes -->
+```
+
+#### domain-model.md Structure  
+```markdown
+<!-- Identifier: DM-[NN] -->
+
+# Domain Model: [Process Name]
+
+## Actors
+[Human and system actors from domain analysis]
+
+### [Actor Name]
+- **Type**: Human/System/External
+- **Responsibilities**: [key responsibilities]
+- **Interactions**: [primary entity interactions]
+
+## Key Entities
+[Business entities from domain concepts extraction]
+
+### [Entity Name] 
+- **Definition**: [entity definition]
+- **Attributes**: [key attributes]
+- **Relationships**: [entity relationships]
+- **Domain Area**: [functional area]
+
+## Systems and Components
+[Technical systems involved in process]
+
+### [System Name]
+- **Purpose**: [system role]
+- **Interfaces**: [external connections]
+- **Key Functions**: [primary capabilities]
+```
+
+#### process.md Structure
+```markdown
+<!-- Identifier: P-[NN] -->
+
+# Process: [Process Name]
+
+## Overview
+[Process purpose and scope]
+
+## Process Flow
+
+```mermaid
+flowchart TD
+    A[Start] --> B[Activity 1]
+    B --> C{Decision Point}
+    C -->|Yes| D[Activity 2]
+    C -->|No| E[Activity 3]
+    D --> F[End]
+    E --> F
+```
+
+## Activities
+
+### [Activity Name]
+- **Input**: [required inputs]
+- **Process**: [activity description]
+- **Output**: [produced outputs]
+- **Responsible**: [actor/role responsible]
+- **Validation**: [quality checks]
+
+## Decision Points
+[Critical decision points with criteria]
+
+## Exception Handling  
+[Error conditions and recovery procedures]
+```
+
+#### collaboration.md Structure
+```markdown
+<!-- Identifier: C-[NN] -->
+
+# Collaboration: [Process Name]
+
+## Entity Interactions
+
+```mermaid
+sequenceDiagram
+    participant A as Actor
+    participant S as System
+    participant D as Data Store
+    
+    A->>S: Request
+    S->>D: Query
+    D-->>S: Response
+    S-->>A: Result
+```
+
+## Interaction Patterns
+[Description of key interaction patterns]
+
+## Communication Channels
+[How entities communicate]
+
+## Data Flow
+[Information flow between entities]
+```
+
+#### vocabulary.md Structure
+```markdown
+<!-- Identifier: V-[NN] -->
+
+# Vocabulary: [Process Name]
+
+## Canonical Terms
+[Standardized terminology for the process]
+
+| Term | Definition | Aliases | Context |
+|------|------------|---------|---------|
+| [Term] | [Definition] | [Synonyms] | [Usage context] |
+
+## Domain Alignment
+[Mapping to enterprise domain models]
+
+## Consistency Rules
+[Guidelines for term usage across process]
+```
+
+#### test-case-list.md Structure
+```markdown
+<!-- Identifier: TCL-[NN] -->
+
+# Test Case List: [Process Name]
+
+## Test Coverage Overview
+[Summary of testing scope and approach]
+
+## Test Cases
+
+| TC ID | Test Category | Title | Priority | Source Requirement |
+|-------|---------------|-------|----------|-------------------|
+| tc-[NN]-001 | Functional | [Test title] | High | R-[ID] |
+
+## Test Categories
+- **Functional**: Core process functionality
+- **Integration**: Cross-entity interactions  
+- **Exception**: Error handling and recovery
+- **Performance**: Process efficiency measures
+- **Compliance**: Regulatory/standards adherence
+
+## Validation Criteria
+[Process success criteria for testing]
+```
+
+### 3. Content Update Logic
+
+**Preservation Strategy**:
+- Maintain existing content structure and identifiers
+- Add new elements without disrupting existing cross-references
+- Preserve manual customizations and annotations
+- Update metadata and change tracking
+
+**Integration Patterns**:
+- Merge new domain entities with existing domain models
+- Append new process activities to existing flows
+- Integrate new collaboration patterns with existing interactions
+- Add new terminology while maintaining consistency
+- Extend test coverage without duplicating existing cases
+
+### 4. Validation and Integrity Checks
+
+**Cross-Reference Validation**:
+- Verify all internal links to process documents remain valid
+- Ensure terminology consistency across all orgModel files
+- Validate entity references between domain model and collaborations
+- Check test case traceability to source requirements
+
+**Structure Integrity**:
+- Confirm file naming conventions compliance
+- Validate Mermaid diagram syntax in process.md and collaboration.md
+- Ensure required sections present in all core files
+- Verify identifier uniqueness across orgModel structure
+
+**Content Consistency**:
+- Align terminology with vocabulary.md across all files
+- Ensure actor consistency between domain-model.md and collaboration.md
+- Validate process flow completeness and logical consistency
+- Check test case coverage against identified process activities
+
+## Usage Guidelines
+
+### Typical Workflow
+1. **Analyze Input**: Process domain concepts, alignment results, and collaboration diagrams
+2. **Identify Target**: Determine orgModel process (existing or new) for updates
+3. **Structure Update**: Create/modify orgModel folder structure as needed
+4. **Content Integration**: Update each core file with new elements, preserving existing content
+5. **Validation**: Run integrity checks and cross-reference validation
+6. **Summary Generation**: Document all changes and validation results
+
+### Integration Points
+- **Domain Analysis**: Incorporates entities and concepts from domain extraction
+- **Process Modeling**: Integrates with collaboration diagram generation
+- **Requirements Traceability**: Maintains links to source requirements
+- **Change Management**: Documents updates for organizational tracking
+- **Testing Integration**: Provides test case foundation for validation activities
+
+### Quality Assurance
+- Apply organizational naming conventions consistently
+- Ensure Mermaid diagram syntax validity
+- Maintain document template compliance
+- Validate cross-reference integrity
+- Confirm terminology alignment with enterprise standards
+
+## Configuration Options
+
+### Process Identification
+- **Auto-numbering**: Automatically assign next available orgModel sequence number
+- **Manual numbering**: Use specified process number for updates
+- **Name mapping**: Map requirements/domain areas to existing process models
+
+### Update Mode
+- **Incremental**: Add new elements to existing orgModel content
+- **Refresh**: Regenerate orgModel content while preserving customizations
+- **Merge**: Combine multiple analysis sources into single orgModel update
+
+### Validation Level
+- **Basic**: File structure and syntax validation
+- **Standard**: Cross-reference and consistency checking  
+- **Comprehensive**: Full integrity validation with dependency analysis
+
+---
+
+**Dependencies**: domain-extractconcepts, domain-alignentities, diagram-generatecollaboration
+**Integration**: GitHub Copilot, VS Code environment, EDPS skill framework
+**Maintenance**: Update templates based on organizational model evolution

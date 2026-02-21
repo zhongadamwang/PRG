@@ -1,0 +1,444 @@
+# EDPS Workflow Templates
+
+## Template: Complete Project Initiation
+
+```json
+{
+  "name": "complete_project_initiation",
+  "description": "Full project setup from requirements to initial analysis",
+  "trigger_patterns": [
+    "start new project",
+    "initialize project", 
+    "setup project with requirements",
+    "begin EDPS project"
+  ],
+  "prerequisites": {
+    "required": ["requirements_document"],
+    "optional": ["project_name", "team_information"]
+  },
+  "workflow": {
+    "steps": [
+      {
+        "step": 1,
+        "skill": "project-document-management",
+        "purpose": "Create standardized project structure",
+        "inputs": ["project_name"],
+        "outputs": ["project_structure"],
+        "duration": "2-3 minutes",
+        "critical": true
+      },
+      {
+        "step": 2,
+        "skill": "requirements-ingest", 
+        "purpose": "Process and normalize requirements",
+        "inputs": ["requirements_document", "project_structure"],
+        "outputs": ["requirements.md", "requirements.json"],
+        "duration": "3-5 minutes",
+        "critical": true
+      },
+      {
+        "step": 3,
+        "skill": "goals-extract",
+        "purpose": "Identify business objectives and success criteria",
+        "inputs": ["requirements.md"],
+        "outputs": ["goals.md", "goals.json"],
+        "duration": "2-4 minutes", 
+        "critical": true
+      },
+      {
+        "step": 4,
+        "skill": "process-w5h",
+        "purpose": "Comprehensive contextual analysis",
+        "inputs": ["requirements.md", "goals.md"],
+        "outputs": ["w5h-analysis.md", "w5h-analysis.json"],
+        "duration": "4-6 minutes",
+        "critical": false
+      },
+      {
+        "step": 5,
+        "skill": "domain-extractconcepts",
+        "purpose": "Identify domain entities and relationships", 
+        "inputs": ["requirements.md", "w5h-analysis.md"],
+        "outputs": ["domain-concepts.md", "domain-concepts.json"],
+        "duration": "3-5 minutes",
+        "critical": false
+      },
+      {
+        "step": 6,
+        "skill": "domain-alignentities",
+        "purpose": "Align concepts with organizational standards",
+        "inputs": ["domain-concepts.md"],
+        "outputs": ["domain-alignment.md", "domain-alignment.json"],
+        "duration": "2-4 minutes",
+        "critical": false,
+        "conditional": "if organizational standards available"
+      }
+    ],
+    "parallel_opportunities": [
+      {
+        "steps": [3, 4],
+        "note": "Goals extraction and W5H analysis can run simultaneously"
+      }
+    ],
+    "checkpoints": [
+      {
+        "after_step": 2,
+        "check": "Requirements successfully processed",
+        "failure_action": "Manual requirements review"
+      },
+      {
+        "after_step": 5, 
+        "check": "Domain concepts identified (minimum 5)",
+        "failure_action": "Guided concept identification"
+      }
+    ]
+  },
+  "success_criteria": [
+    "Project structure created",
+    "Requirements processed and normalized", 
+    "Business goals identified",
+    "Domain model foundation established"
+  ],
+  "estimated_total_duration": "15-25 minutes",
+  "user_interaction_points": [
+    "Project name confirmation",
+    "Requirements document upload",
+    "Optional: Review extracted goals",
+    "Optional: Review domain concepts"
+  ]
+}
+```
+
+## Template: Requirements Analysis Focus
+
+```json
+{
+  "name": "requirements_analysis_focus",
+  "description": "Deep analysis of existing requirements without full project setup",
+  "trigger_patterns": [
+    "analyze requirements",
+    "understand requirements better", 
+    "deep dive on requirements",
+    "comprehensive requirements analysis"
+  ],
+  "prerequisites": {
+    "required": ["requirements_document OR existing_requirements.md"],
+    "optional": ["specific_analysis_focus"]
+  },
+  "workflow": {
+    "steps": [
+      {
+        "step": 1,
+        "skill": "requirements-ingest",
+        "purpose": "Ensure requirements are properly processed",
+        "conditional": "if requirements not already processed",
+        "inputs": ["requirements_document"], 
+        "outputs": ["requirements.md"],
+        "duration": "3-5 minutes"
+      },
+      {
+        "step": 2,
+        "skill": "goals-extract",
+        "purpose": "Extract and clarify business objectives",
+        "inputs": ["requirements.md"],
+        "outputs": ["goals.md"],
+        "duration": "2-4 minutes",
+        "critical": true
+      },
+      {
+        "step": 3,
+        "skill": "process-w5h", 
+        "purpose": "Comprehensive contextual analysis",
+        "inputs": ["requirements.md", "goals.md"],
+        "outputs": ["w5h-analysis.md"],
+        "duration": "4-6 minutes",
+        "critical": true
+      },
+      {
+        "step": 4,
+        "skill": "process-scopemin",
+        "purpose": "Identify minimum viable scope",
+        "inputs": ["requirements.md", "goals.md", "w5h-analysis.md"],
+        "outputs": ["scope-analysis.md"], 
+        "duration": "3-5 minutes",
+        "critical": false
+      },
+      {
+        "step": 5,
+        "skill": "project-status-reporting",
+        "purpose": "Generate analysis summary",
+        "inputs": ["All previous outputs"],
+        "outputs": ["analysis-summary.md"],
+        "duration": "2-3 minutes",
+        "critical": false
+      }
+    ],
+    "parallel_opportunities": [
+      {
+        "steps": [2, 3],
+        "note": "Goals and W5H analysis can start simultaneously"
+      }
+    ]
+  },
+  "success_criteria": [
+    "Business goals clearly identified",
+    "Requirements context fully understood",
+    "Scope boundaries defined"
+  ],
+  "estimated_total_duration": "10-20 minutes"
+}
+```
+
+## Template: Domain Modeling Workflow
+
+```json
+{
+  "name": "domain_modeling_workflow", 
+  "description": "Focused domain analysis and modeling",
+  "trigger_patterns": [
+    "model the domain",
+    "understand domain concepts",
+    "domain analysis",
+    "identify domain entities"
+  ],
+  "prerequisites": {
+    "required": ["requirements.md"],
+    "recommended": ["goals.md", "w5h-analysis.md"]
+  },
+  "workflow": {
+    "steps": [
+      {
+        "step": 1,
+        "skill": "domain-extractconcepts",
+        "purpose": "Identify core domain entities and relationships",
+        "inputs": ["requirements.md", "w5h-analysis.md"],
+        "outputs": ["domain-concepts.md"],
+        "duration": "3-5 minutes",
+        "critical": true
+      },
+      {
+        "step": 2,
+        "skill": "domain-alignentities", 
+        "purpose": "Align concepts with organizational standards",
+        "inputs": ["domain-concepts.md"],
+        "outputs": ["domain-alignment.md"],
+        "duration": "2-4 minutes",
+        "critical": false
+      },
+      {
+        "step": 3,
+        "skill": "domain-proposenewconcepts",
+        "purpose": "Identify and propose missing concepts",
+        "inputs": ["domain-alignment.md"],
+        "outputs": ["domain-newconcepts.md"],
+        "duration": "3-5 minutes",
+        "critical": false,
+        "conditional": "if gaps identified"
+      },
+      {
+        "step": 4,
+        "skill": "diagram-generatecollaboration",
+        "purpose": "Create visual domain and collaboration models",
+        "inputs": ["domain-concepts.md", "domain-alignment.md"],
+        "outputs": ["collaboration-diagrams.md"],
+        "duration": "4-6 minutes", 
+        "critical": false
+      },
+      {
+        "step": 5,
+        "skill": "change-management",
+        "purpose": "Document domain modeling decisions",
+        "inputs": ["All domain artifacts"],
+        "outputs": ["domain-change-log.md"],
+        "duration": "2-3 minutes",
+        "critical": false
+      }
+    ]
+  },
+  "success_criteria": [
+    "Domain concepts identified and categorized",
+    "Concepts aligned with standards (if applicable)",
+    "Visual models created for key interactions"
+  ],
+  "estimated_total_duration": "12-20 minutes"
+}
+```
+
+## Template: Quick Start MVP
+
+```json
+{
+  "name": "quick_start_mvp",
+  "description": "Minimum viable analysis for rapid project initiation",
+  "trigger_patterns": [
+    "quick start",
+    "fast analysis", 
+    "minimum viable",
+    "get started quickly",
+    "basic analysis"
+  ],
+  "prerequisites": {
+    "required": ["requirements_document"],
+    "optional": []
+  },
+  "workflow": {
+    "steps": [
+      {
+        "step": 1,
+        "skill": "requirements-ingest",
+        "purpose": "Basic requirements processing",
+        "inputs": ["requirements_document"],
+        "outputs": ["requirements.md"],
+        "duration": "2-3 minutes",
+        "critical": true
+      },
+      {
+        "step": 2,
+        "skill": "goals-extract",
+        "purpose": "Essential goal identification",
+        "inputs": ["requirements.md"], 
+        "outputs": ["goals.md"],
+        "duration": "2-3 minutes",
+        "critical": true
+      },
+      {
+        "step": 3,
+        "skill": "process-scopemin",
+        "purpose": "Define minimum scope",
+        "inputs": ["requirements.md", "goals.md"],
+        "outputs": ["scope-analysis.md"],
+        "duration": "3-4 minutes",
+        "critical": true
+      },
+      {
+        "step": 4,
+        "skill": "project-planning-tracking",
+        "purpose": "Basic project plan",
+        "inputs": ["goals.md", "scope-analysis.md"],
+        "outputs": ["project-plan.md"],
+        "duration": "3-4 minutes",
+        "critical": false
+      }
+    ] 
+  },
+  "success_criteria": [
+    "Requirements captured",
+    "Essential goals identified",
+    "MVP scope defined",
+    "Basic plan created"
+  ],
+  "estimated_total_duration": "8-12 minutes",
+  "follow_up_recommendations": [
+    "Consider comprehensive analysis for better understanding",
+    "Domain modeling for complex business logic",
+    "Collaboration diagrams for system interactions"
+  ]
+}
+```
+
+## Template: Change Integration
+
+```json
+{
+  "name": "change_integration_workflow",
+  "description": "Process and integrate requirement changes into existing project",
+  "trigger_patterns": [
+    "process changes",
+    "integrate new requirements",
+    "handle requirement updates",
+    "merge requirement changes"
+  ],
+  "prerequisites": {
+    "required": ["existing_project_structure", "change_source"],
+    "optional": ["change_description", "impact_scope"]
+  },
+  "workflow": {
+    "steps": [
+      {
+        "step": 1,
+        "skill": "change-management",
+        "purpose": "Document and classify incoming change",
+        "inputs": ["change_source", "change_description"],
+        "outputs": ["change-record.md"],
+        "duration": "2-3 minutes",
+        "critical": true
+      },
+      {
+        "step": 2,
+        "skill": "process-merge",
+        "purpose": "Merge changes with existing requirements",
+        "conditional": "if multiple requirement sources",
+        "inputs": ["change_source", "existing_requirements.md"],
+        "outputs": ["merged-requirements.md"],
+        "duration": "3-5 minutes"
+      },
+      {
+        "step": 3,
+        "skill": "impact_analysis", 
+        "purpose": "Analyze change impact on existing artifacts",
+        "note": "This step requires manual analysis of affected skills",
+        "inputs": ["change-record.md", "existing_artifacts"],
+        "outputs": ["impact-assessment.md"],
+        "duration": "5-10 minutes"
+      },
+      {
+        "step": 4,
+        "skill": "re_execute_affected_skills",
+        "purpose": "Re-run skills affected by changes",
+        "note": "Variable depending on change scope",
+        "inputs": ["impact-assessment.md"],
+        "outputs": ["updated_artifacts"],
+        "duration": "Variable"
+      },
+      {
+        "step": 5,
+        "skill": "project-status-reporting",
+        "purpose": "Generate change impact summary",
+        "inputs": ["change-record.md", "impact-assessment.md"],
+        "outputs": ["change-summary.md"],
+        "duration": "2-3 minutes"
+      }
+    ]
+  },
+  "success_criteria": [
+    "Change properly documented",
+    "Impact on existing work assessed", 
+    "Affected artifacts updated",
+    "Change integrated successfully"
+  ],
+  "estimated_total_duration": "Variable (10-30 minutes depending on scope)"
+}
+```
+
+## Usage Instructions
+
+### For EDPS Skill Navigator
+
+1. **Template Selection**: Match user intent to appropriate template using trigger patterns
+2. **Prerequisite Check**: Verify required inputs are available
+3. **Dynamic Execution**: Follow workflow steps, handling conditionals and parallel opportunities
+4. **Checkpoint Monitoring**: Verify success criteria at designated checkpoints
+5. **Error Recovery**: Use failure actions when steps don't complete successfully
+
+### Template Customization
+
+Templates can be customized based on:
+- **Project Context**: E-commerce vs. enterprise vs. academic projects
+- **User Experience**: Novice vs. expert users
+- **Time Constraints**: Quick vs. comprehensive analysis needs
+- **Organizational Standards**: Company-specific workflow modifications
+
+### Extension Points
+
+New templates can be added for:
+- **Industry-Specific Workflows**: Healthcare, finance, manufacturing domains
+- **Methodology Integration**: Agile, waterfall, lean startup approaches  
+- **Tool Integration**: Integration with specific external tools or systems
+- **Quality Frameworks**: Integration with quality assurance or compliance requirements
+
+---
+
+**Template Version**: 1.0.0
+**Last Updated**: 2026-02-17
+**Compatible With**: EDPS Skill Navigator v1.0.0
+**Format**: JSON with embedded workflow logic
