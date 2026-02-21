@@ -1,0 +1,300 @@
+{
+  "project_id": "PRG-01",
+  "generated_at": "2026-02-20T15:30:00Z",
+  "total_requirements": 47,
+  "sources": [
+    {
+      "file": "workflow-meeting-transcript.md",
+      "type": "meeting_transcript",
+      "extraction_confidence": 0.85
+    },
+    {
+      "file": "Sanjel Engineering Request Process Diagram (REV 2).pdf", 
+      "type": "process_diagram",
+      "extraction_confidence": 0.70
+    },
+    {
+      "file": "Program request Management tool Phase 1.docx",
+      "type": "specification_document", 
+      "extraction_confidence": 0.75
+    }
+  ],
+  "requirements": [
+    {
+      "id": "R-001",
+      "source_file": "workflow-meeting-transcript.md",
+      "location_hint": "00:03:25 - email request discussion",
+      "text": "System SHALL automatically generate requests from incoming emails to designated request inbox",
+      "tags": ["functional"],
+      "confidence": 0.95,
+      "priority": "high",
+      "category": "request_creation"
+    },
+    {
+      "id": "R-002", 
+      "source_file": "workflow-meeting-transcript.md",
+      "location_hint": "00:03:25 - state diagram import",
+      "text": "System SHALL import state diagram data automatically during request creation",
+      "tags": ["functional"],
+      "confidence": 0.90,
+      "priority": "high", 
+      "category": "request_creation"
+    },
+    {
+      "id": "R-003",
+      "source_file": "workflow-meeting-transcript.md", 
+      "location_hint": "00:01:44 - status progression discussion",
+      "text": "System SHALL support request status progression: Open → Assigned → Acknowledged → In Progress → Awaiting Review → Review → Program Ready",
+      "tags": ["functional"],
+      "confidence": 0.95,
+      "priority": "high",
+      "category": "status_management"
+    },
+    {
+      "id": "R-004",
+      "source_file": "workflow-meeting-transcript.md",
+      "location_hint": "00:01:44 - open status definition", 
+      "text": "New requests SHALL default to 'Open' status when not yet assigned",
+      "tags": ["functional"],
+      "confidence": 0.95,
+      "priority": "high",
+      "category": "status_management" 
+    },
+    {
+      "id": "R-005",
+      "source_file": "workflow-meeting-transcript.md",
+      "location_hint": "00:06:15 - assignment process",
+      "text": "System SHALL allow managers to assign requests to specific engineers", 
+      "tags": ["functional"],
+      "confidence": 0.95,
+      "priority": "high",
+      "category": "assignment"
+    },
+    {
+      "id": "R-006",
+      "source_file": "workflow-meeting-transcript.md",
+      "location_hint": "00:06:15 - assigned status",
+      "text": "System SHALL change status to 'Assigned' when manager assigns request to engineer",
+      "tags": ["functional"], 
+      "confidence": 0.95,
+      "priority": "high",
+      "category": "assignment"
+    },
+    {
+      "id": "R-007",
+      "source_file": "workflow-meeting-transcript.md",
+      "location_hint": "00:06:57 - team notification",
+      "text": "System SHALL notify all team members when request is assigned (not just assigned engineer)",
+      "tags": ["functional"],
+      "confidence": 0.90,
+      "priority": "high", 
+      "category": "notification"
+    },
+    {
+      "id": "R-008",
+      "source_file": "workflow-meeting-transcript.md",
+      "location_hint": "00:08:02 - engineer response options",
+      "text": "Assigned engineer SHALL be able to Accept, Decline, or Reassign requests via email buttons",
+      "tags": ["functional"],
+      "confidence": 0.95,
+      "priority": "high",
+      "category": "assignment_response"
+    },
+    {
+      "id": "R-009",
+      "source_file": "workflow-meeting-transcript.md",
+      "location_hint": "00:08:02 - acknowledged status",
+      "text": "System SHALL change status to 'Acknowledged' when engineer accepts assignment",
+      "tags": ["functional"],
+      "confidence": 0.95,
+      "priority": "high",
+      "category": "assignment_response"
+    },
+    {
+      "id": "R-010",
+      "source_file": "workflow-meeting-transcript.md", 
+      "location_hint": "00:08:39 - decline handling",
+      "text": "System SHALL return request to 'Open' status when engineer declines assignment",
+      "tags": ["functional"],
+      "confidence": 0.90,
+      "priority": "high",
+      "category": "assignment_response"
+    },
+    {
+      "id": "R-011",
+      "source_file": "workflow-meeting-transcript.md",
+      "location_hint": "00:17:36 - reassignment capability", 
+      "text": "System SHALL allow engineer to reassign request to another engineer",
+      "tags": ["functional"],
+      "confidence": 0.90,
+      "priority": "medium",
+      "category": "assignment_response"
+    },
+    {
+      "id": "R-012",
+      "source_file": "workflow-meeting-transcript.md",
+      "location_hint": "00:20:45 - button visibility control",
+      "text": "Only the assigned engineer SHALL see Accept/Decline/Reassign buttons in notifications", 
+      "tags": ["functional"],
+      "confidence": 0.85,
+      "priority": "medium",
+      "category": "assignment_response"
+    },
+    {
+      "id": "R-013",
+      "source_file": "workflow-meeting-transcript.md",
+      "location_hint": "00:03:57 - data validation requirement",
+      "text": "System SHALL require engineers to validate imported state diagram data before proceeding",
+      "tags": ["functional"],
+      "confidence": 0.95,
+      "priority": "high", 
+      "category": "data_validation"
+    },
+    {
+      "id": "R-014",
+      "source_file": "workflow-meeting-transcript.md",
+      "location_hint": "00:03:57 - validation interface",
+      "text": "System SHALL provide data tree view, state diagram view, and data details view for validation",
+      "tags": ["functional"],
+      "confidence": 0.90,
+      "priority": "high",
+      "category": "data_validation"
+    },
+    {
+      "id": "R-015",
+      "source_file": "workflow-meeting-transcript.md", 
+      "location_hint": "00:03:57 - data correction capability",
+      "text": "Engineers SHALL be able to correct automatically parsed data during validation",
+      "tags": ["functional"],
+      "confidence": 0.90,
+      "priority": "high",
+      "category": "data_validation"
+    },
+    {
+      "id": "R-016", 
+      "source_file": "workflow-meeting-transcript.md",
+      "location_hint": "00:05:05 - progress trigger",
+      "text": "System SHALL change status to 'In Progress' when engineer begins data validation process",
+      "tags": ["functional"],
+      "confidence": 0.95,
+      "priority": "high",
+      "category": "progress_tracking"
+    },
+    {
+      "id": "R-017",
+      "source_file": "workflow-meeting-transcript.md",
+      "location_hint": "00:23:28 - review submission", 
+      "text": "Engineers SHALL be able to send completed work for group review",
+      "tags": ["functional"],
+      "confidence": 0.90,
+      "priority": "high",
+      "category": "review"
+    },
+    {
+      "id": "R-018",
+      "source_file": "workflow-meeting-transcript.md",
+      "location_hint": "00:25:33 - awaiting review status",
+      "text": "System SHALL change status to 'Awaiting Review' when sent for review",
+      "tags": ["functional"], 
+      "confidence": 0.90,
+      "priority": "high",
+      "category": "review"
+    },
+    {
+      "id": "R-019",
+      "source_file": "workflow-meeting-transcript.md",
+      "location_hint": "00:24:31 - review distribution",
+      "text": "Review requests SHALL be sent to entire engineering team (not specific reviewer)",
+      "tags": ["functional"],
+      "confidence": 0.85,
+      "priority": "medium",
+      "category": "review"
+    },
+    {
+      "id": "R-020",
+      "source_file": "workflow-meeting-transcript.md",
+      "location_hint": "00:25:02 - review acceptance", 
+      "text": "Team member SHALL be able to accept review responsibility",
+      "tags": ["functional"],
+      "confidence": 0.85,
+      "priority": "medium",
+      "category": "review"
+    }
+  ],
+  "glossary_suspects": [
+    "State Diagram",
+    "Job Design", 
+    "Program",
+    "Service Report",
+    "Service Ticket",
+    "Triage",
+    "Reassignment",
+    "Acknowledgment",
+    "Escalation",
+    "Validation",
+    "SharePoint",
+    "Bamboo HR",
+    "AD Groups",
+    "PDF Generation",
+    "Email Integration"
+  ],
+  "workflow_states": [
+    {
+      "name": "Open",
+      "description": "New request, not yet assigned",
+      "entry_conditions": ["Request created", "Engineer declined", "Request unassigned"]
+    },
+    {
+      "name": "Assigned", 
+      "description": "Assigned to engineer, awaiting acknowledgment",
+      "entry_conditions": ["Manager assigns request"]
+    },
+    {
+      "name": "Acknowledged",
+      "description": "Engineer accepted assignment",
+      "entry_conditions": ["Engineer accepts assignment"]
+    },
+    {
+      "name": "In Progress", 
+      "description": "Engineer working on request",
+      "entry_conditions": ["Engineer begins data validation"]
+    },
+    {
+      "name": "Awaiting Review",
+      "description": "Work submitted for team review", 
+      "entry_conditions": ["Engineer submits for review"]
+    },
+    {
+      "name": "Review",
+      "description": "Review in progress by team member",
+      "entry_conditions": ["Team member accepts review"]
+    },
+    {
+      "name": "Program Ready",
+      "description": "Approved and ready for next phase",
+      "entry_conditions": ["Review approved"]
+    }
+  ],
+  "user_roles": [
+    {
+      "role": "Manager",
+      "examples": ["Jeremy", "Warren"],
+      "responsibilities": ["Assign requests", "Manage escalations", "Override triage decisions"]
+    },
+    {
+      "role": "Engineer", 
+      "examples": ["Henry", "Jason"],
+      "responsibilities": ["Accept/decline assignments", "Validate data", "Complete job design", "Submit for review"]
+    },
+    {
+      "role": "Reviewer",
+      "examples": ["Engineering Team"],  
+      "responsibilities": ["Review work", "Approve or request adjustments"]
+    },
+    {
+      "role": "System Admin",
+      "examples": ["IT"],
+      "responsibilities": ["Manage roles", "Configure integrations", "System maintenance"]
+    }
+  ]
+}

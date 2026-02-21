@@ -1,0 +1,599 @@
+{
+  "project_id": "PRG-01",
+  "extraction_metadata": {
+    "generated_at": "2026-02-20T16:00:00Z",
+    "source_files": ["requirements.json", "goals.json"],
+    "total_concepts": 18,
+    "total_entities": 12,
+    "confidence_score": 0.87
+  },
+  "domain_entities": [
+    {
+      "id": "ENT-001",
+      "name": "Request",
+      "description": "Program request submitted for engineering work",
+      "attributes": [
+        {
+          "name": "request_id",
+          "type": "identifier", 
+          "description": "Unique request identifier",
+          "visibility": "public"
+        },
+        {
+          "name": "status",
+          "type": "enumeration",
+          "description": "Current request status",
+          "values": ["open", "assigned", "acknowledged", "in_progress", "awaiting_review", "review", "program_ready"],
+          "visibility": "public"
+        },
+        {
+          "name": "created_date",
+          "type": "datetime",
+          "description": "Request creation timestamp", 
+          "visibility": "public"
+        },
+        {
+          "name": "priority",
+          "type": "enumeration",
+          "description": "Request priority level",
+          "values": ["high", "medium", "low", "urgent"],
+          "visibility": "public"
+        },
+        {
+          "name": "client_id",
+          "type": "identifier",
+          "description": "Associated client identifier",
+          "visibility": "public"
+        },
+        {
+          "name": "source_email",
+          "type": "string", 
+          "description": "Originating email content",
+          "visibility": "private"
+        }
+      ],
+      "operations": [
+        {
+          "name": "assign",
+          "description": "Assign request to engineer",
+          "parameters": ["engineer_id", "manager_id"],
+          "return_type": "boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "updateStatus", 
+          "description": "Change request status",
+          "parameters": ["new_status", "user_id"],
+          "return_type": "void", 
+          "visibility": "public"
+        },
+        {
+          "name": "escalate",
+          "description": "Escalate unacknowledged request",
+          "parameters": ["escalation_reason"],
+          "return_type": "void",
+          "visibility": "public"
+        }
+      ],
+      "domain_area": "Core Workflow",
+      "source_refs": ["R-001", "R-003", "R-005", "R-027"],
+      "confidence": 0.95
+    },
+    {
+      "id": "ENT-002", 
+      "name": "Engineer",
+      "description": "Engineering staff member who processes requests",
+      "attributes": [
+        {
+          "name": "engineer_id",
+          "type": "identifier",
+          "description": "Unique engineer identifier",
+          "visibility": "public"
+        },
+        {
+          "name": "name",
+          "type": "string", 
+          "description": "Engineer full name",
+          "visibility": "public"
+        },
+        {
+          "name": "email",
+          "type": "string",
+          "description": "Engineer email address", 
+          "visibility": "public"
+        },
+        {
+          "name": "specialties", 
+          "type": "list",
+          "description": "Engineering specialization areas",
+          "visibility": "public"
+        },
+        {
+          "name": "workload_capacity",
+          "type": "integer",
+          "description": "Maximum concurrent requests",
+          "visibility": "private"
+        }
+      ],
+      "operations": [
+        {
+          "name": "acceptAssignment",
+          "description": "Accept assigned request",
+          "parameters": ["request_id"],
+          "return_type": "boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "declineAssignment",
+          "description": "Decline assigned request", 
+          "parameters": ["request_id", "reason"],
+          "return_type": "boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "reassignRequest",
+          "description": "Reassign request to another engineer",
+          "parameters": ["request_id", "target_engineer_id"],
+          "return_type": "boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "validateData",
+          "description": "Validate imported state diagram data",
+          "parameters": ["request_id", "validation_results"], 
+          "return_type": "boolean",
+          "visibility": "public"
+        }
+      ],
+      "domain_area": "User Management",
+      "source_refs": ["R-008", "R-009", "R-010", "R-013"],
+      "confidence": 0.90
+    },
+    {
+      "id": "ENT-003",
+      "name": "Manager", 
+      "description": "Management user who assigns and oversees requests",
+      "attributes": [
+        {
+          "name": "manager_id",
+          "type": "identifier",
+          "description": "Unique manager identifier",
+          "visibility": "public"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Manager full name",
+          "visibility": "public"
+        },
+        {
+          "name": "department",
+          "type": "string",
+          "description": "Organizational department", 
+          "visibility": "public"
+        },
+        {
+          "name": "authorization_level",
+          "type": "enumeration",
+          "description": "Management authorization level",
+          "values": ["supervisor", "senior_manager", "director"],
+          "visibility": "private"
+        }
+      ],
+      "operations": [
+        {
+          "name": "assignRequest",
+          "description": "Assign request to engineer",
+          "parameters": ["request_id", "engineer_id"],
+          "return_type": "boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "escalateRequest",
+          "description": "Escalate problematic request", 
+          "parameters": ["request_id", "escalation_type"],
+          "return_type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "overrideTriage",
+          "description": "Override automated triage assignment",
+          "parameters": ["request_id", "manual_assignment"],
+          "return_type": "boolean",
+          "visibility": "public"
+        }
+      ],
+      "domain_area": "User Management",
+      "source_refs": ["R-005", "R-027", "R-034"],
+      "confidence": 0.85
+    },
+    {
+      "id": "ENT-004",
+      "name": "StateData",
+      "description": "Imported diagram data requiring validation",
+      "attributes": [
+        {
+          "name": "data_id",
+          "type": "identifier",
+          "description": "Unique data identifier", 
+          "visibility": "public"
+        },
+        {
+          "name": "request_id",
+          "type": "identifier",
+          "description": "Associated request identifier",
+          "visibility": "public"
+        },
+        {
+          "name": "raw_content",
+          "type": "text",
+          "description": "Original imported data content",
+          "visibility": "private"
+        },
+        {
+          "name": "parsed_data",
+          "type": "json", 
+          "description": "Processed and structured data",
+          "visibility": "public"
+        },
+        {
+          "name": "validation_status",
+          "type": "enumeration",
+          "description": "Data validation state",
+          "values": ["pending", "validated", "requires_correction"],
+          "visibility": "public"
+        },
+        {
+          "name": "corrections",
+          "type": "json",
+          "description": "Applied data corrections",
+          "visibility": "public"
+        }
+      ],
+      "operations": [
+        {
+          "name": "parseData",
+          "description": "Parse imported raw data",
+          "parameters": ["parsing_rules"],
+          "return_type": "json",
+          "visibility": "private"
+        },
+        {
+          "name": "validateData",
+          "description": "Validate parsed data accuracy",
+          "parameters": ["validation_criteria"],
+          "return_type": "boolean", 
+          "visibility": "public"
+        },
+        {
+          "name": "applyCorrections",
+          "description": "Apply engineer corrections to data",
+          "parameters": ["correction_data", "engineer_id"],
+          "return_type": "boolean",
+          "visibility": "public"
+        }
+      ],
+      "domain_area": "Data Management",
+      "source_refs": ["R-002", "R-013", "R-015"],
+      "confidence": 0.88
+    },
+    {
+      "id": "ENT-005",
+      "name": "Review",
+      "description": "Peer review process for completed work",
+      "attributes": [
+        {
+          "name": "review_id",
+          "type": "identifier",
+          "description": "Unique review identifier",
+          "visibility": "public"
+        },
+        {
+          "name": "request_id",
+          "type": "identifier", 
+          "description": "Request being reviewed",
+          "visibility": "public"
+        },
+        {
+          "name": "reviewer_id",
+          "type": "identifier",
+          "description": "Assigned reviewer identifier",
+          "visibility": "public"
+        },
+        {
+          "name": "review_status",
+          "type": "enumeration",
+          "description": "Review progress status",
+          "values": ["pending", "in_progress", "completed"],
+          "visibility": "public"
+        },
+        {
+          "name": "review_result",
+          "type": "enumeration", 
+          "description": "Review outcome",
+          "values": ["approved", "adjustments_required"],
+          "visibility": "public"
+        },
+        {
+          "name": "comments",
+          "type": "text",
+          "description": "Reviewer feedback and comments",
+          "visibility": "public"
+        },
+        {
+          "name": "created_date",
+          "type": "datetime",
+          "description": "Review creation timestamp",
+          "visibility": "public"
+        }
+      ],
+      "operations": [
+        {
+          "name": "acceptReview",
+          "description": "Accept review responsibility",
+          "parameters": ["reviewer_id"],
+          "return_type": "boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "completeReview",
+          "description": "Complete review with outcome",
+          "parameters": ["result", "comments"],
+          "return_type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "requestAdjustments",
+          "description": "Request work adjustments",
+          "parameters": ["adjustment_details"],
+          "return_type": "void",
+          "visibility": "public"
+        }
+      ],
+      "domain_area": "Quality Control",
+      "source_refs": ["R-017", "R-018", "R-020", "R-022"],
+      "confidence": 0.90
+    },
+    {
+      "id": "ENT-006",
+      "name": "Notification", 
+      "description": "System notification to users",
+      "attributes": [
+        {
+          "name": "notification_id",
+          "type": "identifier",
+          "description": "Unique notification identifier",
+          "visibility": "public"
+        },
+        {
+          "name": "recipient_id",
+          "type": "identifier",
+          "description": "Notification recipient",
+          "visibility": "public"
+        },
+        {
+          "name": "type",
+          "type": "enumeration",
+          "description": "Notification type",
+          "values": ["assignment", "escalation", "review_request", "status_change"],
+          "visibility": "public"
+        },
+        {
+          "name": "content",
+          "type": "text",
+          "description": "Notification message content", 
+          "visibility": "public"
+        },
+        {
+          "name": "action_buttons",
+          "type": "list",
+          "description": "Available action buttons",
+          "values": ["accept", "decline", "reassign"],
+          "visibility": "public"
+        },
+        {
+          "name": "sent_date",
+          "type": "datetime",
+          "description": "Notification send timestamp",
+          "visibility": "public"
+        }
+      ],
+      "operations": [
+        {
+          "name": "send",
+          "description": "Send notification to recipient",
+          "parameters": ["delivery_method"],
+          "return_type": "boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "processAction",
+          "description": "Process user action from notification",
+          "parameters": ["action_type", "user_id"],
+          "return_type": "boolean",
+          "visibility": "public"
+        }
+      ],
+      "domain_area": "Communication",
+      "source_refs": ["R-007", "R-008", "R-012"],
+      "confidence": 0.85
+    }
+  ],
+  "business_concepts": [
+    {
+      "id": "CON-001",
+      "name": "Assignment Workflow",
+      "definition": "Process of assigning requests to engineers and managing responses",
+      "synonyms": ["task assignment", "work allocation"],
+      "domain_area": "Core Workflow",
+      "source_refs": ["R-005", "R-008", "R-009"], 
+      "confidence": 0.92
+    },
+    {
+      "id": "CON-002",
+      "name": "Data Validation",
+      "definition": "Process of verifying and correcting imported state diagram data",
+      "synonyms": ["data verification", "data correction"],
+      "domain_area": "Data Management",
+      "source_refs": ["R-013", "R-014", "R-015"],
+      "confidence": 0.90
+    },
+    {
+      "id": "CON-003", 
+      "name": "Peer Review",
+      "definition": "Team-based quality control review of completed engineering work",
+      "synonyms": ["quality review", "work approval"],
+      "domain_area": "Quality Control",
+      "source_refs": ["R-017", "R-019", "R-022"],
+      "confidence": 0.88
+    },
+    {
+      "id": "CON-004",
+      "name": "Escalation",
+      "definition": "Automated process for handling unacknowledged or overdue requests",
+      "synonyms": ["timeout handling", "automatic escalation"],
+      "domain_area": "Process Management",
+      "source_refs": ["R-027", "R-028"],
+      "confidence": 0.85
+    },
+    {
+      "id": "CON-005",
+      "name": "Automated Triage",
+      "definition": "System-based assignment of requests based on predefined rules",
+      "synonyms": ["auto-assignment", "intelligent routing"],
+      "domain_area": "Automation",
+      "source_refs": ["R-033", "R-034"],
+      "confidence": 0.80
+    }
+  ],
+  "terminology": [
+    {
+      "term": "State Diagram",
+      "definition": "Technical diagram containing job specifications imported during request processing",
+      "context": "Engineering data import and validation",
+      "domain_area": "Technical",
+      "source_refs": ["R-002", "R-013"]
+    },
+    {
+      "term": "Job Design",
+      "definition": "Engineering deliverable representing completed technical work separate from pricing",
+      "context": "Engineering workflow output",
+      "domain_area": "Core Business",
+      "source_refs": ["R-035", "R-036"]
+    },
+    {
+      "term": "Program Ready",
+      "definition": "Status indicating completed engineering work ready for next phase",
+      "context": "Workflow status management",
+      "domain_area": "Core Workflow", 
+      "source_refs": ["R-023", "R-037"]
+    },
+    {
+      "term": "Acknowledgment",
+      "definition": "Engineer confirmation of assignment acceptance",
+      "context": "Assignment response workflow",
+      "domain_area": "Core Workflow",
+      "source_refs": ["R-009", "R-028"]
+    }
+  ],
+  "relationships": [
+    {
+      "id": "REL-001",
+      "type": "association",
+      "source_entity": "Request",
+      "target_entity": "Engineer",
+      "description": "Request is assigned to Engineer",
+      "cardinality": "many-to-one",
+      "source_refs": ["R-005", "R-008"]
+    },
+    {
+      "id": "REL-002", 
+      "type": "association",
+      "source_entity": "Request",
+      "target_entity": "StateData",
+      "description": "Request contains StateData",
+      "cardinality": "one-to-one",
+      "source_refs": ["R-002", "R-013"]
+    },
+    {
+      "id": "REL-003",
+      "type": "association",
+      "source_entity": "Request", 
+      "target_entity": "Review",
+      "description": "Request undergoes Review",
+      "cardinality": "one-to-many",
+      "source_refs": ["R-017", "R-018"]
+    },
+    {
+      "id": "REL-004",
+      "type": "association",
+      "source_entity": "Engineer",
+      "target_entity": "Review",
+      "description": "Engineer participates in Review",
+      "cardinality": "many-to-many",
+      "source_refs": ["R-019", "R-020"]
+    },
+    {
+      "id": "REL-005",
+      "type": "association",
+      "source_entity": "Manager",
+      "target_entity": "Request", 
+      "description": "Manager assigns Request",
+      "cardinality": "one-to-many",
+      "source_refs": ["R-005", "R-034"]
+    },
+    {
+      "id": "REL-006",
+      "type": "dependency",
+      "source_entity": "Review",
+      "target_entity": "Request",
+      "description": "Review depends on Request completion",
+      "cardinality": "one-to-one",
+      "source_refs": ["R-017", "R-024"]
+    }
+  ],
+  "domain_areas": [
+    {
+      "name": "Core Workflow", 
+      "description": "Primary request processing and status management",
+      "entities": ["Request", "Assignment"],
+      "concepts": ["Assignment Workflow", "Status Management", "Escalation"],
+      "key_processes": ["Request Creation", "Assignment", "Status Progression"]
+    },
+    {
+      "name": "User Management",
+      "description": "System users, roles, and permissions",
+      "entities": ["Engineer", "Manager"],
+      "concepts": ["Role-based Access", "Team Management"],
+      "key_processes": ["User Authentication", "Role Assignment", "Team Coordination"]
+    },
+    {
+      "name": "Data Management",
+      "description": "State diagram import, validation, and correction",
+      "entities": ["StateData"],
+      "concepts": ["Data Validation", "Data Import"],
+      "key_processes": ["Data Import", "Validation", "Correction"]
+    },
+    {
+      "name": "Quality Control",
+      "description": "Peer review and approval processes", 
+      "entities": ["Review"],
+      "concepts": ["Peer Review", "Quality Assurance"],
+      "key_processes": ["Review Submission", "Review Assignment", "Approval"]
+    },
+    {
+      "name": "Communication",
+      "description": "Notifications and system messaging",
+      "entities": ["Notification"],
+      "concepts": ["Email Integration", "Action Buttons"],
+      "key_processes": ["Notification Delivery", "Action Processing"]
+    },
+    {
+      "name": "Automation",
+      "description": "Automated processes and intelligent routing",
+      "entities": [],
+      "concepts": ["Automated Triage", "Escalation Rules"],
+      "key_processes": ["Auto-assignment", "Timeout Handling", "Rule Processing"]
+    }
+  ]
+}
