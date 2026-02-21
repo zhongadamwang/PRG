@@ -70,6 +70,278 @@
 - **Interfaces**: LDAP/SAML authentication, group membership APIs
 - **Key Functions**: Authenticate users, provide role information, manage team memberships
 
+## Domain Class Model
+
+### Core Entity Relationships *(Diagram DM-001)*
+**Source Requirements**: R-001, R-003, R-005, R-008, R-013, R-017  
+**Domain Area**: Core Workflow Entities
+
+```mermaid
+classDiagram
+    class Request:::entity {
+        +request_id: String
+        +status: StatusEnum
+        +created_date: DateTime
+        +priority: PriorityEnum
+        +client_id: String
+        +source_email: String
+        +assigned_engineer_id: String
+        +assigned_by: String
+        +acknowledgment_date: DateTime
+        +completion_date: DateTime
+        +assign(engineer_id, manager_id): Boolean
+        +updateStatus(new_status, user_id): Void
+        +escalate(escalation_reason): Void
+    }
+    
+    class Engineer:::actor {
+        +engineer_id: String
+        +name: String
+        +email: String
+        +team: String
+        +specializations: String[]
+        +active_requests: String[]
+        +workload_capacity: Integer
+        +availability_status: AvailabilityEnum
+        +acceptAssignment(request_id): Boolean
+        +declineAssignment(request_id, reason): Boolean
+        +validateData(data_elements): Boolean
+        +submitForReview(work_package): Boolean
+    }
+    
+    class Manager:::actor {
+        +manager_id: String
+        +name: String
+        +email: String
+        +team_members: String[]
+        +assignRequest(request_id, engineer_id): Boolean
+        +handleEscalation(request_id): Void
+        +overrideTriage(request_id): Boolean
+        +reviewMetrics(): Void
+    }
+    
+    class DataElement:::entity {
+        +element_id: String
+        +request_id: String
+        +element_type: ElementTypeEnum
+        +raw_value: String
+        +validated_value: String
+        +validation_status: ValidationEnum
+        +source_location: String
+        +validation_notes: String
+        +validate(): Boolean
+        +correct(new_value, notes): Void
+    }
+    
+    class StateDiagram:::entity {
+        +diagram_id: String
+        +diagram_name: String
+        +file_path: String
+        +version: String
+        +import_date: DateTime
+        +parsing_confidence: Float
+        +client_id: String
+        +diagram_type: DiagramTypeEnum
+        +parse(): DataElement[]
+        +validate(): Boolean
+    }
+    
+    class ReviewPackage:::entity {
+        +package_id: String
+        +request_id: String
+        +submitting_engineer_id: String
+        +assigned_reviewer_id: String
+        +submission_date: DateTime
+        +review_completion_date: DateTime
+        +review_status: ReviewStatusEnum
+        +work_summary: String
+        +review_feedback: String
+        +approve(): Boolean
+        +requestAdjustments(feedback): Boolean
+    }
+    
+    class Notification:::entity {
+        +notification_id: String
+        +request_id: String
+        +recipient_type: RecipientEnum
+        +notification_type: NotificationTypeEnum
+        +delivery_method: DeliveryEnum
+        +sent_date: DateTime
+        +content: String
+        +action_buttons: String[]
+        +send(): Boolean
+        +processAction(action): Void
+    }
+    
+    %% Relationships
+    Request --> Engineer : assigned_to
+    Request --> Manager : assigned_by
+    Request --> ReviewPackage : has_review
+    Request *--> DataElement : contains
+    Request --> Notification : generates
+    
+    StateDiagram --> DataElement : produces
+    StateDiagram --> Request : imported_for
+    
+    Engineer --> ReviewPackage : submits
+    Engineer --> ReviewPackage : reviews
+    Engineer --> DataElement : validates
+    
+    ReviewPackage --> Engineer : reviewed_by
+    
+    %% Styling Definitions
+    classDef actor fill:#e1f5fe
+    classDef entity fill:#f3e5f5
+    classDef enum fill:#fff3e0
+```
+
+### Status and Type Enumerations *(Diagram DM-002)*
+**Source Requirements**: R-003, R-004, R-006, R-009, R-010, R-016, R-018  
+**Domain Area**: Workflow State Management
+
+```mermaid
+classDiagram
+    class StatusEnum:::enum {
+        <<enumeration>>
+        OPEN
+        ASSIGNED
+        ACKNOWLEDGED
+        IN_PROGRESS
+        AWAITING_REVIEW
+        REVIEW
+        PROGRAM_READY
+        +getNextValidStates(): StatusEnum[]
+        +canTransitionTo(target): Boolean
+    }
+    
+    class PriorityEnum:::enum {
+        <<enumeration>>
+        HIGH
+        MEDIUM
+        LOW
+        URGENT
+        +getEscalationTime(): Integer
+    }
+    
+    class AvailabilityEnum:::enum {
+        <<enumeration>>
+        AVAILABLE
+        BUSY
+        UNAVAILABLE
+        +canAcceptAssignment(): Boolean
+    }
+    
+    class ValidationEnum:::enum {
+        <<enumeration>>
+        PENDING
+        VALIDATED
+        CORRECTED
+        APPROVED
+        +isComplete(): Boolean
+    }
+    
+    class ElementTypeEnum:::enum {
+        <<enumeration>>
+        MEASUREMENT
+        SPECIFICATION
+        CALCULATION
+        REFERENCE
+        +getValidationPattern(): String
+    }
+    
+    class ReviewStatusEnum:::enum {
+        <<enumeration>>
+        SUBMITTED
+        IN_REVIEW
+        APPROVED
+        ADJUSTMENTS_NEEDED
+        +isFinalized(): Boolean
+    }
+    
+    class DiagramTypeEnum:::enum {
+        <<enumeration>>
+        WELL_SCHEMATIC
+        PROCESS_FLOW
+        TECHNICAL_SPEC
+        +getParsingRules(): String[]
+    }
+    
+    class NotificationTypeEnum:::enum {
+        <<enumeration>>
+        ASSIGNMENT
+        STATUS_CHANGE
+        ESCALATION
+        REVIEW_REQUEST
+        +getTemplate(): String
+    }
+    
+    %% Styling
+    classDef enum fill:#fff3e0
+```
+
+### System Integration Architecture *(Diagram DM-003)*
+**Source Requirements**: R-001, R-002, R-007, R-013, R-014  
+**Domain Area**: External System Integration
+
+```mermaid
+classDiagram
+    class ProgramRequestSystem:::ai {
+        +processEmailRequest(): Request
+        +manageWorkflow(): Void
+        +generateNotifications(): Notification[]
+        +trackMetrics(): Void
+    }
+    
+    class EmailIntegrationSystem:::ai {
+        +parseIncomingEmail(): String
+        +sendNotification(notification): Boolean
+        +processActionResponse(): Void
+        +validateEmailSecurity(): Boolean
+    }
+    
+    class StateDiagramImportSystem:::ai {
+        +parseDocument(file_path): DataElement[]
+        +extractStructuredData(): String
+        +calculateConfidence(): Float
+        +validateDataIntegrity(): Boolean
+    }
+    
+    class AuthenticationDirectory:::ai {
+        +authenticateUser(credentials): Boolean
+        +getUserRoles(user_id): String[]
+        +validatePermissions(user_id, action): Boolean
+        +getTeamMembers(team): String[]
+    }
+    
+    class DataValidationInterface:::ai {
+        +displayThreePanelView(): Void
+        +enableDataCorrection(): Void
+        +trackValidationProgress(): Float
+        +generateValidationReport(): String
+    }
+    
+    class NotificationGateway:::ai {
+        +routeNotification(): Void
+        +formatMessage(template, data): String
+        +trackDeliveryStatus(): Boolean
+        +processEmailActions(): Void
+    }
+    
+    %% Integration relationships
+    ProgramRequestSystem --> EmailIntegrationSystem : uses
+    ProgramRequestSystem --> StateDiagramImportSystem : uses
+    ProgramRequestSystem --> AuthenticationDirectory : uses
+    ProgramRequestSystem --> DataValidationInterface : provides
+    ProgramRequestSystem --> NotificationGateway : uses
+    
+    EmailIntegrationSystem --> NotificationGateway : feeds_to
+    StateDiagramImportSystem --> DataValidationInterface : provides_data_to
+    AuthenticationDirectory --> ProgramRequestSystem : authenticates
+    
+    %% Styling
+    classDef ai fill:#e8f5e8
+```
+
 ## Key Entities
 
 ### Request
