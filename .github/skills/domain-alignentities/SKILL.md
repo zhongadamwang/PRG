@@ -410,7 +410,12 @@ When alignment results indicate changes to domain models, this skill can trigger
 
 ### Diagram Generation Integration:
 When updating domain models based on alignment results:
-- Entity alignments trigger class diagram updates
+- Entity alignments trigger class diagram updates with proper styling categories
 - Operation alignments modify method signatures in diagrams
 - Terminology standardization updates entity and attribute names
 - Relationship alignments adjust diagram associations
+- Styling consistency maintained with organizational standards:
+  - `classDef actor fill:#e1f5fe` - for actors and user roles
+  - `classDef entity fill:#f3e5f5` - for business entities and data structures  
+  - `classDef enum fill:#fff3e0` - for enumeration and value types
+  - `classDef ai fill:#e8f5e8` - for AI and automation components

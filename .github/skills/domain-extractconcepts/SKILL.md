@@ -319,7 +319,12 @@ This skill can trigger automatic class diagram generation through integration wi
 
 ### Diagram Generation Integration:
 When integrated with diagram-generatecollaboration skill:
-- Extracted entities automatically generate class diagram elements
-- Operations and attributes populate class diagram structure
-- Relationships become diagram associations and inheritance
+- Extracted entities automatically generate class diagram elements with inline styling (`:::category`)
+- Operations and attributes populate class diagram structure with proper visibility markers
+- Relationships become diagram associations and inheritance with clear labels
 - Domain areas organize diagram layout and grouping
+- Styling definitions (`classDef`) must be included for proper rendering:
+  - `classDef actor fill:#e1f5fe` - for primary and supporting actors
+  - `classDef entity fill:#f3e5f5` - for core business entities
+  - `classDef enum fill:#fff3e0` - for enumeration types
+  - `classDef ai fill:#e8f5e8` - for AI-specific entities and components

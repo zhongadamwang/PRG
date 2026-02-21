@@ -301,6 +301,12 @@ classDiagram
     }
     
     Entity --> RelatedEntity
+    
+    %% Styling Definitions
+    classDef actor fill:#e1f5fe
+    classDef entity fill:#f3e5f5
+    classDef enum fill:#fff3e0
+    classDef ai fill:#e8f5e8
 ```
 
 ## Actors
@@ -318,7 +324,8 @@ classDiagram
 - **Attribute consistency**: Sync diagram attributes with detailed attribute lists  
 - **Operation alignment**: Match diagram operations with described behaviors
 - **Relationship validation**: Verify diagram associations match textual relationships
-- **Styling consistency**: Apply organizational diagram styling standards
+- **Styling consistency**: Apply organizational diagram styling standards with proper classDef definitions
+- **Style preservation**: Maintain standard organizational colors (actor: #e1f5fe, entity: #f3e5f5, enum: #fff3e0, ai: #e8f5e8)
 
 ### 4. Validation and Integrity Checks
 
@@ -327,6 +334,8 @@ classDiagram
 - **Coordinate with diagram-generatecollaboration** skill for class diagram generation
 - **Maintain diagram version consistency** across organizational models
 - **Preserve custom diagram styling** and layout preferences
+- **Ensure styling definitions included** - All class diagrams must include classDef statements for proper rendering
+- **Validate diagram syntax** - Check that both inline styling (:::category) and style definitions (classDef) are present
 
 **Cross-Reference Validation**:
 - Verify all internal links to process documents remain valid

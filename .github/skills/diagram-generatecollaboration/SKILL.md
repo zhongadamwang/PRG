@@ -67,6 +67,12 @@ classDiagram
     
     User --> UserRole : has
     User --> Session : creates
+    
+    %% Styling Definitions
+    classDef core fill:#e1f5fe
+    classDef entity fill:#f3e5f5
+    classDef enum fill:#fff3e0
+    classDef ai fill:#e8f5e8
 ```
 
 ## User-System Interactions
@@ -214,6 +220,13 @@ classDiagram
     [ParentEntity] <|-- [ChildEntity]
     [CompositeEntity] *--> [ComponentEntity]
     [AggregateEntity] o--> [PartEntity]
+    
+    %% Styling Definitions
+    classDef [styleCategory] fill:#[color]
+    classDef actor fill:#e1f5fe
+    classDef entity fill:#f3e5f5
+    classDef enum fill:#fff3e0
+    classDef ai fill:#e8f5e8
 ```
 
 **Naming Conventions for Class Diagrams:**
@@ -221,8 +234,9 @@ classDiagram
 - Attributes: snake_case (user_id, created_at, is_active)
 - Methods: camelCase (authenticate(), updateProfile(), calculateTotal())
 - Relationships: Use clear, descriptive labels
-- Styling: Use inline styling with :::styleCategory syntax
+- Styling: Use inline styling with :::styleCategory syntax PLUS classDef definitions
 - Style categories: actor, entity, enum, ai (or custom categories as needed)
+- Standard colors: actor (#e1f5fe), entity (#f3e5f5), enum (#fff3e0), ai (#e8f5e8)
 
 **Sequence Diagrams:**
 ```
@@ -271,7 +285,7 @@ end
 - Consistent naming conventions across all diagram types
 - Appropriate use of visibility markers (+/- for public/private)
 - Clear distinction between inheritance, composition, and association
-- Proper use of inline styling with :::category syntax for entity categorization
+- Proper use of inline styling with :::category syntax AND corresponding classDef definitions
 - Consistent participant naming across related diagrams
 - Appropriate use of activation boxes for long-running operations
 - Clear distinction between synchronous and asynchronous calls
