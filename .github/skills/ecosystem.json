@@ -1,0 +1,268 @@
+{
+	"project": "prg",
+	"generated_at": "2026-02-25",
+	"skills": {
+		"project-creator": {
+			"category": "architecture",
+			"level": 0,
+			"complexity": "expert",
+			"dependencies": [ ],
+			"generated": true
+		},
+		"dependency-injection-creator": {
+			"category": "architecture",
+			"level": 0,
+			"complexity": "expert",
+			"dependencies": [
+				"project-creator"
+			],
+			"generated": true
+		},
+		"configuration-creator": {
+			"category": "architecture",
+			"level": 0,
+			"complexity": "basic",
+			"dependencies": [
+				"project-creator"
+			],
+			"generated": true
+		},
+		"logging-creator": {
+			"category": "architecture",
+			"level": 0,
+			"complexity": "intermediate",
+			"dependencies": [
+				"project-creator",
+				"configuration-creator"
+			],
+			"generated": true
+		},
+		"page-creator": {
+			"category": "presentation",
+			"level": 1,
+			"complexity": "advanced",
+			"dependencies": [
+				"project-creator",
+				"viewmodel-creator",
+				"service-creator",
+				"load-data-creator",
+				"logging-creator"
+			],
+			"generated": true
+		},
+		"component-creator": {
+			"category": "presentation",
+			"level": 1,
+			"complexity": "intermediate",
+			"dependencies": [
+				"project-creator",
+				"css-creator"
+			],
+			"generated": true
+		},
+		"dialog-creator": {
+			"category": "presentation",
+			"level": 1,
+			"complexity": "advanced",
+			"dependencies": [
+				"component-creator",
+				"form-creator"
+			],
+			"generated": true
+		},
+		"form-creator": {
+			"category": "presentation",
+			"level": 1,
+			"complexity": "intermediate",
+			"dependencies": [
+				"component-creator",
+				"viewmodel-creator",
+				"validator-creator",
+				"save-data-creator"
+			],
+			"generated": true
+		},
+		"grid-creator": {
+			"category": "presentation",
+			"level": 1,
+			"complexity": "advanced",
+			"dependencies": [
+				"viewmodel-creator",
+				"service-creator",
+				"load-data-creator"
+			],
+			"generated": true
+		},
+		"filter-creator": {
+			"category": "presentation",
+			"level": 1,
+			"complexity": "intermediate",
+			"dependencies": [
+				"component-creator",
+				"grid-creator"
+			],
+			"generated": true
+		},
+		"context-menu-creator": {
+			"category": "presentation",
+			"level": 1,
+			"complexity": "intermediate",
+			"dependencies": [
+				"component-creator"
+			],
+			"generated": true
+		},
+		"error-handler-creator": {
+			"category": "presentation",
+			"level": 1,
+			"complexity": "advanced",
+			"dependencies": [
+				"component-creator",
+				"logging-creator"
+			],
+			"generated": true
+		},
+		"css-creator": {
+			"category": "presentation",
+			"level": 1,
+			"complexity": "basic",
+			"dependencies": [ ],
+			"generated": true
+		},
+		"javascript-creator": {
+			"category": "presentation",
+			"level": 1,
+			"complexity": "basic",
+			"dependencies": [ ],
+			"generated": true
+		},
+		"viewmodel-creator": {
+			"category": "business",
+			"level": 2,
+			"complexity": "basic",
+			"dependencies": [ ],
+			"generated": true
+		},
+		"validator-creator": {
+			"category": "business",
+			"level": 2,
+			"complexity": "basic",
+			"dependencies": [
+				"viewmodel-creator"
+			],
+			"generated": true
+		},
+		"service-creator": {
+			"category": "business",
+			"level": 2,
+			"complexity": "advanced",
+			"dependencies": [
+				"viewmodel-creator",
+				"repository-creator",
+				"entity-mapping-creator",
+				"logging-creator"
+			],
+			"generated": true
+		},
+		"business-process-creator": {
+			"category": "business",
+			"level": 2,
+			"complexity": "expert",
+			"dependencies": [
+				"repository-creator"
+			],
+			"generated": true
+		},
+		"load-data-creator": {
+			"category": "business",
+			"level": 2,
+			"complexity": "advanced",
+			"dependencies": [
+				"service-creator",
+				"viewmodel-creator"
+			],
+			"generated": true
+		},
+		"save-data-creator": {
+			"category": "business",
+			"level": 2,
+			"complexity": "advanced",
+			"dependencies": [
+				"service-creator",
+				"validator-creator"
+			],
+			"generated": true
+		},
+		"entity-mapping-creator": {
+			"category": "business",
+			"level": 2,
+			"complexity": "advanced",
+			"dependencies": [
+				"viewmodel-creator"
+			],
+			"generated": true
+		},
+		"mapping-service-creator": {
+			"category": "business",
+			"level": 2,
+			"complexity": "expert",
+			"dependencies": [
+				"entity-mapping-creator",
+				"service-creator"
+			],
+			"generated": true
+		},
+		"cache-service-creator": {
+			"category": "business",
+			"level": 2,
+			"complexity": "intermediate",
+			"dependencies": [
+				"service-creator"
+			],
+			"generated": true
+		},
+		"repository-creator": {
+			"category": "data",
+			"level": 3,
+			"complexity": "advanced",
+			"dependencies": [
+				"project-creator",
+				"entity-mapping-creator",
+				"logging-creator"
+			],
+			"generated": true
+		},
+		"unit-test-creator": {
+			"category": "quality",
+			"level": 4,
+			"complexity": "intermediate",
+			"dependencies": [
+				"project-creator"
+			],
+			"generated": true
+		}
+	},
+	"statistics": {
+		"total_skills": 25,
+		"by_category": {
+			"architecture": 4,
+			"presentation": 10,
+			"business": 9,
+			"data": 1,
+			"quality": 1
+		},
+		"by_level": {
+			"level_0": 4,
+			"level_1": 10,
+			"level_2": 9,
+			"level_3": 1,
+			"level_4": 1
+		},
+		"by_complexity": {
+			"expert": 4,
+			"basic": 5,
+			"intermediate": 7,
+			"advanced": 9
+		}
+	}
+}
