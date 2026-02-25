@@ -1,5 +1,8 @@
 # T003 - User Role and Permission System Design
 
+**GitHub Issue:** #3
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/3
+
 ## Description
 
 Design and implement role-based access control system with Manager, Engineer, and Reviewer roles with appropriate permissions. This task establishes the security foundation ensuring users can only access functions appropriate to their organizational role.

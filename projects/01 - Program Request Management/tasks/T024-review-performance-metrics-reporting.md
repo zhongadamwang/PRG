@@ -1,5 +1,8 @@
 # T024 - Review Performance Metrics and Reporting
 
+**GitHub Issue:** #24
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/24
+
 ## Description
 
 Implement metrics collection and reporting for review cycle times, adjustment frequencies, and quality indicators. This provides insights into review process effectiveness and quality trends.

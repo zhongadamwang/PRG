@@ -110,6 +110,12 @@ Complete navigation guide for EDPS (Evolutionary Development Process System) ski
 | **process-scopemin** | Define MVP and scope boundaries | [Individual skill docs](.github/skills/process-scopemin/SKILL.md) |
 | **change-management** | Track and manage changes | [Individual skill docs](.github/skills/change-management/SKILL.md) |
 
+### 🔗 Integration & Automation
+| Skill | Purpose | Documentation |
+|-------|---------|---------------|
+| **github-issue-create-update** | Create and update GitHub Issues from local task files with dual CLI/API support | [Individual skill docs](.github/skills/github-issue-create-update/SKILL.md) |
+| **github-issue-sync-status** | Sync local task status from GitHub Issue state changes with format preservation | [Individual skill docs](.github/skills/github-issue-sync-status/SKILL.md) |
+
 ### 🧠 Meta Skills
 | Skill | Purpose | Documentation |
 |-------|---------|---------------|

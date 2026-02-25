@@ -1,5 +1,8 @@
 # T017 - State Diagram Import Service
 
+**GitHub Issue:** #17
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/17
+
 ## Description
 
 Implement automated import service for state diagrams with parsing, validation, and data extraction capabilities. This service processes uploaded state diagram files and extracts structured data for validation and analysis.

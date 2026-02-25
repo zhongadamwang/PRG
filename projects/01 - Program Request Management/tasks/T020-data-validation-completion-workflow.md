@@ -1,5 +1,8 @@
 # T020 - Data Validation Completion Workflow
 
+**GitHub Issue:** #20
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/20
+
 ## Description
 
 Implement workflow completion logic when data validation is finished and request is ready for review submission. This handles the transition from validation work to review submission.

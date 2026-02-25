@@ -1,5 +1,8 @@
 # T004 - System Architecture Documentation
 
+**GitHub Issue:** #4
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/4
+
 ## Description
 
 Create comprehensive system architecture documentation including component diagrams, data flow, and integration points. This documentation provides the blueprint for the entire system and guides all subsequent development efforts.

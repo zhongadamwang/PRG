@@ -1,5 +1,8 @@
 # T027 - Performance Testing and Optimization
 
+**GitHub Issue:** #27
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/27
+
 ## Description
 
 Conduct performance testing to validate system responsiveness under load and optimize critical workflows. This ensures the system meets performance requirements under expected user loads.

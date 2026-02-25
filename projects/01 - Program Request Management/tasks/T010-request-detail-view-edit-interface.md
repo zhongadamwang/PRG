@@ -1,5 +1,8 @@
 # T010 - Request Detail View and Edit Interface
 
+**GitHub Issue:** #10
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/10
+
 ## Description
 
 Create detailed request view with editing capabilities for authorized users and comprehensive request information display. This provides the primary interface for users to view and interact with individual requests.

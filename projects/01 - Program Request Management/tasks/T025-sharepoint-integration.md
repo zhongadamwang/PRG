@@ -1,5 +1,8 @@
 # T025 - SharePoint Integration
 
+**GitHub Issue:** #25
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/25
+
 ## Description
 
 Implement SharePoint integration for automatic document storage and retrieval with proper folder structure. This provides centralized document management and storage for completed program designs.

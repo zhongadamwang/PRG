@@ -1,5 +1,8 @@
 # T026 - System Integration Testing
 
+**GitHub Issue:** #26
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/26
+
 ## Description
 
 Comprehensive testing of all system integrations including email, AD, SharePoint, and internal component integration. This task ensures that all external system connections work correctly and that the complete request lifecycle executes properly from creation to completion.

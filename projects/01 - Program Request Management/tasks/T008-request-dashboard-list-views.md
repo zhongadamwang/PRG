@@ -1,5 +1,8 @@
 # T008 - Request Dashboard and List Views
 
+**GitHub Issue:** #8
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/8
+
 ## Description
 
 Create Blazor components for displaying request lists with filtering, sorting, and status-based views for different user roles. This provides the primary user interface for request management and monitoring.

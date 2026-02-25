@@ -1,0 +1,35 @@
+{
+  "github": {
+    "default_repository": {
+      "owner": "zhongadamwang", 
+      "name": "PRG"
+    },
+    "authentication": {
+      "token_env_var": "GITHUB_TOKEN"
+    },
+    "issue_defaults": {
+      "auto_create_labels": true,
+      "default_assignee": "zhongadamwang"
+    },
+    "field_mapping": {
+      "state_mapping": {
+        "completed": "closed",
+        "in-progress": "open",
+        "ready": "open",
+        "blocked": "open"
+      },
+      "additional_labels": ["project-01", "program-request-management"],
+      "effort_label_prefix": "effort:"
+    },
+    "batch_processing": {
+      "max_concurrent": 5,
+      "progress_reporting": true,
+      "stop_on_error": false
+    },
+    "file_updates": {
+      "add_github_metadata": true,
+      "metadata_format": "markdown",
+      "backup_on_update": false
+    }
+  }
+}

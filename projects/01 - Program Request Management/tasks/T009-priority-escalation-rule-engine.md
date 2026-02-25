@@ -1,5 +1,8 @@
 # T009 - Priority and Escalation Rule Engine
 
+**GitHub Issue:** #9
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/9
+
 ## Description
 
 Implement configurable rule engine for request prioritization and automatic escalation based on timing and priority levels. This system ensures high-priority requests receive appropriate attention and automatic escalation when needed.

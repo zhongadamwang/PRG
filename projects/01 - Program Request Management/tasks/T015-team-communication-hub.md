@@ -1,5 +1,8 @@
 # T015 - Team Communication Hub
 
+**GitHub Issue:** #15
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/15
+
 ## Description
 
 Create team dashboard for managers to monitor assignments, workloads, and team performance metrics. This provides managers with comprehensive visibility into team operations and performance.

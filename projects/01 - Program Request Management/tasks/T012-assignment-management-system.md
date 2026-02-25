@@ -1,5 +1,8 @@
 # T012 - Assignment Management System
 
+**GitHub Issue:** #12
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/12
+
 ## Description
 
 Implement request assignment functionality for managers with workload balancing and automated triage capabilities. This system enables efficient distribution of requests to appropriate engineers based on skills and workload.

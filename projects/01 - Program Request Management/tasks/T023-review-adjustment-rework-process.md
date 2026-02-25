@@ -1,5 +1,8 @@
 # T023 - Review Adjustment and Rework Process
 
+**GitHub Issue:** #23
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/23
+
 ## Description
 
 Implement adjustment request handling that invalidates approvals and restarts the review process. This ensures quality by requiring complete re-review when changes are requested.

@@ -1,5 +1,8 @@
 # T011 - User Management and Profile System
 
+**GitHub Issue:** #11
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/11
+
 ## Description
 
 Implement user profile management system with Engineer and Manager entities, specialties, and team assignments. This provides the foundation for user-based assignment and workload management capabilities.

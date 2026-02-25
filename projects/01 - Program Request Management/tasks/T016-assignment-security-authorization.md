@@ -1,5 +1,8 @@
 # T016 - Assignment Security and Authorization
 
+**GitHub Issue:** #16
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/16
+
 ## Description
 
 Implement security controls to ensure only authorized users can make assignments and access assignment functions. This provides comprehensive security for the assignment workflow.

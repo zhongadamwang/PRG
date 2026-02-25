@@ -1,5 +1,8 @@
 # T031 - Production Deployment Preparation
 
+**GitHub Issue:** #31
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/31
+
 ## Description
 
 Prepare production environment, deployment scripts, monitoring, and go-live coordination. This ensures successful transition from development to production operation.

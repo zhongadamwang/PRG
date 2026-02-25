@@ -1,0 +1,37 @@
+{
+  "github": {
+    "api": {
+      "base_url": "https://api.github.com",
+      "timeout": 30,
+      "rate_limit_delay": 1,
+      "max_retries": 3
+    },
+    "authentication": {
+      "token_env_var": "GITHUB_TOKEN",
+      "credentials_file": "../../../github-credentials.json"
+    },
+    "default_repository": {
+      "owner": "your-github-username-or-org",
+      "name": "your-repository-name"
+    },
+    "sync_behavior": {
+      "auto_sync": false,
+      "preserve_manual_changes": true,
+      "conflict_resolution": "manual",
+      "sync_frequency": "on_demand",
+      "state_mapping": {
+        "issue_to_task": {
+          "open": "ready",
+          "closed": "completed"
+        }
+      },
+      "preserve_in_progress": true,
+      "add_completion_date": true
+    },
+    "file_handling": {
+      "backup_before_sync": false, 
+      "create_sync_log": true,
+      "preserve_format": true
+    }
+  }
+}

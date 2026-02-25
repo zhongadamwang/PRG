@@ -1,5 +1,8 @@
 # T002 - Database Design and Entity Framework Setup
 
+**GitHub Issue:** #2
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/2
+
 ## Description
 
 Design and implement database schema for requests, users, reviews, and state data with Entity Framework Code First approach. This task establishes the foundational data layer for the entire application, including all core entities, relationships, and data access patterns.

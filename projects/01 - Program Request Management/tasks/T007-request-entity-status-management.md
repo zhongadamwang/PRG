@@ -1,5 +1,8 @@
 # T007 - Request Entity and Status Management
 
+**GitHub Issue:** #7
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/7
+
 ## Description
 
 Implement core Request entity with status state machine and workflow progression through all defined states. This foundational component manages the complete request lifecycle from creation through completion.

@@ -1,5 +1,8 @@
 # T030 - System Documentation and User Training
 
+**GitHub Issue:** #30
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/30
+
 ## Description
 
 Create comprehensive system documentation, user guides, and training materials for all stakeholder groups. This ensures users can effectively operate and maintain the system.

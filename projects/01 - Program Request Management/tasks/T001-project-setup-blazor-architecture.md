@@ -1,5 +1,8 @@
 # T001 - Project Setup and Blazor Architecture
 
+**GitHub Issue:** #1
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/1
+
 ## Description
 
 Initialize ASP.NET Blazor project structure with proper architecture, authentication framework, and development environment setup. This foundational task establishes the core project structure, integrates with organizational Active Directory for authentication, and sets up the development and deployment pipeline.

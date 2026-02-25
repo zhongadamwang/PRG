@@ -1,5 +1,8 @@
 # T013 - Email Notification System
 
+**GitHub Issue:** #13
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/13
+
 ## Description
 
 Implement comprehensive email notification system with action buttons for assignment responses and status updates. This system will handle all communication with engineers and team members, including assignment notifications with embedded action buttons (Accept, Decline, Reassign) and status update notifications.

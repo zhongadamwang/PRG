@@ -1,5 +1,8 @@
 # T006 - Email Integration Service
 
+**GitHub Issue:** #6
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/6
+
 ## Description
 
 Implement email monitoring service to automatically detect and parse incoming program requests from designated inbox. This critical task enables the automated workflow by converting email requests into structured system requests with extracted state diagram data.

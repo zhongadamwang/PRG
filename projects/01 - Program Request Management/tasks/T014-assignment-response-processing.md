@@ -1,5 +1,8 @@
 # T014 - Assignment Response Processing
 
+**GitHub Issue:** #14
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/14
+
 ## Description
 
 Implement backend processing for engineer responses to assignments including acceptance, decline, and reassignment workflows. This system handles all engineer responses to assignment notifications and updates system state accordingly.

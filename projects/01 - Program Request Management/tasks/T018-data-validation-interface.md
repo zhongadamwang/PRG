@@ -1,5 +1,8 @@
 # T018 - Data Validation Interface
 
+**GitHub Issue:** #18
+**Issue URL:** https://github.com/zhongadamwang/PRG/issues/18
+
 ## Description
 
 Create interactive validation interface with tree view, diagram view, and data detail panels for engineer data validation. This provides engineers with comprehensive tools to review and validate imported state diagram data.
