@@ -1,0 +1,48 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Launch Blazor (Debug)",
+			"type": "blazorwasm",
+			"request": "launch",
+			"cwd": "${workspaceFolder}/src",
+			"browser": "edge",
+			"url": "https://0.0.0.0:5001",
+			"webRoot": "${workspaceFolder}/src/app/Sanjel.PRG.Blazor/wwwroot",
+			"inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
+			"program": "${workspaceFolder}/src/app/Sanjel.PRG.Blazor/bin/Debug/net10.0/Sanjel.PRG.Blazor.dll",
+			"args": [ ],
+			"env": {
+				"ASPNETCORE_ENVIRONMENT": "Development"
+			},
+			"console": "internalConsole",
+			"stopAtEntry": false,
+			"serverReadyAction": {
+				"action": "openExternally",
+				"pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+			}
+		},
+		{
+			"name": "Launch Blazor (Release)",
+			"type": "blazorwasm",
+			"request": "launch",
+			"cwd": "${workspaceFolder}/src",
+			"browser": "edge",
+			"url": "https://localhost:5001",
+			"webRoot": "${workspaceFolder}/src/app/Sanjel.PRG.Blazor/wwwroot",
+			"program": "${workspaceFolder}/src/app/Sanjel.PRG.Blazor/bin/Release/net10.0/Sanjel.PRG.Blazor.dll",
+			"args": [ ],
+			"env": {
+				"ASPNETCORE_ENVIRONMENT": "Production"
+			},
+			"console": "internalConsole",
+			"stopAtEntry": false
+		},
+		{
+			"name": "Attach to .NET Process",
+			"type": "coreclr",
+			"request": "attach",
+			"processId": "${command:pickProcess}"
+		}
+	]
+}
