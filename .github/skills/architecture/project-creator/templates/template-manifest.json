@@ -237,6 +237,12 @@
           "target": "src/app/Prg.ProjectName.Blazor/appsettings.Development.json",
           "replaceNamespace": false,
           "description": "Development environment configuration"
+        },
+        {
+          "source": "Properties/launchSettings.json",
+          "target": "src/app/Prg.ProjectName.Blazor/Properties/launchSettings.json",
+          "replaceNamespace": false,
+          "description": "Launch profiles for development debugging"
         }
       ]
     },
