@@ -1,0 +1,7 @@
+﻿namespace Sanjel.eServiceCloud.Core.Models
+{
+	public interface IModel
+	{
+		int Id { get; set; }
+	}
+}

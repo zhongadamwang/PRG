@@ -1,4 +1,4 @@
-using Sanjel.PRG.Blazor.Components;
+using Prg.ProjectName.Blazor.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 

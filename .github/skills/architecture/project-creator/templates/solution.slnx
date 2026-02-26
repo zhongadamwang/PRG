@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/app/">
+    <Project Path="app/Prg.ProjectName.Blazor.Tests/Prg.ProjectName.Blazor.Tests.csproj" />
+    <Project Path="app/Prg.ProjectName.Blazor/Prg.ProjectName.Blazor.csproj" />
+    <Project Path="app/Prg.ProjectName.BusinessProcess.Tests/Prg.ProjectName.BusinessProcess.Tests.csproj" />
+    <Project Path="app/Prg.ProjectName.BusinessProcess/Prg.ProjectName.BusinessProcess.csproj" />
+    <Project Path="app/Prg.ProjectName.Core.Tests/Prg.ProjectName.Core.Tests.csproj" />
+    <Project Path="app/Prg.ProjectName.Core/Prg.ProjectName.Core.csproj" />
+    <Project Path="app/Prg.ProjectName.Repositories.Tests/Prg.ProjectName.Repositories.Tests.csproj" />
+    <Project Path="app/Prg.ProjectName.Repositories/Prg.ProjectName.Repositories.csproj" />
+  </Folder>
+</Solution>

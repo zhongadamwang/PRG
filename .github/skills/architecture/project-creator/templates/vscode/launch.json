@@ -1,0 +1,46 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Launch Blazor Server (Development)",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build",
+			"program": "${workspaceFolder}/src/app/Prg.ProjectName.Blazor/bin/Debug/net10.0/Prg.ProjectName.Blazor.dll",
+			"args": [ ],
+			"cwd": "${workspaceFolder}/src/app/Prg.ProjectName.Blazor",
+			"console": "internalConsole",
+			"stopAtEntry": false,
+			"env": {
+				"ASPNETCORE_ENVIRONMENT": "Development"
+			},
+			"serverReadyAction": {
+				"action": "openExternally",
+				"pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+			}
+		},
+		{
+			"name": "Launch Blazor Server (HTTPS)",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build",
+			"program": "${workspaceFolder}/src/app/Prg.ProjectName.Blazor/bin/Debug/net10.0/Prg.ProjectName.Blazor.dll",
+			"args": [ "--urls", "https://0.0.0.0:7119;http://0.0.0.0:5000" ],
+			"cwd": "${workspaceFolder}/src/app/Prg.ProjectName.Blazor",
+			"console": "internalConsole",
+			"stopAtEntry": false,
+			"env": {
+				"ASPNETCORE_ENVIRONMENT": "Development"
+			},
+			"serverReadyAction": {
+				"action": "openExternally",
+				"pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+			}
+		},
+		{
+			"name": "Attach to Process",
+			"type": "coreclr",
+			"request": "attach"
+		}
+	]
+}

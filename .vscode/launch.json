@@ -2,41 +2,58 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Launch Blazor (Debug)",
-			"type": "blazorwasm",
+			"name": "Launch Blazor Server (Development)",
+			"type": "coreclr",
 			"request": "launch",
-			"cwd": "${workspaceFolder}/src",
-			"browser": "edge",
-			"url": "https://0.0.0.0:5001",
-			"webRoot": "${workspaceFolder}/src/app/Sanjel.PRG.Blazor/wwwroot",
-			"inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
+			"preLaunchTask": "build",
 			"program": "${workspaceFolder}/src/app/Sanjel.PRG.Blazor/bin/Debug/net10.0/Sanjel.PRG.Blazor.dll",
 			"args": [ ],
+			"cwd": "${workspaceFolder}/src/app/Sanjel.PRG.Blazor",
+			"console": "internalConsole",
+			"stopAtEntry": false,
 			"env": {
 				"ASPNETCORE_ENVIRONMENT": "Development"
 			},
-			"console": "internalConsole",
-			"stopAtEntry": false,
 			"serverReadyAction": {
 				"action": "openExternally",
 				"pattern": "\\bNow listening on:\\s+(https?://\\S+)"
 			}
 		},
 		{
-			"name": "Launch Blazor (Release)",
-			"type": "blazorwasm",
+			"name": "Launch Blazor Server (HTTPS)",
+			"type": "coreclr",
 			"request": "launch",
-			"cwd": "${workspaceFolder}/src",
-			"browser": "edge",
-			"url": "https://localhost:5001",
-			"webRoot": "${workspaceFolder}/src/app/Sanjel.PRG.Blazor/wwwroot",
-			"program": "${workspaceFolder}/src/app/Sanjel.PRG.Blazor/bin/Release/net10.0/Sanjel.PRG.Blazor.dll",
-			"args": [ ],
-			"env": {
-				"ASPNETCORE_ENVIRONMENT": "Production"
-			},
+			"preLaunchTask": "build",
+			"program": "${workspaceFolder}/src/app/Sanjel.PRG.Blazor/bin/Debug/net10.0/Sanjel.PRG.Blazor.dll",
+			"args": [ "--urls", "https://0.0.0.0:7119;http://0.0.0.0:5000" ],
+			"cwd": "${workspaceFolder}/src/app/Sanjel.PRG.Blazor",
 			"console": "internalConsole",
-			"stopAtEntry": false
+			"stopAtEntry": false,
+			"env": {
+				"ASPNETCORE_ENVIRONMENT": "Development"
+			},
+			"serverReadyAction": {
+				"action": "openExternally",
+				"pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+			}
+		},
+		{
+			"name": "Launch Blazor Server (HTTP Only)",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build",
+			"program": "${workspaceFolder}/src/app/Sanjel.PRG.Blazor/bin/Debug/net10.0/Sanjel.PRG.Blazor.dll",
+			"args": [ "--urls", "http://0.0.0.0:5000" ],
+			"cwd": "${workspaceFolder}/src/app/Sanjel.PRG.Blazor",
+			"console": "internalConsole",
+			"stopAtEntry": false,
+			"env": {
+				"ASPNETCORE_ENVIRONMENT": "Development"
+			},
+			"serverReadyAction": {
+				"action": "openExternally",
+				"pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+			}
 		},
 		{
 			"name": "Attach to .NET Process",

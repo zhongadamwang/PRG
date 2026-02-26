@@ -1,0 +1,120 @@
+{
+  "version": "2.0.0", 
+  "tasks": [
+    {
+      "label": "build",
+      "command": "dotnet",
+      "type": "process", 
+      "args": [
+        "build",
+        "${workspaceFolder}/src/Prg.ProjectName.slnx",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "group": "build",
+      "presentation": {
+        "reveal": "silent"
+      },
+      "problemMatcher": "$msCompile",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "publish",
+      "command": "dotnet", 
+      "type": "process",
+      "args": [
+        "publish",
+        "${workspaceFolder}/src/app/Prg.ProjectName.Blazor/Prg.ProjectName.Blazor.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "group": "build",
+      "presentation": {
+        "reveal": "silent"
+      },
+      "problemMatcher": "$msCompile",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "watch",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "watch",
+        "run",
+        "--project",
+        "${workspaceFolder}/src/app/Prg.ProjectName.Blazor/Prg.ProjectName.Blazor.csproj"
+      ],
+      "group": "build",
+      "presentation": {
+        "reveal": "always"
+      },
+      "problemMatcher": "$msCompile",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "isBackground": true,
+      "runOptions": {
+        "instanceLimit": 1
+      }
+    },
+    {
+      "label": "clean",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "clean",
+        "${workspaceFolder}/src/Prg.ProjectName.slnx"
+      ],
+      "group": "build",
+      "presentation": {
+        "reveal": "silent"
+      },
+      "problemMatcher": "$msCompile",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "restore",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "restore",
+        "${workspaceFolder}/src/Prg.ProjectName.slnx"
+      ],
+      "group": "build", 
+      "presentation": {
+        "reveal": "silent"
+      },
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "test",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "test",
+        "${workspaceFolder}/src/Prg.ProjectName.slnx",
+        "--no-build",
+        "--logger:console;verbosity=normal"
+      ],
+      "group": "test",
+      "presentation": {
+        "reveal": "always"
+      },
+      "problemMatcher": "$msCompile",
+      "dependsOn": "build",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    }
+  ]
+}

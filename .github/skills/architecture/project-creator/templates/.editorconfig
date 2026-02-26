@@ -1,0 +1,43 @@
+# http://editorconfig.org
+root = true
+
+[*]
+indent_style = tab
+indent_size = 4
+tab_width = 4
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+end_of_line = lf
+
+[*.md]
+trim_trailing_whitespace = false
+
+# C# files
+[*.cs]
+dotnet_remove_unnecessary_usings = true
+# SA1121: 禁止使用框架类型的别名（String → string）
+dotnet_diagnostic.CA1305.severity = none
+dotnet_diagnostic.SA1121.severity = error   # 直接编译失败
+dotnet_diagnostic.SA1000.severity = none
+dotnet_diagnostic.SA1027.severity = none
+dotnet_diagnostic.SA1119.severity = none
+dotnet_diagnostic.SA1124.severity = none
+dotnet_diagnostic.SA1200.severity = none
+dotnet_diagnostic.SA1201.severity = none
+dotnet_diagnostic.SA1300.severity = none
+dotnet_diagnostic.SA1309.severity = none
+dotnet_diagnostic.SA1402.severity = none
+dotnet_diagnostic.SA1600.severity = none
+dotnet_diagnostic.SA1601.severity = none
+dotnet_diagnostic.SA1602.severity = none
+dotnet_diagnostic.SA1633.severity = none
+dotnet_diagnostic.SA1649.severity = none
+
+# 移除未使用的 using
+dotnet_remove_unnecessary_using_directives = true
+
+# 排序 using
+dotnet_sort_system_directives_first = true
+
+dotnet_diagnostic.IDE0005.severity = error
