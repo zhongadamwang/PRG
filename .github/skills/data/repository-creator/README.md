@@ -9,6 +9,10 @@ This repository provides data access operations for {{entityName}} entities foll
 - **Interface**: `I{{pascalEntityName}}Repository` - Defines the contract for repository operations
 - **Implementation**: `{{pascalEntityName}}Repository` - Concrete implementation inheriting from `CommonRepository`
 
+
+Sesi.SanjelData.Entities.BusinessEntities
+Sesi.SanjelData.Services.Interfaces
+
 ## Features
 
 - ✅ Standard CRUD operations (Create, Read, Update, Delete)
