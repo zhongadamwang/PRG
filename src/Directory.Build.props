@@ -1,4 +1,9 @@
 <Project>
+  <PropertyGroup>
+    <!-- Suppress NuGet warnings -->
+    <NoWarn>NU1701</NoWarn>
+  </PropertyGroup>
+  
   <ItemGroup>
     <!-- Force Google.Protobuf to a known stable version to override older transitive versions -->
     <PackageReference Include="Google.Protobuf" Version="3.34.0" />

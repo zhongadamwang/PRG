@@ -3,6 +3,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Sanjel.RequestManagement.Core\Sanjel.RequestManagement.Core.csproj" />
     <ProjectReference Include="..\Sanjel.RequestManagement.Repositories\Sanjel.RequestManagement.Repositories.csproj" />
+    <ProjectReference Include="..\Sanjel.RequestManagement.BusinessProcess\Sanjel.RequestManagement.BusinessProcess.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Scrutor" Version="4.2.2" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -1,20 +1,20 @@
 {
 	"recommendations": [
-		"ms-dotnettools.csharp",
-		"ms-dotnettools.csdevkit",
-		"ms-dotnettools.blazorwasm-companion",
-		"ms-vscode.dotnet-interactive-vscode",
-		"ms-dotnettools.vscode-dotnet-runtime",
-		"formulahendry.dotnet-test-explorer",
-		"kreativ-software.csharpextensions",
 		"adrianwilczynski.namespace",
+		"bierner.markdown-mermaid",
+		"formulahendry.dotnet-test-explorer",
 		"jongrant.csharpsortusings",
-		"tintoy.msbuild-project-tools",
+		"kreativ-software.csharpextensions",
+		"ms-dotnettools.blazorwasm-companion",
+		"ms-dotnettools.csdevkit",
+		"ms-dotnettools.csharp",
+		"ms-dotnettools.vscode-dotnet-runtime",
+		"ms-vscode.dotnet-interactive-vscode",
+		"ms-vscode.live-server",
+		"ms-vscode.powershell",
 		"ms-vscode.vscode-json",
 		"redhat.vscode-xml",
-		"ms-vscode.powershell",
-		"bierner.markdown-mermaid",
-		"yzhang.markdown-all-in-one",
-		"ms-vscode.live-server"
+		"tintoy.msbuild-project-tools",
+		"yzhang.markdown-all-in-one"
 	]
 }

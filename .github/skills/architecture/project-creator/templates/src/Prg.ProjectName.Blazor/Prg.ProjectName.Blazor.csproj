@@ -3,6 +3,12 @@
   <ItemGroup>
     <ProjectReference Include="..\Prg.ProjectName.Core\Prg.ProjectName.Core.csproj" />
     <ProjectReference Include="..\Prg.ProjectName.Repositories\Prg.ProjectName.Repositories.csproj" />
+    <ProjectReference Include="..\Prg.ProjectName.Core\Prg.ProjectName.Core.csproj" />
+    <ProjectReference Include="..\Prg.ProjectName.BusinessProcess\Prg.ProjectName.BusinessProcess.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Scrutor" Version="4.2.2" />
   </ItemGroup>
 
   <PropertyGroup>

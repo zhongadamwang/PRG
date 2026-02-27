@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Prg.ProjectName.Core\Prg.ProjectName.Core.csproj" />
     <ProjectReference Include="..\Prg.ProjectName.Repositories\Prg.ProjectName.Repositories.csproj" />
   </ItemGroup>
 

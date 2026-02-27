@@ -70,7 +70,7 @@ public class PagerTests
 		Assert.That(toEntity.OrderBy, Is.EqualTo("email"));
 
 		// Confirm PopulateTo handles null without throwing
-		Assert.DoesNotThrow(() => pager.PopulateTo(null));
+		Assert.DoesNotThrow(() => pager.PopulateTo(null!));
 	}
 
 	[Test]
