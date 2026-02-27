@@ -1,0 +1,8 @@
+<Project>
+  <ItemGroup>
+    <!-- Force Google.Protobuf to a known stable version to override older transitive versions -->
+    <PackageReference Include="Google.Protobuf" Version="3.34.0" />
+    <!-- Pin System.Drawing.Common to a known stable version to silence NU1904 warnings -->
+    <PackageReference Include="System.Drawing.Common" Version="10.0.3" />
+  </ItemGroup>
+</Project>

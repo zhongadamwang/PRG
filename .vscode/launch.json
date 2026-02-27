@@ -6,9 +6,9 @@
 			"type": "coreclr",
 			"request": "launch",
 			"preLaunchTask": "build",
-			"program": "${workspaceFolder}/src/app/Sanjel.PRG.Blazor/bin/Debug/net10.0/Sanjel.PRG.Blazor.dll",
+			"program": "${workspaceFolder}/src/app/Sanjel.RequestManagement.Blazor/bin/Debug/net10.0/Sanjel.RequestManagement.Blazor.dll",
 			"args": [ ],
-			"cwd": "${workspaceFolder}/src/app/Sanjel.PRG.Blazor",
+			"cwd": "${workspaceFolder}/src/app/Sanjel.RequestManagement.Blazor",
 			"console": "internalConsole",
 			"stopAtEntry": false,
 			"env": {
@@ -24,9 +24,9 @@
 			"type": "coreclr",
 			"request": "launch",
 			"preLaunchTask": "build",
-			"program": "${workspaceFolder}/src/app/Sanjel.PRG.Blazor/bin/Debug/net10.0/Sanjel.PRG.Blazor.dll",
+			"program": "${workspaceFolder}/src/app/Sanjel.RequestManagement.Blazor/bin/Debug/net10.0/Sanjel.RequestManagement.Blazor.dll",
 			"args": [ "--urls", "https://0.0.0.0:7119;http://0.0.0.0:5000" ],
-			"cwd": "${workspaceFolder}/src/app/Sanjel.PRG.Blazor",
+			"cwd": "${workspaceFolder}/src/app/Sanjel.RequestManagement.Blazor",
 			"console": "internalConsole",
 			"stopAtEntry": false,
 			"env": {
@@ -38,28 +38,9 @@
 			}
 		},
 		{
-			"name": "Launch Blazor Server (HTTP Only)",
+			"name": "Attach to Process",
 			"type": "coreclr",
-			"request": "launch",
-			"preLaunchTask": "build",
-			"program": "${workspaceFolder}/src/app/Sanjel.PRG.Blazor/bin/Debug/net10.0/Sanjel.PRG.Blazor.dll",
-			"args": [ "--urls", "http://0.0.0.0:5000" ],
-			"cwd": "${workspaceFolder}/src/app/Sanjel.PRG.Blazor",
-			"console": "internalConsole",
-			"stopAtEntry": false,
-			"env": {
-				"ASPNETCORE_ENVIRONMENT": "Development"
-			},
-			"serverReadyAction": {
-				"action": "openExternally",
-				"pattern": "\\bNow listening on:\\s+(https?://\\S+)"
-			}
-		},
-		{
-			"name": "Attach to .NET Process",
-			"type": "coreclr",
-			"request": "attach",
-			"processId": "${command:pickProcess}"
+			"request": "attach"
 		}
 	]
 }

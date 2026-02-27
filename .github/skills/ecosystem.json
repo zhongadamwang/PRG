@@ -2,24 +2,26 @@
   "project": "prg",
   "generated_at": "2026-02-26",
   "skills": {
-    "project-creator": {
-      "category": "architecture",
-      "level": 0,
-      "complexity": "expert",
-      "dependencies": [],
+    "repository-creator": {
+      "category": "data",
+      "level": 3,
+      "complexity": "advanced",
+      "dependencies": [
+        "project-creator"
+      ],
       "generated": true
     }
   },
   "statistics": {
     "total_skills": 1,
     "by_category": {
-      "architecture": 1
+      "data": 1
     },
     "by_level": {
-      "level_0": 1
+      "level_3": 1
     },
     "by_complexity": {
-      "expert": 1
+      "advanced": 1
     }
   }
 }

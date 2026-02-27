@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/app/">
+    <Project Path="Sanjel.RequestManagement.Blazor.Tests/Sanjel.RequestManagement.Blazor.Tests.csproj" />
+    <Project Path="Sanjel.RequestManagement.Blazor/Sanjel.RequestManagement.Blazor.csproj" />
+    <Project Path="Sanjel.RequestManagement.BusinessProcess.Tests/Sanjel.RequestManagement.BusinessProcess.Tests.csproj" />
+    <Project Path="Sanjel.RequestManagement.BusinessProcess/Sanjel.RequestManagement.BusinessProcess.csproj" />
+    <Project Path="Sanjel.RequestManagement.Core.Tests/Sanjel.RequestManagement.Core.Tests.csproj" />
+    <Project Path="Sanjel.RequestManagement.Core/Sanjel.RequestManagement.Core.csproj" />
+    <Project Path="Sanjel.RequestManagement.Repositories.Tests/Sanjel.RequestManagement.Repositories.Tests.csproj" />
+    <Project Path="Sanjel.RequestManagement.Repositories/Sanjel.RequestManagement.Repositories.csproj" />
+  </Folder>
+</Solution>

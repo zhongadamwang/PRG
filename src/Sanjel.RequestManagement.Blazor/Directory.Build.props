@@ -1,0 +1,17 @@
+<Project>
+  <PropertyGroup>
+    <!-- 全局强制禁用 @code 块 -->
+    <DisableCodeBlocks>true</DisableCodeBlocks>
+  </PropertyGroup>
+  
+  <!-- 在所有 Blazor 项目中检测 @code 块 -->
+  <Target Name="GlobalCheckForCodeBlocks" BeforeTargets="Build" Condition="'$(DisableCodeBlocks)' == 'true'">
+    <ItemGroup>
+      <AllRazorFiles Include="**/*.razor" />
+      <RazorFilesWithCodeBlocks Include="@(AllRazorFiles)" Condition="$([System.IO.File]::Exists('%(FullPath)')) And $([System.IO.File]::ReadAllText('%(FullPath)').Contains('@code'))" />
+    </ItemGroup>
+    
+    <Error Text="❌ @code blocks are not allowed in this project! Please use code-behind files (.razor.cs) instead.%0A📁 Found @code block in: %(RazorFilesWithCodeBlocks.Identity)%0A💡 To fix: Move the code from @code block to a .razor.cs file." 
+           Condition="@(RazorFilesWithCodeBlocks->Count()) > 0" />
+  </Target>
+</Project>
