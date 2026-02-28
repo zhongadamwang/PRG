@@ -29,13 +29,10 @@ When working on GitHub Skills development for this project, please refer to the 
 - Follow markdown formatting standards
 - Include examples where helpful
 - Maintain traceability between requirements and implementation
+- All saved documents must use English language
 
 ### Project Structure
 - Respect the established folder hierarchy
 - Place files in appropriate directories
 - Follow naming conventions consistently
 - Maintain separation between different project components
-
----
-
-For Skills development specifically, always reference the [Skills Development Guidelines](./skills-development-guidelines.md) document for detailed technical requirements and standards.

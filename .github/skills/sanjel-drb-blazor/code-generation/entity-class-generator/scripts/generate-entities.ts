@@ -1,0 +1,472 @@
+// @ts-ignore
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+// @ts-ignore  
+import { join } from 'node:path';
+// @ts-ignore
+import { execSync } from 'node:child_process';
+
+// @ts-ignore
+const process = globalThis.process;
+
+interface EntityAttribute {
+	name: string;
+	type: string;
+	isOptional: boolean;
+	isArray: boolean;
+	constraints?: string[];
+}
+
+interface Entity {
+	id: string;
+	name: string;
+	type: 'entity' | 'actor' | 'enum' | 'system';
+	description?: string;
+	attributes: EntityAttribute[];
+	methods: any[];
+	category?: string;
+}
+
+interface Relationship {
+	id: string;
+	sourceEntity: string;
+	targetEntity: string;
+	type: 'association' | 'composition' | 'aggregation' | 'inheritance' | 'dependency';
+	cardinality?: string;
+	label?: string;
+	description?: string;
+}
+
+interface DomainModelMetadata {
+	version: string;
+	generatedAt: string;
+	sourceFile: string;
+	entities: Entity[];
+	relationships: Relationship[];
+	enums: any[];
+	statistics: any;
+}
+
+interface GenerationOptions {
+	namespace: string;
+	outputDirectory: string;
+	generateComments: boolean;
+	includeNavigationProperties: boolean;
+}
+
+// Convert snake_case to PascalCase for C# properties
+function toPascalCase(snakeCase: string): string {
+	return snakeCase
+		.split('_')
+		.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+		.join('');
+}
+
+// Detect project path and generate appropriate entity directory
+function detectProjectEntityPath(): { outputDir: string; namespace: string } {
+	// @ts-ignore
+	let currentDir = process.cwd();
+	console.log(`🔍 Detecting project structure from: ${currentDir}`);
+
+	// Navigate up to find project root (where .slnx files are located)
+	let projectRoot = currentDir;
+	let foundSlnx = false;
+	let slnxFile = '';
+
+	while (projectRoot !== '/' && !foundSlnx) {
+		try {
+			// Check both current directory and src subdirectory
+			const searchPaths = [
+				`find "${projectRoot}" -maxdepth 1 -name "*.slnx" -type f`,
+				`find "${projectRoot}/src" -maxdepth 1 -name "*.slnx" -type f 2>/dev/null || true`
+			];
+
+			for (const searchPath of searchPaths) {
+				const slnxFiles = (execSync(searchPath, { encoding: 'utf-8' }) as string)
+					.split('\n')
+					.filter(line => line.trim())
+					.map(line => line.trim());
+
+				if (slnxFiles.length > 0) {
+					slnxFile = slnxFiles[0];
+					foundSlnx = true;
+					break;
+				}
+			}
+
+			if (foundSlnx) break;
+
+			// Move up one directory
+			const parentDir = join(projectRoot, '..');
+			if (parentDir === projectRoot) break; // Reached filesystem root
+			projectRoot = parentDir;
+		} catch (error) {
+			// Continue searching up
+			const parentDir = join(projectRoot, '..');
+			if (parentDir === projectRoot) break;
+			projectRoot = parentDir;
+		}
+	}
+
+	if (!foundSlnx) {
+		throw new Error('No .slnx file found. Unable to detect project structure. Please run from project root or provide paths manually.');
+	}
+
+	// Extract project name from .slnx file
+	const projectName = slnxFile.split('/').pop()?.replace('.slnx', '') || 'Unknown';
+
+	console.log(`📦 Detected project: ${projectName}`);
+	console.log(`📂 Project root: ${projectRoot}`);
+	console.log(`🎯 Found .slnx: ${slnxFile}`);
+
+	// Construct entity directory path - check if slnx is in src/ subdirectory
+	const isInSrcDir = slnxFile.includes('/src/');
+	const outputDir = isInSrcDir
+		? join(projectRoot, `src/${projectName}.Core/Entities`)
+		: join(projectRoot, `src/${projectName}.Core/Entities`);
+	const namespace = `${projectName}.Core.Entities`;
+
+	console.log(`📁 Target directory: ${outputDir}`);
+	console.log(`📦 Target namespace: ${namespace}`);
+
+	return { outputDir, namespace };
+}
+
+// Type mapping from domain model types to C# types
+function mapToCSharpType(domainType: string, isOptional: boolean = false, isArray: boolean = false): string {
+	let csharpType: string;
+
+	switch (domainType.toLowerCase()) {
+		case 'string':
+		case 'text':
+			csharpType = 'string';
+			break;
+		case 'int':
+		case 'integer':
+		case 'number':
+			csharpType = 'int';
+			break;
+		case 'long':
+			csharpType = 'long';
+			break;
+		case 'float':
+		case 'decimal':
+			csharpType = 'decimal';
+			break;
+		case 'double':
+			csharpType = 'double';
+			break;
+		case 'bool':
+		case 'boolean':
+			csharpType = 'bool';
+			break;
+		case 'datetime':
+		case 'date':
+			csharpType = 'DateTime';
+			break;
+		case 'guid':
+		case 'uuid':
+			csharpType = 'Guid';
+			break;
+		case 'void':
+			csharpType = 'void';
+			break;
+		default:
+			// For custom types, assume they are other entity classes
+			csharpType = domainType;
+			break;
+	}
+
+	// Handle arrays/collections
+	if (isArray) {
+		csharpType = `ICollection<${csharpType}>`;
+	}
+
+	// Handle nullable types (except for string and collections which are reference types)
+	if (isOptional && !isArray && csharpType !== 'string' && csharpType !== 'void') {
+		if (['int', 'long', 'decimal', 'double', 'bool', 'DateTime', 'Guid'].includes(csharpType)) {
+			csharpType += '?';
+		}
+	}
+
+	return csharpType;
+}
+
+// Generate Data Annotations based on attribute properties
+function generateDataAnnotations(attribute: EntityAttribute): string[] {
+	const annotations: string[] = [];
+
+	// Always add Column attribute to map to database column name
+	annotations.push(`[Column("${attribute.name}")]`);
+
+	// Handle constraints
+	if (attribute.constraints) {
+		for (const constraint of attribute.constraints) {
+			switch (constraint.toLowerCase()) {
+				case 'required':
+				case 'notnull':
+					if (attribute.type !== 'string' || !attribute.isOptional) {
+						annotations.push('[Required]');
+					}
+					break;
+				case 'key':
+				case 'primarykey':
+					annotations.push('[Key]');
+					break;
+				case 'unique':
+					annotations.push('[Index(IsUnique = true)]');
+					break;
+			}
+		}
+	}
+
+	// Auto-detect primary key by naming convention
+	if (attribute.name.toLowerCase() === 'id' ||
+		attribute.name.toLowerCase().endsWith('id') &&
+		attribute.name.toLowerCase().indexOf('id') === attribute.name.length - 2) {
+		if (!annotations.some(a => a.includes('[Key]'))) {
+			annotations.push('[Key]');
+		}
+	}
+
+	// Add Required annotation for non-nullable reference types
+	if (!attribute.isOptional && attribute.type === 'string' && !annotations.some(a => a.includes('[Required]'))) {
+		annotations.push('[Required]');
+	}
+
+	// Add MaxLength for strings (default reasonable length)
+	if (attribute.type === 'string' && !annotations.some(a => a.includes('[MaxLength]'))) {
+		const maxLength = attribute.name.toLowerCase().includes('name') ? '100' :
+			attribute.name.toLowerCase().includes('description') ? '500' :
+				attribute.name.toLowerCase().includes('email') ? '255' : '255';
+		annotations.push(`[MaxLength(${maxLength})]`);
+	}
+
+	return annotations;
+}
+
+// Generate navigation properties based on relationships
+function generateNavigationProperties(entity: Entity, relationships: Relationship[]): string[] {
+	const navigationProps: string[] = [];
+
+	// Find relationships where this entity is involved
+	const entityRelationships = relationships.filter(rel =>
+		rel.sourceEntity === entity.name || rel.targetEntity === entity.name
+	);
+
+	for (const rel of entityRelationships) {
+		if (rel.sourceEntity === entity.name) {
+			// This entity is the source - add navigation to target
+			const targetEntity = rel.targetEntity;
+			const propName = targetEntity;
+
+			if (rel.cardinality?.includes('*') || rel.type === 'composition') {
+				navigationProps.push(`    public virtual ICollection<${targetEntity}> ${propName} { get; set; } = new List<${targetEntity}>();`);
+			} else {
+				navigationProps.push(`    public virtual ${targetEntity}? ${propName} { get; set; }`);
+			}
+		} else if (rel.targetEntity === entity.name) {
+			// This entity is the target - add navigation to source
+			const sourceEntity = rel.sourceEntity;
+			const propName = sourceEntity;
+
+			if (rel.cardinality?.startsWith('*') || rel.type === 'aggregation') {
+				navigationProps.push(`    public virtual ICollection<${sourceEntity}> ${propName} { get; set; } = new List<${sourceEntity}>();`);
+			} else {
+				navigationProps.push(`    public virtual ${sourceEntity}? ${propName} { get; set; }`);
+			}
+		}
+	}
+
+	return navigationProps;
+}
+
+// Generate a complete C# entity class
+function generateEntityClass(entity: Entity, metadata: DomainModelMetadata, options: GenerationOptions): string {
+	const lines: string[] = [];
+
+	// Using statements
+	lines.push('using System;');
+	lines.push('using System.Collections.Generic;');
+	lines.push('using System.ComponentModel.DataAnnotations;');
+	lines.push('using System.ComponentModel.DataAnnotations.Schema;');
+	lines.push('using Microsoft.EntityFrameworkCore;');
+	lines.push('');
+
+	// Namespace
+	lines.push(`namespace ${options.namespace};`);
+	lines.push('');
+
+	// Class documentation
+	if (options.generateComments && entity.description) {
+		lines.push('/// <summary>');
+		lines.push(`/// ${entity.description}`);
+		lines.push('/// </summary>');
+	}
+
+	// Class declaration
+	lines.push(`public class ${entity.name}`);
+	lines.push('{');
+
+	// Properties
+	for (const attr of entity.attributes) {
+		lines.push('');
+
+		// Property documentation
+		if (options.generateComments) {
+			lines.push('    /// <summary>');
+			lines.push(`    /// ${attr.name} property`);
+			lines.push('    /// </summary>');
+		}
+
+		// Data annotations
+		const annotations = generateDataAnnotations(attr);
+		for (const annotation of annotations) {
+			lines.push(`    ${annotation}`);
+		}
+
+		// Property declaration
+		const csharpType = mapToCSharpType(attr.type, attr.isOptional, attr.isArray);
+		const propertyName = toPascalCase(attr.name); // Convert snake_case to PascalCase
+
+		if (attr.isArray) {
+			lines.push(`    public ${csharpType} ${propertyName} { get; set; } = new List<${csharpType.replace('ICollection<', '').replace('>', '')}>();`);
+		} else {
+			lines.push(`    public ${csharpType} ${propertyName} { get; set; }`);
+		}
+	}
+
+	// Navigation properties
+	if (options.includeNavigationProperties) {
+		const navProps = generateNavigationProperties(entity, metadata.relationships);
+		if (navProps.length > 0) {
+			lines.push('');
+			lines.push('    // Navigation Properties');
+			for (const navProp of navProps) {
+				lines.push('');
+				lines.push(navProp);
+			}
+		}
+	}
+
+	lines.push('}');
+
+	return lines.join('\n');
+}
+
+// Main generation function
+function generateEntities(metadataFilePath: string, outputDir: string, namespace: string = 'Sanjel.RequestManagement.Core.Entities'): void {
+	console.log('🚀 Starting entity class generation...');
+
+	// Validate input file
+	if (!existsSync(metadataFilePath)) {
+		throw new Error(`Metadata file not found: ${metadataFilePath}`);
+	}
+
+	// Read and parse metadata
+	const metadataContent = readFileSync(metadataFilePath, 'utf-8');
+	const metadata: DomainModelMetadata = JSON.parse(metadataContent);
+
+	console.log(`📋 Found ${metadata.entities.length} entities to generate`);
+
+	// Create output directory if it doesn't exist
+	if (!existsSync(outputDir)) {
+		mkdirSync(outputDir, { recursive: true });
+		console.log(`📁 Created output directory: ${outputDir}`);
+	}
+
+	const options: GenerationOptions = {
+		namespace: namespace,
+		outputDirectory: outputDir,
+		generateComments: true,
+		includeNavigationProperties: true
+	};
+
+	let generatedCount = 0;
+
+	// Generate entity classes
+	for (const entity of metadata.entities) {
+		// Skip non-entity types for now
+		if (entity.type !== 'entity') {
+			console.log(`⏭️  Skipping ${entity.name} (type: ${entity.type})`);
+			continue;
+		}
+
+		console.log(`🔧 Generating ${entity.name}...`);
+
+		// Generate class content
+		const classContent = generateEntityClass(entity, metadata, options);
+
+		// Write to file
+		const fileName = `${entity.name}.cs`;
+		const filePath = join(outputDir, fileName);
+
+		try {
+			writeFileSync(filePath, classContent, 'utf-8');
+			console.log(`✅ Generated: ${fileName}`);
+			generatedCount++;
+		} catch (error) {
+			console.error(`❌ Failed to generate ${fileName}:`, error);
+		}
+	}
+
+	console.log(`🎉 Generation complete! Generated ${generatedCount} entity classes.`);
+}
+
+// Command line interface
+function main(): void {
+	const args = process.argv.slice(2);
+
+	if (args.length < 1) {
+		console.log('Usage: bun run generate-entities.ts <metadata-file> [output-directory] [namespace]');
+		console.log('');
+		console.log('Arguments:');
+		console.log('  metadata-file    Path to the JSON metadata file from domain-model-parser');
+		console.log('  output-directory Optional: Path to the directory where entity classes will be generated (auto-detected if not provided)');
+		console.log('  namespace        Optional: C# namespace for the entity classes (auto-detected if not provided)');
+		console.log('');
+		console.log('Examples:');
+		console.log('  bun run generate-entities.ts ./domain-metadata.json');
+		console.log('  bun run generate-entities.ts ./domain-metadata.json ./custom/path Custom.Namespace');
+		process.exit(1);
+	}
+
+	const metadataFile = args[0];
+
+	// Auto-detect project structure if not provided
+	let outputDir: string;
+	let namespace: string;
+
+	if (args.length >= 2) {
+		// Manual override
+		outputDir = args[1];
+		namespace = args[2] || 'Sanjel.RequestManagement.Core.Entities';
+		console.log('📝 Using provided paths:');
+	} else {
+		// Auto-detect
+		const detected = detectProjectEntityPath();
+		outputDir = detected.outputDir;
+		namespace = detected.namespace;
+		console.log('🔍 Using auto-detected paths:');
+	}
+
+	console.log(`   📄 Metadata: ${metadataFile}`);
+	console.log(`   📁 Output: ${outputDir}`);
+	console.log(`   📦 Namespace: ${namespace}`);
+
+	try {
+		generateEntities(metadataFile, outputDir, namespace);
+	} catch (error) {
+		console.error('❌ Generation failed:', error);
+		process.exit(1);
+	}
+}
+
+// Run if called directly
+// @ts-ignore
+if (import.meta.main) {
+	main();
+}
+
+// Export for use by other skills
+export { detectProjectEntityPath, generateDataAnnotations, generateEntities, mapToCSharpType, toPascalCase };
+
