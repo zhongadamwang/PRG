@@ -9,8 +9,8 @@ builder.Services.AddHttpContextAccessor();
 
 // Use Scrutor for assembly scanning and auto-registration
 builder.Services.Scan(scan => scan
-	// Scan multiple assemblies
-	.FromAssemblyOf<Sanjel.RequestManagement.Repositories.IProgramRequestRepository>()
+	// Scan multiple assemblies  
+	.FromAssemblies(typeof(Sanjel.RequestManagement.Repositories.Common.IRepository<>).Assembly)
 	.FromAssemblyOf<Sanjel.RequestManagement.Core.Services.ICurrentUserService>()
 	.FromAssemblyOf<Sanjel.RequestManagement.Blazor.Components.App>()
 
