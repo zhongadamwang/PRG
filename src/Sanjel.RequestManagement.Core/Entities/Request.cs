@@ -25,7 +25,7 @@ public class Request
     /// status property
     /// </summary>
     [Column("status")]
-    public statusenum Status { get; set; }
+    public StatusEnum Status { get; set; }
 
     /// <summary>
     /// created_date property
@@ -37,7 +37,7 @@ public class Request
     /// priority property
     /// </summary>
     [Column("priority")]
-    public priorityenum Priority { get; set; }
+    public PriorityEnum Priority { get; set; }
 
     /// <summary>
     /// client_id property
@@ -86,10 +86,6 @@ public class Request
     public DateTime CompletionDate { get; set; }
 
     // Navigation Properties
-
-    public virtual Engineer? Engineer { get; set; }
-
-    public virtual Manager? Manager { get; set; }
 
     public virtual ReviewPackage? ReviewPackage { get; set; }
 

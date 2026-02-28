@@ -61,7 +61,7 @@ public class ReviewPackage
     /// review_status property
     /// </summary>
     [Column("review_status")]
-    public reviewstatusenum ReviewStatus { get; set; }
+    public ReviewStatusEnum ReviewStatus { get; set; }
 
     /// <summary>
     /// work_summary property
@@ -82,10 +82,4 @@ public class ReviewPackage
     // Navigation Properties
 
     public virtual Request? Request { get; set; }
-
-    public virtual Engineer? Engineer { get; set; }
-
-    public virtual Engineer? Engineer { get; set; }
-
-    public virtual Engineer? Engineer { get; set; }
 }

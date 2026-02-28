@@ -67,7 +67,7 @@ public class StateDiagram
     /// diagram_type property
     /// </summary>
     [Column("diagram_type")]
-    public diagramtypeenum DiagramType { get; set; }
+    public DiagramTypeEnum DiagramType { get; set; }
 
     // Navigation Properties
 

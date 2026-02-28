@@ -1,0 +1,29 @@
+using System;
+
+namespace Sanjel.RequestManagement.Core.Entities;
+
+/// <summary>
+/// ValidationEnum enumeration
+/// </summary>
+public enum ValidationEnum
+{
+    /// <summary>
+    /// Not validated
+    /// </summary>
+    NotValidated = 0,
+
+    /// <summary>
+    /// Validation passed
+    /// </summary>
+    Valid = 1,
+
+    /// <summary>
+    /// Validation failed
+    /// </summary>
+    Invalid = 2,
+
+    /// <summary>
+    /// Validation pending
+    /// </summary>
+    Pending = 3
+}

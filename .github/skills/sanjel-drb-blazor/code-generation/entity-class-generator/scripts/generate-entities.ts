@@ -61,27 +61,44 @@ function toPascalCase(snakeCase: string): string {
 		.join('');
 }
 
+// Enhanced enum name conversion (same as enum-generator)
+function convertEnumName(enumId: string): string {
+	// Remove 'enum' suffix and convert to PascalCase
+	let baseName = enumId.replace(/enum$/i, '');
+	
+	// Handle special compound words
+	const compoundWords: Record<string, string> = {
+		'notificationtype': 'NotificationType',
+		'elementtype': 'ElementType',
+		'diagramtype': 'DiagramType',
+		'reviewstatus': 'ReviewStatus'
+	};
+	
+	if (compoundWords[baseName.toLowerCase()]) {
+		return compoundWords[baseName.toLowerCase()] + 'Enum';
+	}
+	
+	// Standard PascalCase conversion
+	return toPascalCase(baseName) + 'Enum';
+}
+
 // Detect project path and generate appropriate entity directory
 function detectProjectEntityPath(): { outputDir: string; namespace: string } {
 	// @ts-ignore
 	let currentDir = process.cwd();
 	console.log(`🔍 Detecting project structure from: ${currentDir}`);
 
-	// Navigate up to find project root (where .slnx files are located)
+	// Navigate up to find project root (where src/.slnx files are located)
 	let projectRoot = currentDir;
 	let foundSlnx = false;
 	let slnxFile = '';
 
 	while (projectRoot !== '/' && !foundSlnx) {
 		try {
-			// Check both current directory and src subdirectory
-			const searchPaths = [
-				`find "${projectRoot}" -maxdepth 1 -name "*.slnx" -type f`,
-				`find "${projectRoot}/src" -maxdepth 1 -name "*.slnx" -type f 2>/dev/null || true`
-			];
-
-			for (const searchPath of searchPaths) {
-				const slnxFiles = (execSync(searchPath, { encoding: 'utf-8' }) as string)
+			// Check src subdirectory for .slnx files (fixed location)
+			const srcDir = join(projectRoot, 'src');
+			if (existsSync(srcDir)) {
+				const slnxFiles = (execSync(`find "${srcDir}" -maxdepth 1 -name "*.slnx" -type f 2>/dev/null || true`, { encoding: 'utf-8' }) as string)
 					.split('\n')
 					.filter(line => line.trim())
 					.map(line => line.trim());
@@ -92,8 +109,6 @@ function detectProjectEntityPath(): { outputDir: string; namespace: string } {
 					break;
 				}
 			}
-
-			if (foundSlnx) break;
 
 			// Move up one directory
 			const parentDir = join(projectRoot, '..');
@@ -108,7 +123,7 @@ function detectProjectEntityPath(): { outputDir: string; namespace: string } {
 	}
 
 	if (!foundSlnx) {
-		throw new Error('No .slnx file found. Unable to detect project structure. Please run from project root or provide paths manually.');
+		throw new Error('No .slnx file found in src directory. Unable to detect project structure. Please run from project root or provide paths manually.');
 	}
 
 	// Extract project name from .slnx file
@@ -118,11 +133,8 @@ function detectProjectEntityPath(): { outputDir: string; namespace: string } {
 	console.log(`📂 Project root: ${projectRoot}`);
 	console.log(`🎯 Found .slnx: ${slnxFile}`);
 
-	// Construct entity directory path - check if slnx is in src/ subdirectory
-	const isInSrcDir = slnxFile.includes('/src/');
-	const outputDir = isInSrcDir
-		? join(projectRoot, `src/${projectName}.Core/Entities`)
-		: join(projectRoot, `src/${projectName}.Core/Entities`);
+	// Construct entity directory path (always in src subdirectory)
+	const outputDir = join(projectRoot, `src/${projectName}.Core/Entities`);
 	const namespace = `${projectName}.Core.Entities`;
 
 	console.log(`📁 Target directory: ${outputDir}`);
@@ -171,8 +183,17 @@ function mapToCSharpType(domainType: string, isOptional: boolean = false, isArra
 			csharpType = 'void';
 			break;
 		default:
-			// For custom types, assume they are other entity classes
-			csharpType = domainType;
+			// Check if it's an enum type (ends with 'enum')
+			if (domainType.toLowerCase().endsWith('enum')) {
+				// Use enhanced enum name conversion
+				csharpType = convertEnumName(domainType);
+			} else if (domainType.toLowerCase() === 'engineer' || domainType.toLowerCase() === 'manager') {
+				// For actor types, use string representation (ID reference)
+				csharpType = 'string';
+			} else {
+				// For other custom types, assume they are entity classes
+				csharpType = toPascalCase(domainType);
+			}
 			break;
 	}
 
@@ -245,7 +266,7 @@ function generateDataAnnotations(attribute: EntityAttribute): string[] {
 }
 
 // Generate navigation properties based on relationships
-function generateNavigationProperties(entity: Entity, relationships: Relationship[]): string[] {
+function generateNavigationProperties(entity: Entity, relationships: Relationship[], metadata: DomainModelMetadata): string[] {
 	const navigationProps: string[] = [];
 
 	// Find relationships where this entity is involved
@@ -257,6 +278,14 @@ function generateNavigationProperties(entity: Entity, relationships: Relationshi
 		if (rel.sourceEntity === entity.name) {
 			// This entity is the source - add navigation to target
 			const targetEntity = rel.targetEntity;
+			
+			// Find target entity in metadata to check its type
+			const targetEntityDef = metadata.entities.find(e => e.name === targetEntity);
+			if (!targetEntityDef || targetEntityDef.type === 'actor') {
+				// Skip Actor types - they are not generated as entity classes
+				continue;
+			}
+			
 			const propName = targetEntity;
 
 			if (rel.cardinality?.includes('*') || rel.type === 'composition') {
@@ -267,6 +296,14 @@ function generateNavigationProperties(entity: Entity, relationships: Relationshi
 		} else if (rel.targetEntity === entity.name) {
 			// This entity is the target - add navigation to source
 			const sourceEntity = rel.sourceEntity;
+			
+			// Find source entity in metadata to check its type
+			const sourceEntityDef = metadata.entities.find(e => e.name === sourceEntity);
+			if (!sourceEntityDef || sourceEntityDef.type === 'actor') {
+				// Skip Actor types - they are not generated as entity classes
+				continue;
+			}
+			
 			const propName = sourceEntity;
 
 			if (rel.cardinality?.startsWith('*') || rel.type === 'aggregation') {
@@ -337,7 +374,7 @@ function generateEntityClass(entity: Entity, metadata: DomainModelMetadata, opti
 
 	// Navigation properties
 	if (options.includeNavigationProperties) {
-		const navProps = generateNavigationProperties(entity, metadata.relationships);
+		const navProps = generateNavigationProperties(entity, metadata.relationships, metadata);
 		if (navProps.length > 0) {
 			lines.push('');
 			lines.push('    // Navigation Properties');
@@ -468,5 +505,5 @@ if (import.meta.main) {
 }
 
 // Export for use by other skills
-export { detectProjectEntityPath, generateDataAnnotations, generateEntities, mapToCSharpType, toPascalCase };
+export { convertEnumName, detectProjectEntityPath, generateDataAnnotations, generateEntities, mapToCSharpType, toPascalCase };
 

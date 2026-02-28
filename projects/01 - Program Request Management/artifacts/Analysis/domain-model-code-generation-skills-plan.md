@@ -42,7 +42,19 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Analyze entity relationships
 - Generate structured metadata
 
-### Skill 3a: `entity-class-generator` ✅ **Finished**
+### Skill 3: `enum-generator`
+**Responsibility**: Generate C# enum definitions from parsed metadata
+**Input**: JSON output from domain-model-parser (enums array)
+**Output**: C# enum class files
+
+**Script**: `generate-enums.ts` (run with bun)
+- Parse enum definitions from domain model metadata
+- Generate C# enum classes with proper naming conventions
+- Handle PascalCase conversion for compound words (notificationtype → NotificationType)
+- Create enum files in appropriate project directory
+- Support custom enum values and descriptions
+
+### Skill 4a: `entity-class-generator` ✅ **Finished**
 **Responsibility**: Generate basic C# entity classes based on parsed metadata
 **Input**: JSON output from domain-model-parser
 **Output**: C# entity class files
@@ -53,7 +65,7 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Add basic Data Annotations ([Key], [Required], [MaxLength])
 - Generate simple navigation properties
 
-### Skill 3b: `entity-configuration-generator`
+### Skill 4b: `entity-configuration-generator` ✅ **Finished**
 **Responsibility**: Generate EF Core Fluent API configurations for entities
 **Input**: JSON entity metadata + relationship metadata
 **Output**: Entity configuration classes
@@ -64,7 +76,7 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Add indexes and constraints configuration
 - Handle advanced EF Core features (owned types, value converters)
 
-### Skill 4: `database-migration-generator`
+### Skill 5: `database-migration-generator`
 **Responsibility**: Generate EF Core database migration scripts
 **Input**: Entity metadata JSON
 **Output**: EF Core Migration files
@@ -75,7 +87,7 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Add indexes and constraints
 - Handle foreign key relationships
 
-### Skill 5a: `repository-interface-generator`
+### Skill 6a: `repository-interface-generator`
 **Responsibility**: Generate Repository interface contracts
 **Input**: Entity metadata JSON
 **Output**: IRepository interface files
@@ -86,7 +98,7 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Define CRUD method signatures
 - Add performance annotation markers for Dapper optimization
 
-### Skill 5b: `efcore-repository-generator`
+### Skill 6b: `efcore-repository-generator`
 **Responsibility**: Generate EF Core Repository implementations
 **Input**: Entity metadata JSON + Repository interfaces
 **Output**: EF Core Repository implementation classes
@@ -97,7 +109,7 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Add transaction management
 - Include change tracking and lazy loading features
 
-### Skill 5c: `dapper-repository-generator`
+### Skill 6c: `dapper-repository-generator`
 **Responsibility**: Generate Dapper Repository implementations for performance-critical operations
 **Input**: Entity metadata JSON + Performance markers
 **Output**: Dapper Repository implementation classes
@@ -108,7 +120,7 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Add parameter mapping
 - Handle complex JOIN operations
 
-### Skill 6a: `service-interface-generator`
+### Skill 7a: `service-interface-generator`
 **Responsibility**: Generate business service interface contracts
 **Input**: Entity metadata JSON + Business rules
 **Output**: Service interface files
@@ -119,7 +131,7 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Add validation and business rule placeholders
 - Include async/await patterns
 
-### Skill 6b: `service-implementation-generator`
+### Skill 7b: `service-implementation-generator`
 **Responsibility**: Generate business service implementation classes
 **Input**: Service interfaces + Repository interfaces
 **Output**: Service implementation classes
@@ -130,7 +142,7 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Implement basic CRUD business operations
 - Add transaction management and error handling
 
-### Skill 7a: `blazor-list-component-generator`
+### Skill 8a: `blazor-list-component-generator`
 **Responsibility**: Generate Blazor list/grid components for entities
 **Input**: Entity metadata JSON
 **Output**: Blazor list component files
@@ -141,7 +153,7 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Include pagination support
 - Add action buttons (Edit, Delete, View)
 
-### Skill 7b: `blazor-form-component-generator`
+### Skill 8b: `blazor-form-component-generator`
 **Responsibility**: Generate Blazor form components for entity editing
 **Input**: Entity metadata JSON + Validation rules
 **Output**: Blazor form component files
@@ -152,7 +164,7 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Include input components for different data types
 - Add save/cancel functionality
 
-### Skill 7c: `blazor-detail-component-generator`
+### Skill 8c: `blazor-detail-component-generator`
 **Responsibility**: Generate Blazor detail view components
 **Input**: Entity metadata JSON
 **Output**: Blazor detail component files
@@ -163,7 +175,7 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Add navigation to related entities
 - Include action buttons
 
-### Skill 8: `data-context-generator` 
+### Skill 9: `data-context-generator` 
 **Responsibility**: Generate EF Core DbContext class
 **Input**: Entity metadata JSON + Connection configuration
 **Output**: DbContext class file
@@ -175,7 +187,7 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Configure database connection and options
 - Add audit fields and soft delete configurations
 
-### Skill 9: `model-change-detector`
+### Skill 10: `model-change-detector`
 **Responsibility**: Detect changes in domain model files
 **Input**: Current and historical versions of domain models
 **Output**: Change difference report
@@ -186,7 +198,7 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Analyze attribute and relationship changes
 - Generate change summary
 
-### Skill 10: `incremental-update-generator`
+### Skill 11: `incremental-update-generator`
 **Responsibility**: Generate incremental update scripts based on changes
 **Input**: Change difference report
 **Output**: Incremental update code and scripts
@@ -216,6 +228,10 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 │       └── scripts/
 │           └── detect-changes.ts
 ├── code-generation/
+│   ├── enum-generator/
+│   │   ├── SKILL.md
+│   │   └── scripts/
+│   │       └── generate-enums.ts
 │   ├── entity-class-generator/
 │   │   ├── SKILL.md
 │   │   └── scripts/
@@ -330,25 +346,26 @@ bun run scripts/[script-name].ts
 ### Scenario 1: New Project
 1. `workflow-orchestrator` → Analyze project state, recommend complete generation process
 2. `domain-model-parser` → Parse domain models
-3. `entity-class-generator` → Generate basic entity classes
-4. `entity-configuration-generator` → Generate EF Core configurations
-5. `data-context-generator` → Generate DbContext class
-6. `database-migration-generator` → Generate database scripts
-7. `repository-interface-generator` → Generate Repository interfaces
-8. `efcore-repository-generator` → Generate EF Core Repository implementations
-9. `dapper-repository-generator` → Generate optimized Dapper implementations
-10. `service-interface-generator` → Generate service interfaces
-11. `service-implementation-generator` → Generate service implementations
-12. `blazor-list-component-generator` → Generate list components
-13. `blazor-form-component-generator` → Generate form components
-14. `blazor-detail-component-generator` → Generate detail components
+3. `enum-generator` → Generate enum definitions
+4. `entity-class-generator` → Generate basic entity classes
+5. `entity-configuration-generator` → Generate EF Core configurations
+6. `data-context-generator` → Generate DbContext class
+7. `database-migration-generator` → Generate database scripts
+8. `repository-interface-generator` → Generate Repository interfaces
+9. `efcore-repository-generator` → Generate EF Core Repository implementations
+10. `dapper-repository-generator` → Generate optimized Dapper implementations
+11. `service-interface-generator` → Generate service interfaces
+12. `service-implementation-generator` → Generate service implementations
+13. `blazor-list-component-generator` → Generate list components
+14. `blazor-form-component-generator` → Generate form components
+15. `blazor-detail-component-generator` → Generate detail components
 
 ### Scenario 2: Domain Model Modification
 1. `workflow-orchestrator` → Detect model changes, recommend incremental update process
 2. `model-change-detector` → Analyze specific changes
 3. `incremental-update-generator` → Generate update scripts based on changes
 4. Selectively call affected generators:
-   - Entity changes: `entity-class-generator` + `entity-configuration-generator`
+   - Entity changes: `enum-generator` + `entity-class-generator` + `entity-configuration-generator`
    - New entities: Full generation sequence for new entities only
    - Relationship changes: `entity-configuration-generator` + `data-context-generator`
    - Repository changes: `repository-interface-generator` + implementation generators
@@ -357,7 +374,7 @@ bun run scripts/[script-name].ts
 ### Scenario 3: Update Specific Layer Only
 1. `workflow-orchestrator` → Based on user intent, recommend specific skill combinations
 2. Call relevant specific generators:
-   **Entity Layer**: `entity-class-generator` + `entity-configuration-generator`
+   **Entity Layer**: `enum-generator` + `entity-class-generator` + `entity-configuration-generator`
    **Data Layer**: `repository-interface-generator` + `efcore-repository-generator` + `dapper-repository-generator`
    **Business Layer**: `service-interface-generator` + `service-implementation-generator`
    **UI Layer**: `blazor-list-component-generator` + `blazor-form-component-generator` + `blazor-detail-component-generator`
@@ -419,7 +436,7 @@ After splitting larger skills into focused components, we achieve:
 
 ## Implementation Priority
 
-**Phase 1 (Core)**: Skills 1, 2, 3a, 3b, 4, 8 - Basic entity and database generation
+**Phase 1 (Core)**: Skills 1, 2, 3, 4a, 4b, 5, 9 - Basic enum, entity and database generation
 **Phase 2 (Data Access)**: Skills 5a, 5b, 5c - Repository pattern implementation  
 **Phase 3 (Business Logic)**: Skills 6a, 6b - Service layer generation
 **Phase 4 (UI)**: Skills 7a, 7b, 7c - Blazor component generation

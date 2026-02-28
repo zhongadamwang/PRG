@@ -34,19 +34,19 @@ public class Notification
     /// recipient_type property
     /// </summary>
     [Column("recipient_type")]
-    public recipientenum RecipientType { get; set; }
+    public RecipientEnum RecipientType { get; set; }
 
     /// <summary>
     /// notification_type property
     /// </summary>
     [Column("notification_type")]
-    public notificationtypeenum NotificationType { get; set; }
+    public NotificationTypeEnum NotificationType { get; set; }
 
     /// <summary>
     /// delivery_method property
     /// </summary>
     [Column("delivery_method")]
-    public deliveryenum DeliveryMethod { get; set; }
+    public DeliveryEnum DeliveryMethod { get; set; }
 
     /// <summary>
     /// sent_date property

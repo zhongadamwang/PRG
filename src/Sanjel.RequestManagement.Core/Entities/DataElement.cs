@@ -31,7 +31,7 @@ public class DataElement
     /// element_type property
     /// </summary>
     [Column("element_type")]
-    public elementtypeenum ElementType { get; set; }
+    public ElementTypeEnum ElementType { get; set; }
 
     /// <summary>
     /// raw_value property
@@ -53,7 +53,7 @@ public class DataElement
     /// validation_status property
     /// </summary>
     [Column("validation_status")]
-    public validationenum ValidationStatus { get; set; }
+    public ValidationEnum ValidationStatus { get; set; }
 
     /// <summary>
     /// source_location property
@@ -76,6 +76,4 @@ public class DataElement
     public virtual Request? Request { get; set; }
 
     public virtual StateDiagram? StateDiagram { get; set; }
-
-    public virtual Engineer? Engineer { get; set; }
 }
