@@ -16,10 +16,10 @@ interface ProjectConfig {
 
 class ProjectCreator {
 	// @ts-ignore
-	private readonly templatesDir = path.join(__dirname, 'templates');
+	private readonly templatesDir = path.join(__dirname, 'templates') as string;
 
 	constructor() {
-		console.log('\n🏗️  eServiceCloud Blazor Project Creator 🏗️\n');
+		console.log('\n🏗️ Sanjel DRB Blazor Project Creator 🏗️\n');
 	}
 
 	async createProject(projectName: string, projectPrefix: string, targetDirectory: string) {

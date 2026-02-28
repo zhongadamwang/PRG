@@ -1,0 +1,1021 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-02-28T08:21:47.369Z",
+  "sourceFile": "/sanjel/PRG/orgModel/01 - Program Request Management/domain-model.md",
+  "entities": [
+    {
+      "id": "request",
+      "name": "Request",
+      "type": "entity",
+      "attributes": [
+        {
+          "name": "request_id",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "status",
+          "type": "statusenum",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "created_date",
+          "type": "DateTime",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "priority",
+          "type": "priorityenum",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "client_id",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "source_email",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "assigned_engineer_id",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "assigned_by",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "acknowledgment_date",
+          "type": "DateTime",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "completion_date",
+          "type": "DateTime",
+          "isOptional": false,
+          "isArray": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "assign",
+          "returnType": "bool",
+          "parameters": [
+            {
+              "name": "engineer_id",
+              "type": "string"
+            },
+            {
+              "name": "manager_id",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "name": "updateStatus",
+          "returnType": "void",
+          "parameters": [
+            {
+              "name": "new_status",
+              "type": "string"
+            },
+            {
+              "name": "user_id",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "name": "escalate",
+          "returnType": "void",
+          "parameters": [
+            {
+              "name": "escalation_reason",
+              "type": "string"
+            }
+          ]
+        }
+      ],
+      "category": "entity",
+      "description": "Program request submitted for engineering work with complete lifecycle tracking"
+    },
+    {
+      "id": "engineer",
+      "name": "Engineer",
+      "type": "actor",
+      "attributes": [
+        {
+          "name": "engineer_id",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "email",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "team",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "specializations",
+          "type": "string",
+          "isOptional": false,
+          "isArray": true
+        },
+        {
+          "name": "active_requests",
+          "type": "string",
+          "isOptional": false,
+          "isArray": true
+        },
+        {
+          "name": "workload_capacity",
+          "type": "int",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "availability_status",
+          "type": "availabilityenum",
+          "isOptional": false,
+          "isArray": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "acceptAssignment",
+          "returnType": "bool",
+          "parameters": [
+            {
+              "name": "request_id",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "name": "declineAssignment",
+          "returnType": "bool",
+          "parameters": [
+            {
+              "name": "request_id",
+              "type": "string"
+            },
+            {
+              "name": "reason",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "name": "validateData",
+          "returnType": "bool",
+          "parameters": [
+            {
+              "name": "data_elements",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "name": "submitForReview",
+          "returnType": "bool",
+          "parameters": [
+            {
+              "name": "work_package",
+              "type": "string"
+            }
+          ]
+        }
+      ],
+      "category": "actor",
+      "description": "Engineering staff member who processes requests and develops technical solutions"
+    },
+    {
+      "id": "manager",
+      "name": "Manager",
+      "type": "actor",
+      "attributes": [
+        {
+          "name": "manager_id",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "email",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "team_members",
+          "type": "string",
+          "isOptional": false,
+          "isArray": true
+        }
+      ],
+      "methods": [
+        {
+          "name": "assignRequest",
+          "returnType": "bool",
+          "parameters": [
+            {
+              "name": "request_id",
+              "type": "string"
+            },
+            {
+              "name": "engineer_id",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "name": "handleEscalation",
+          "returnType": "void",
+          "parameters": [
+            {
+              "name": "request_id",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "name": "overrideTriage",
+          "returnType": "bool",
+          "parameters": [
+            {
+              "name": "request_id",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "name": "reviewMetrics",
+          "returnType": "void",
+          "parameters": []
+        }
+      ],
+      "category": "actor",
+      "description": ""
+    },
+    {
+      "id": "dataelement",
+      "name": "DataElement",
+      "type": "entity",
+      "attributes": [
+        {
+          "name": "element_id",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "request_id",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "element_type",
+          "type": "elementtypeenum",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "raw_value",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "validated_value",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "validation_status",
+          "type": "validationenum",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "source_location",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "validation_notes",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "validate",
+          "returnType": "bool",
+          "parameters": []
+        },
+        {
+          "name": "correct",
+          "returnType": "void",
+          "parameters": [
+            {
+              "name": "new_value",
+              "type": "string"
+            },
+            {
+              "name": "notes",
+              "type": "string"
+            }
+          ]
+        }
+      ],
+      "category": "entity"
+    },
+    {
+      "id": "statediagram",
+      "name": "StateDiagram",
+      "type": "entity",
+      "attributes": [
+        {
+          "name": "diagram_id",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "diagram_name",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "file_path",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "version",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "import_date",
+          "type": "DateTime",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "parsing_confidence",
+          "type": "float",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "client_id",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "diagram_type",
+          "type": "diagramtypeenum",
+          "isOptional": false,
+          "isArray": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "validate",
+          "returnType": "bool",
+          "parameters": []
+        }
+      ],
+      "category": "entity"
+    },
+    {
+      "id": "reviewpackage",
+      "name": "ReviewPackage",
+      "type": "entity",
+      "attributes": [
+        {
+          "name": "package_id",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "request_id",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "submitting_engineer_id",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "assigned_reviewer_id",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "submission_date",
+          "type": "DateTime",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "review_completion_date",
+          "type": "DateTime",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "review_status",
+          "type": "reviewstatusenum",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "work_summary",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "review_feedback",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "approve",
+          "returnType": "bool",
+          "parameters": []
+        },
+        {
+          "name": "requestAdjustments",
+          "returnType": "bool",
+          "parameters": [
+            {
+              "name": "feedback",
+              "type": "string"
+            }
+          ]
+        }
+      ],
+      "category": "entity"
+    },
+    {
+      "id": "notification",
+      "name": "Notification",
+      "type": "entity",
+      "attributes": [
+        {
+          "name": "notification_id",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "request_id",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "recipient_type",
+          "type": "recipientenum",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "notification_type",
+          "type": "notificationtypeenum",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "delivery_method",
+          "type": "deliveryenum",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "sent_date",
+          "type": "DateTime",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "content",
+          "type": "string",
+          "isOptional": false,
+          "isArray": false
+        },
+        {
+          "name": "action_buttons",
+          "type": "string",
+          "isOptional": false,
+          "isArray": true
+        }
+      ],
+      "methods": [
+        {
+          "name": "send",
+          "returnType": "bool",
+          "parameters": []
+        },
+        {
+          "name": "processAction",
+          "returnType": "void",
+          "parameters": [
+            {
+              "name": "action",
+              "type": "string"
+            }
+          ]
+        }
+      ],
+      "category": "entity",
+      "description": "System-generated communication to stakeholders about request status and actions"
+    },
+    {
+      "id": "statusenum",
+      "name": "StatusEnum",
+      "type": "enum",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "canTransitionTo",
+          "returnType": "bool",
+          "parameters": [
+            {
+              "name": "target",
+              "type": "string"
+            }
+          ]
+        }
+      ],
+      "category": "enum"
+    },
+    {
+      "id": "priorityenum",
+      "name": "PriorityEnum",
+      "type": "enum",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "getEscalationTime",
+          "returnType": "int",
+          "parameters": []
+        }
+      ],
+      "category": "enum"
+    },
+    {
+      "id": "availabilityenum",
+      "name": "AvailabilityEnum",
+      "type": "enum",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "canAcceptAssignment",
+          "returnType": "bool",
+          "parameters": []
+        }
+      ],
+      "category": "enum"
+    },
+    {
+      "id": "validationenum",
+      "name": "ValidationEnum",
+      "type": "enum",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "isComplete",
+          "returnType": "bool",
+          "parameters": []
+        }
+      ],
+      "category": "enum"
+    },
+    {
+      "id": "elementtypeenum",
+      "name": "ElementTypeEnum",
+      "type": "enum",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "getValidationPattern",
+          "returnType": "string",
+          "parameters": []
+        }
+      ],
+      "category": "enum"
+    },
+    {
+      "id": "reviewstatusenum",
+      "name": "ReviewStatusEnum",
+      "type": "enum",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "isFinalized",
+          "returnType": "bool",
+          "parameters": []
+        }
+      ],
+      "category": "enum"
+    },
+    {
+      "id": "diagramtypeenum",
+      "name": "DiagramTypeEnum",
+      "type": "enum",
+      "attributes": [],
+      "methods": [],
+      "category": "enum"
+    },
+    {
+      "id": "notificationtypeenum",
+      "name": "NotificationTypeEnum",
+      "type": "enum",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "getTemplate",
+          "returnType": "string",
+          "parameters": []
+        }
+      ],
+      "category": "enum"
+    },
+    {
+      "id": "programrequestsystem",
+      "name": "ProgramRequestSystem",
+      "type": "system",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "processEmailRequest",
+          "returnType": "request",
+          "parameters": []
+        },
+        {
+          "name": "manageWorkflow",
+          "returnType": "void",
+          "parameters": []
+        },
+        {
+          "name": "trackMetrics",
+          "returnType": "void",
+          "parameters": []
+        }
+      ],
+      "category": "ai"
+    },
+    {
+      "id": "emailintegrationsystem",
+      "name": "EmailIntegrationSystem",
+      "type": "system",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "parseIncomingEmail",
+          "returnType": "string",
+          "parameters": []
+        },
+        {
+          "name": "sendNotification",
+          "returnType": "bool",
+          "parameters": [
+            {
+              "name": "notification",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "name": "processActionResponse",
+          "returnType": "void",
+          "parameters": []
+        },
+        {
+          "name": "validateEmailSecurity",
+          "returnType": "bool",
+          "parameters": []
+        }
+      ],
+      "category": "ai"
+    },
+    {
+      "id": "statediagramimportsystem",
+      "name": "StateDiagramImportSystem",
+      "type": "system",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "extractStructuredData",
+          "returnType": "string",
+          "parameters": []
+        },
+        {
+          "name": "calculateConfidence",
+          "returnType": "float",
+          "parameters": []
+        },
+        {
+          "name": "validateDataIntegrity",
+          "returnType": "bool",
+          "parameters": []
+        }
+      ],
+      "category": "ai"
+    },
+    {
+      "id": "authenticationdirectory",
+      "name": "AuthenticationDirectory",
+      "type": "system",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "authenticateUser",
+          "returnType": "bool",
+          "parameters": [
+            {
+              "name": "credentials",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "name": "validatePermissions",
+          "returnType": "bool",
+          "parameters": [
+            {
+              "name": "user_id",
+              "type": "string"
+            },
+            {
+              "name": "action",
+              "type": "string"
+            }
+          ]
+        }
+      ],
+      "category": "ai"
+    },
+    {
+      "id": "datavalidationinterface",
+      "name": "DataValidationInterface",
+      "type": "system",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "displayThreePanelView",
+          "returnType": "void",
+          "parameters": []
+        },
+        {
+          "name": "enableDataCorrection",
+          "returnType": "void",
+          "parameters": []
+        },
+        {
+          "name": "trackValidationProgress",
+          "returnType": "float",
+          "parameters": []
+        },
+        {
+          "name": "generateValidationReport",
+          "returnType": "string",
+          "parameters": []
+        }
+      ],
+      "category": "ai"
+    },
+    {
+      "id": "notificationgateway",
+      "name": "NotificationGateway",
+      "type": "system",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "routeNotification",
+          "returnType": "void",
+          "parameters": []
+        },
+        {
+          "name": "formatMessage",
+          "returnType": "string",
+          "parameters": [
+            {
+              "name": "template",
+              "type": "string"
+            },
+            {
+              "name": "data",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "name": "trackDeliveryStatus",
+          "returnType": "bool",
+          "parameters": []
+        },
+        {
+          "name": "processEmailActions",
+          "returnType": "void",
+          "parameters": []
+        }
+      ],
+      "category": "ai"
+    }
+  ],
+  "relationships": [
+    {
+      "id": "Request_to_Engineer",
+      "sourceEntity": "Request",
+      "targetEntity": "Engineer",
+      "type": "association",
+      "label": "assigned_to"
+    },
+    {
+      "id": "Request_to_Manager",
+      "sourceEntity": "Request",
+      "targetEntity": "Manager",
+      "type": "association",
+      "label": "assigned_by"
+    },
+    {
+      "id": "Request_to_ReviewPackage",
+      "sourceEntity": "Request",
+      "targetEntity": "ReviewPackage",
+      "type": "association",
+      "label": "has_review"
+    },
+    {
+      "id": "Request_to_DataElement",
+      "sourceEntity": "Request",
+      "targetEntity": "DataElement",
+      "type": "composition",
+      "label": "contains"
+    },
+    {
+      "id": "Request_to_Notification",
+      "sourceEntity": "Request",
+      "targetEntity": "Notification",
+      "type": "association",
+      "label": "generates"
+    },
+    {
+      "id": "StateDiagram_to_DataElement",
+      "sourceEntity": "StateDiagram",
+      "targetEntity": "DataElement",
+      "type": "association",
+      "label": "produces"
+    },
+    {
+      "id": "StateDiagram_to_Request",
+      "sourceEntity": "StateDiagram",
+      "targetEntity": "Request",
+      "type": "association",
+      "label": "imported_for"
+    },
+    {
+      "id": "Engineer_to_ReviewPackage",
+      "sourceEntity": "Engineer",
+      "targetEntity": "ReviewPackage",
+      "type": "association",
+      "label": "submits"
+    },
+    {
+      "id": "Engineer_to_ReviewPackage",
+      "sourceEntity": "Engineer",
+      "targetEntity": "ReviewPackage",
+      "type": "association",
+      "label": "reviews"
+    },
+    {
+      "id": "Engineer_to_DataElement",
+      "sourceEntity": "Engineer",
+      "targetEntity": "DataElement",
+      "type": "association",
+      "label": "validates"
+    },
+    {
+      "id": "ReviewPackage_to_Engineer",
+      "sourceEntity": "ReviewPackage",
+      "targetEntity": "Engineer",
+      "type": "association",
+      "label": "reviewed_by"
+    },
+    {
+      "id": "ProgramRequestSystem_to_EmailIntegrationSystem",
+      "sourceEntity": "ProgramRequestSystem",
+      "targetEntity": "EmailIntegrationSystem",
+      "type": "association",
+      "label": "uses"
+    },
+    {
+      "id": "ProgramRequestSystem_to_StateDiagramImportSystem",
+      "sourceEntity": "ProgramRequestSystem",
+      "targetEntity": "StateDiagramImportSystem",
+      "type": "association",
+      "label": "uses"
+    },
+    {
+      "id": "ProgramRequestSystem_to_AuthenticationDirectory",
+      "sourceEntity": "ProgramRequestSystem",
+      "targetEntity": "AuthenticationDirectory",
+      "type": "association",
+      "label": "uses"
+    },
+    {
+      "id": "ProgramRequestSystem_to_DataValidationInterface",
+      "sourceEntity": "ProgramRequestSystem",
+      "targetEntity": "DataValidationInterface",
+      "type": "association",
+      "label": "provides"
+    },
+    {
+      "id": "ProgramRequestSystem_to_NotificationGateway",
+      "sourceEntity": "ProgramRequestSystem",
+      "targetEntity": "NotificationGateway",
+      "type": "association",
+      "label": "uses"
+    },
+    {
+      "id": "EmailIntegrationSystem_to_NotificationGateway",
+      "sourceEntity": "EmailIntegrationSystem",
+      "targetEntity": "NotificationGateway",
+      "type": "association",
+      "label": "feeds_to"
+    },
+    {
+      "id": "StateDiagramImportSystem_to_DataValidationInterface",
+      "sourceEntity": "StateDiagramImportSystem",
+      "targetEntity": "DataValidationInterface",
+      "type": "association",
+      "label": "provides_data_to"
+    },
+    {
+      "id": "AuthenticationDirectory_to_ProgramRequestSystem",
+      "sourceEntity": "AuthenticationDirectory",
+      "targetEntity": "ProgramRequestSystem",
+      "type": "association",
+      "label": "authenticates"
+    }
+  ],
+  "enums": [],
+  "statistics": {
+    "totalEntities": 21,
+    "totalRelationships": 19,
+    "totalEnums": 0,
+    "totalAttributes": 55
+  }
+}
