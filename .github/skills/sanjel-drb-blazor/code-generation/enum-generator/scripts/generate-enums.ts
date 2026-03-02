@@ -47,7 +47,7 @@ function toPascalCase(snakeCase: string): string {
 function convertEnumName(enumId: string): string {
 	// Remove 'enum' suffix and convert to PascalCase
 	let baseName = enumId.replace(/enum$/i, '');
-	
+
 	// Handle special compound words
 	const compoundWords: Record<string, string> = {
 		'notificationtype': 'NotificationType',
@@ -55,11 +55,11 @@ function convertEnumName(enumId: string): string {
 		'diagramtype': 'DiagramType',
 		'reviewstatus': 'ReviewStatus'
 	};
-	
+
 	if (compoundWords[baseName.toLowerCase()]) {
 		return compoundWords[baseName.toLowerCase()] + 'Enum';
 	}
-	
+
 	// Standard PascalCase conversion
 	return toPascalCase(baseName) + 'Enum';
 }
@@ -69,12 +69,12 @@ function detectProjectEnumPath(): { outputDir: string; namespace: string } {
 	// @ts-ignore
 	let currentDir = process.cwd();
 	console.log(`🔍 Detecting project structure from: ${currentDir}`);
-	
+
 	// Navigate up to find project root (where src/.slnx files are located)
 	let projectRoot = currentDir;
 	let foundSlnx = false;
 	let slnxFile = '';
-	
+
 	while (projectRoot !== '/' && !foundSlnx) {
 		try {
 			// Check src subdirectory for .slnx files (fixed location)
@@ -84,14 +84,14 @@ function detectProjectEnumPath(): { outputDir: string; namespace: string } {
 					.split('\n')
 					.filter(line => line.trim())
 					.map(line => line.trim());
-				
+
 				if (slnxFiles.length > 0) {
 					slnxFile = slnxFiles[0];
 					foundSlnx = true;
 					break;
 				}
 			}
-			
+
 			// Move up one directory
 			const parentDir = join(projectRoot, '..');
 			if (parentDir === projectRoot) break; // Reached filesystem root
@@ -103,32 +103,32 @@ function detectProjectEnumPath(): { outputDir: string; namespace: string } {
 			projectRoot = parentDir;
 		}
 	}
-	
+
 	if (!foundSlnx) {
 		throw new Error('No .slnx file found in src directory. Unable to detect project structure. Please run from project root or provide paths manually.');
 	}
-	
+
 	// Extract project name from .slnx file
 	const projectName = slnxFile.split('/').pop()?.replace('.slnx', '') || 'Unknown';
-	
+
 	console.log(`📦 Detected project: ${projectName}`);
 	console.log(`📂 Project root: ${projectRoot}`);
 	console.log(`🎯 Found .slnx: ${slnxFile}`);
-	
+
 	// Construct enum directory path (same as entities for now)
 	const outputDir = join(projectRoot, `src/${projectName}.Core/Entities`);
 	const namespace = `${projectName}.Core.Entities`;
-	
+
 	console.log(`📁 Target directory: ${outputDir}`);
 	console.log(`📦 Target namespace: ${namespace}`);
-	
+
 	return { outputDir, namespace };
 }
 
 // Generate standard enum values based on common patterns
 function generateEnumValues(enumEntity: Entity): { name: string; value: number; description?: string }[] {
 	const enumName = enumEntity.name;
-	
+
 	// Standard enum value patterns based on enum type
 	const standardEnums: Record<string, { name: string; value: number; description?: string }[]> = {
 		'StatusEnum': [
@@ -197,7 +197,7 @@ function generateEnumValues(enumEntity: Entity): { name: string; value: number; 
 			{ name: 'Unavailable', value: 3, description: 'Unavailable' }
 		]
 	};
-	
+
 	return standardEnums[enumName] || [
 		{ name: 'Unknown', value: 0, description: 'Unknown value' }
 	];
@@ -208,76 +208,76 @@ function generateEnumClass(enumEntity: Entity, options: EnumGenerationOptions): 
 	const lines: string[] = [];
 	const enumName = convertEnumName(enumEntity.id);
 	const enumValues = generateEnumValues({ ...enumEntity, name: enumName });
-	
+
 	// Using statements
 	lines.push('using System;');
 	lines.push('');
-	
+
 	// Namespace
 	lines.push(`namespace ${options.namespace};`);
 	lines.push('');
-	
+
 	// Class documentation
 	if (options.generateComments) {
 		lines.push('/// <summary>');
 		lines.push(`/// ${enumEntity.description || `${enumName} enumeration`}`);
 		lines.push('/// </summary>');
 	}
-	
+
 	// Enum declaration
 	lines.push(`public enum ${enumName}`);
 	lines.push('{');
-	
+
 	// Enum values
 	for (let i = 0; i < enumValues.length; i++) {
 		const enumValue = enumValues[i];
-		
+
 		if (options.generateComments && enumValue.description) {
 			lines.push(`    /// <summary>`);
 			lines.push(`    /// ${enumValue.description}`);
 			lines.push(`    /// </summary>`);
 		}
-		
+
 		const isLast = i === enumValues.length - 1;
 		const suffix = isLast ? '' : ',';
 		lines.push(`    ${enumValue.name} = ${enumValue.value}${suffix}`);
-		
+
 		if (!isLast) {
 			lines.push('');
 		}
 	}
-	
+
 	lines.push('}');
-	
+
 	return lines.join('\n');
 }
 
 // Main generation function
 function generateEnums(metadataFilePath: string, outputDir?: string, namespace?: string): void {
 	console.log('🚀 Starting enum generation...');
-	
+
 	// Validate input file
 	if (!existsSync(metadataFilePath)) {
 		throw new Error(`Metadata file not found: ${metadataFilePath}`);
 	}
-	
+
 	// Read and parse metadata
 	const metadataContent = readFileSync(metadataFilePath, 'utf-8');
 	const metadata: DomainModelMetadata = JSON.parse(metadataContent);
-	
+
 	// Filter enum entities
 	const enumEntities = metadata.entities.filter(entity => entity.type === 'enum');
 	console.log(`📋 Found ${enumEntities.length} enums to generate`);
-	
+
 	if (enumEntities.length === 0) {
 		console.log('⚠️  No enum entities found in metadata. Nothing to generate.');
 		return;
 	}
-	
+
 	// Determine output directory and namespace
 	let finalOutputDir: string;
 	let finalNamespace: string;
-	
+
 	if (outputDir && namespace) {
 		finalOutputDir = outputDir;
 		finalNamespace = namespace;
@@ -288,37 +288,37 @@ function generateEnums(metadataFilePath: string, outputDir?: string, namespace?:
 		finalNamespace = detected.namespace;
 		console.log('🔍 Using auto-detected paths:');
 	}
-	
+
 	console.log(`   📁 Output: ${finalOutputDir}`);
 	console.log(`   📦 Namespace: ${finalNamespace}`);
-	
+
 	// Create output directory if it doesn't exist
 	if (!existsSync(finalOutputDir)) {
 		mkdirSync(finalOutputDir, { recursive: true });
 		console.log(`📁 Created output directory: ${finalOutputDir}`);
 	}
-	
+
 	const options: EnumGenerationOptions = {
 		namespace: finalNamespace,
 		outputDirectory: finalOutputDir,
 		generateComments: true,
 		includeToString: true
 	};
-	
+
 	let generatedCount = 0;
-	
+
 	// Generate enum classes
 	for (const enumEntity of enumEntities) {
 		const enumName = convertEnumName(enumEntity.id);
 		console.log(`🔧 Generating ${enumName}...`);
-		
+
 		// Generate enum content
 		const enumContent = generateEnumClass(enumEntity, options);
-		
+
 		// Write to file
 		const fileName = `${enumName}.cs`;
 		const filePath = join(finalOutputDir, fileName);
-		
+
 		try {
 			writeFileSync(filePath, enumContent, 'utf-8');
 			console.log(`✅ Generated: ${fileName}`);
@@ -327,8 +327,11 @@ function generateEnums(metadataFilePath: string, outputDir?: string, namespace?:
 			console.error(`❌ Failed to generate ${fileName}:`, error);
 		}
 	}
-	
+
 	console.log(`🎉 Enum generation complete! Generated ${generatedCount} enum classes.`);
+
+	// Format generated code using dotnet format
+	formatGeneratedCode(finalOutputDir);
 }
 
 // Command line interface
@@ -349,22 +352,22 @@ function main(): void {
 		process.exit(1);
 	}
 
-	 const metadataFile = args[0];
-	 
-	 // Auto-detect project structure if not provided
-	 let outputDir: string | undefined;
-	 let namespace: string | undefined;
-	 
-	 if (args.length >= 2) {
-	 	 // Manual override
-	 	 outputDir = args[1];
-	 	 namespace = args[2];
-	 	 console.log('📝 Using provided paths:');
-	 } else {
-	 	 console.log('🔍 Using auto-detected paths:');
-	 }
-	
-	 console.log(`   📄 Metadata: ${metadataFile}`);
+	const metadataFile = args[0];
+
+	// Auto-detect project structure if not provided
+	let outputDir: string | undefined;
+	let namespace: string | undefined;
+
+	if (args.length >= 2) {
+		// Manual override
+		outputDir = args[1];
+		namespace = args[2];
+		console.log('📝 Using provided paths:');
+	} else {
+		console.log('🔍 Using auto-detected paths:');
+	}
+
+	console.log(`   📄 Metadata: ${metadataFile}`);
 
 	try {
 		generateEnums(metadataFile, outputDir, namespace);
@@ -378,6 +381,36 @@ function main(): void {
 // @ts-ignore
 if (import.meta.main) {
 	main();
+}
+
+// Format generated C# code using dotnet format
+function formatGeneratedCode(outputDir: string): void {
+	try {
+		console.log('🎨 Formatting generated code with dotnet format...');
+
+		// Get the project root (where .slnx file is located)
+		let projectRoot = outputDir;
+		while (projectRoot && projectRoot !== '/') {
+			const files = (execSync(`ls "${projectRoot}"`, { encoding: 'utf-8' }) as string).split('\n');
+			const hasSlnx = files.some(file => file.endsWith('.slnx'));
+			if (hasSlnx) {
+				break;
+			}
+			// Continue searching up
+			const parentDir = join(projectRoot, '..');
+			if (parentDir === projectRoot) break;
+			projectRoot = parentDir;
+		}
+
+		// Run dotnet format on the specific directory
+		const formatCommand = `dotnet format "${projectRoot}" --include "${outputDir}/**/*.cs"`;
+		execSync(formatCommand, { cwd: projectRoot, encoding: 'utf-8' });
+
+		console.log('✅ Code formatting completed successfully!');
+	} catch (error) {
+		console.warn('⚠️  Code formatting failed, but generation was successful:', error);
+		// Don't fail the generation if formatting fails
+	}
 }
 
 // Export for use by other skills

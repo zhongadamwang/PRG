@@ -321,6 +321,128 @@ function extractEnumDefinitions(content: string, context: ParseContext): void {
 	}
 }
 
+// Infer missing enums from entity attribute type references
+function inferMissingEnums(context: ParseContext): void {
+	console.log('🔍 Inferring missing enums from entity attributes...');
+
+	// Get all existing enum IDs
+	const existingEnumIds = new Set(context.enums.map(e => e.id.toLowerCase()));
+
+	// Collect all enum type references from entity attributes
+	const referencedEnumTypes = new Set<string>();
+
+	for (const entity of context.entities) {
+		for (const attr of entity.attributes) {
+			const lowerType = attr.type.toLowerCase();
+			// Check if it looks like an enum type (ends with 'enum')
+			if (lowerType.endsWith('enum') || lowerType.endsWith('enumeration')) {
+				referencedEnumTypes.add(lowerType);
+			}
+		}
+	}
+
+	// Find missing enums
+	const missingEnums = Array.from(referencedEnumTypes).filter(enumType => !existingEnumIds.has(enumType));
+
+	console.log(`📋 Found ${referencedEnumTypes.size} enum references, ${missingEnums.length} are missing definitions`);
+
+	// Generate missing enum definitions with default values
+	for (const missingEnumType of missingEnums) {
+		const enumName = missingEnumType.charAt(0).toUpperCase() + missingEnumType.slice(1);
+
+		console.log(`🔧 Generating missing enum: ${enumName}`);
+
+		// Generate standard default values based on enum type
+		const defaultValues = generateDefaultEnumValues(enumName);
+
+		const enumDef: DomainEnum = {
+			id: missingEnumType,
+			name: enumName,
+			values: defaultValues,
+			description: `Auto-generated enumeration for ${enumName.replace('Enum', '')} values (inferred from entity attributes)`
+		};
+
+		context.enums.push(enumDef);
+
+		// Also add as an Entity so enum-generator can find it
+		const entityDef: Entity = {
+			id: missingEnumType,
+			name: enumName,
+			type: 'enum',
+			description: `Auto-generated enumeration for ${enumName.replace('Enum', '')} values (inferred from entity attributes)`,
+			attributes: [],
+			methods: []
+		};
+
+		context.entities.push(entityDef);
+	}
+
+	if (missingEnums.length > 0) {
+		console.log(`✅ Generated ${missingEnums.length} missing enum definitions`);
+	}
+}
+
+// Generate default enum values based on enum name patterns
+function generateDefaultEnumValues(enumName: string): EnumValue[] {
+	const lowerName = enumName.toLowerCase();
+
+	// Common enum patterns
+	if (lowerName.includes('recipient')) {
+		return [
+			{ name: 'USER', description: 'Regular user' },
+			{ name: 'MANAGER', description: 'Manager or supervisor' },
+			{ name: 'ENGINEER', description: 'Engineer or technical staff' },
+			{ name: 'ADMIN', description: 'System administrator' },
+			{ name: 'EXTERNAL', description: 'External stakeholder' }
+		];
+	}
+
+	if (lowerName.includes('delivery') || lowerName.includes('notification')) {
+		return [
+			{ name: 'EMAIL', description: 'Email notification' },
+			{ name: 'SMS', description: 'SMS text message' },
+			{ name: 'IN_APP', description: 'In-application notification' },
+			{ name: 'PUSH', description: 'Push notification' },
+			{ name: 'WEBHOOK', description: 'Webhook callback' }
+		];
+	}
+
+	if (lowerName.includes('status')) {
+		return [
+			{ name: 'PENDING', description: 'Pending state' },
+			{ name: 'ACTIVE', description: 'Active state' },
+			{ name: 'INACTIVE', description: 'Inactive state' },
+			{ name: 'COMPLETED', description: 'Completed state' },
+			{ name: 'CANCELLED', description: 'Cancelled state' }
+		];
+	}
+
+	if (lowerName.includes('priority')) {
+		return [
+			{ name: 'LOW', description: 'Low priority' },
+			{ name: 'NORMAL', description: 'Normal priority' },
+			{ name: 'HIGH', description: 'High priority' },
+			{ name: 'CRITICAL', description: 'Critical priority' }
+		];
+	}
+
+	if (lowerName.includes('type')) {
+		return [
+			{ name: 'DEFAULT', description: 'Default type' },
+			{ name: 'CUSTOM', description: 'Custom type' },
+			{ name: 'TEMPLATE', description: 'Template type' },
+			{ name: 'SYSTEM', description: 'System type' }
+		];
+	}
+
+	// Generic default values
+	return [
+		{ name: 'UNKNOWN', description: 'Unknown value' },
+		{ name: 'DEFAULT', description: 'Default value' },
+		{ name: 'CUSTOM', description: 'Custom value' }
+	];
+}
+
 function parseDomainModel(filePath: string): DomainModelMetadata {
 	if (!existsSync(filePath)) {
 		throw new Error(`Domain model file not found: ${filePath}`);
@@ -338,6 +460,9 @@ function parseDomainModel(filePath: string): DomainModelMetadata {
 	extractMermaidDiagrams(content, context);
 	extractEntityDescriptions(content, context);
 	extractEnumDefinitions(content, context);
+
+	// Infer missing enums from entity attribute type references
+	inferMissingEnums(context);
 
 	const metadata: DomainModelMetadata = {
 		version: '1.0.0',

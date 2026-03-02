@@ -3,7 +3,7 @@ using System;
 namespace Sanjel.RequestManagement.Core.Entities;
 
 /// <summary>
-/// ReviewStatusEnum enumeration
+/// Auto-generated enumeration for Reviewstatusenum values (inferred from entity attributes)
 /// </summary>
 public enum ReviewStatusEnum
 {

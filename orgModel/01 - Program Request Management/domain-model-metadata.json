@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-02-28T08:21:47.369Z",
+  "generatedAt": "2026-03-02T02:09:53.309Z",
   "sourceFile": "/sanjel/PRG/orgModel/01 - Program Request Management/domain-model.md",
   "entities": [
     {
@@ -874,6 +874,86 @@
         }
       ],
       "category": "ai"
+    },
+    {
+      "id": "statusenum",
+      "name": "Statusenum",
+      "type": "enum",
+      "description": "Auto-generated enumeration for Statusenum values (inferred from entity attributes)",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "id": "priorityenum",
+      "name": "Priorityenum",
+      "type": "enum",
+      "description": "Auto-generated enumeration for Priorityenum values (inferred from entity attributes)",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "id": "availabilityenum",
+      "name": "Availabilityenum",
+      "type": "enum",
+      "description": "Auto-generated enumeration for Availabilityenum values (inferred from entity attributes)",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "id": "elementtypeenum",
+      "name": "Elementtypeenum",
+      "type": "enum",
+      "description": "Auto-generated enumeration for Elementtypeenum values (inferred from entity attributes)",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "id": "validationenum",
+      "name": "Validationenum",
+      "type": "enum",
+      "description": "Auto-generated enumeration for Validationenum values (inferred from entity attributes)",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "id": "diagramtypeenum",
+      "name": "Diagramtypeenum",
+      "type": "enum",
+      "description": "Auto-generated enumeration for Diagramtypeenum values (inferred from entity attributes)",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "id": "reviewstatusenum",
+      "name": "Reviewstatusenum",
+      "type": "enum",
+      "description": "Auto-generated enumeration for Reviewstatusenum values (inferred from entity attributes)",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "id": "recipientenum",
+      "name": "Recipientenum",
+      "type": "enum",
+      "description": "Auto-generated enumeration for Recipientenum values (inferred from entity attributes)",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "id": "notificationtypeenum",
+      "name": "Notificationtypeenum",
+      "type": "enum",
+      "description": "Auto-generated enumeration for Notificationtypeenum values (inferred from entity attributes)",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "id": "deliveryenum",
+      "name": "Deliveryenum",
+      "type": "enum",
+      "description": "Auto-generated enumeration for Deliveryenum values (inferred from entity attributes)",
+      "attributes": [],
+      "methods": []
     }
   ],
   "relationships": [
@@ -1011,11 +1091,254 @@
       "label": "authenticates"
     }
   ],
-  "enums": [],
+  "enums": [
+    {
+      "id": "statusenum",
+      "name": "Statusenum",
+      "values": [
+        {
+          "name": "PENDING",
+          "description": "Pending state"
+        },
+        {
+          "name": "ACTIVE",
+          "description": "Active state"
+        },
+        {
+          "name": "INACTIVE",
+          "description": "Inactive state"
+        },
+        {
+          "name": "COMPLETED",
+          "description": "Completed state"
+        },
+        {
+          "name": "CANCELLED",
+          "description": "Cancelled state"
+        }
+      ],
+      "description": "Auto-generated enumeration for Statusenum values (inferred from entity attributes)"
+    },
+    {
+      "id": "priorityenum",
+      "name": "Priorityenum",
+      "values": [
+        {
+          "name": "LOW",
+          "description": "Low priority"
+        },
+        {
+          "name": "NORMAL",
+          "description": "Normal priority"
+        },
+        {
+          "name": "HIGH",
+          "description": "High priority"
+        },
+        {
+          "name": "CRITICAL",
+          "description": "Critical priority"
+        }
+      ],
+      "description": "Auto-generated enumeration for Priorityenum values (inferred from entity attributes)"
+    },
+    {
+      "id": "availabilityenum",
+      "name": "Availabilityenum",
+      "values": [
+        {
+          "name": "UNKNOWN",
+          "description": "Unknown value"
+        },
+        {
+          "name": "DEFAULT",
+          "description": "Default value"
+        },
+        {
+          "name": "CUSTOM",
+          "description": "Custom value"
+        }
+      ],
+      "description": "Auto-generated enumeration for Availabilityenum values (inferred from entity attributes)"
+    },
+    {
+      "id": "elementtypeenum",
+      "name": "Elementtypeenum",
+      "values": [
+        {
+          "name": "DEFAULT",
+          "description": "Default type"
+        },
+        {
+          "name": "CUSTOM",
+          "description": "Custom type"
+        },
+        {
+          "name": "TEMPLATE",
+          "description": "Template type"
+        },
+        {
+          "name": "SYSTEM",
+          "description": "System type"
+        }
+      ],
+      "description": "Auto-generated enumeration for Elementtypeenum values (inferred from entity attributes)"
+    },
+    {
+      "id": "validationenum",
+      "name": "Validationenum",
+      "values": [
+        {
+          "name": "UNKNOWN",
+          "description": "Unknown value"
+        },
+        {
+          "name": "DEFAULT",
+          "description": "Default value"
+        },
+        {
+          "name": "CUSTOM",
+          "description": "Custom value"
+        }
+      ],
+      "description": "Auto-generated enumeration for Validationenum values (inferred from entity attributes)"
+    },
+    {
+      "id": "diagramtypeenum",
+      "name": "Diagramtypeenum",
+      "values": [
+        {
+          "name": "DEFAULT",
+          "description": "Default type"
+        },
+        {
+          "name": "CUSTOM",
+          "description": "Custom type"
+        },
+        {
+          "name": "TEMPLATE",
+          "description": "Template type"
+        },
+        {
+          "name": "SYSTEM",
+          "description": "System type"
+        }
+      ],
+      "description": "Auto-generated enumeration for Diagramtypeenum values (inferred from entity attributes)"
+    },
+    {
+      "id": "reviewstatusenum",
+      "name": "Reviewstatusenum",
+      "values": [
+        {
+          "name": "PENDING",
+          "description": "Pending state"
+        },
+        {
+          "name": "ACTIVE",
+          "description": "Active state"
+        },
+        {
+          "name": "INACTIVE",
+          "description": "Inactive state"
+        },
+        {
+          "name": "COMPLETED",
+          "description": "Completed state"
+        },
+        {
+          "name": "CANCELLED",
+          "description": "Cancelled state"
+        }
+      ],
+      "description": "Auto-generated enumeration for Reviewstatusenum values (inferred from entity attributes)"
+    },
+    {
+      "id": "recipientenum",
+      "name": "Recipientenum",
+      "values": [
+        {
+          "name": "USER",
+          "description": "Regular user"
+        },
+        {
+          "name": "MANAGER",
+          "description": "Manager or supervisor"
+        },
+        {
+          "name": "ENGINEER",
+          "description": "Engineer or technical staff"
+        },
+        {
+          "name": "ADMIN",
+          "description": "System administrator"
+        },
+        {
+          "name": "EXTERNAL",
+          "description": "External stakeholder"
+        }
+      ],
+      "description": "Auto-generated enumeration for Recipientenum values (inferred from entity attributes)"
+    },
+    {
+      "id": "notificationtypeenum",
+      "name": "Notificationtypeenum",
+      "values": [
+        {
+          "name": "EMAIL",
+          "description": "Email notification"
+        },
+        {
+          "name": "SMS",
+          "description": "SMS text message"
+        },
+        {
+          "name": "IN_APP",
+          "description": "In-application notification"
+        },
+        {
+          "name": "PUSH",
+          "description": "Push notification"
+        },
+        {
+          "name": "WEBHOOK",
+          "description": "Webhook callback"
+        }
+      ],
+      "description": "Auto-generated enumeration for Notificationtypeenum values (inferred from entity attributes)"
+    },
+    {
+      "id": "deliveryenum",
+      "name": "Deliveryenum",
+      "values": [
+        {
+          "name": "EMAIL",
+          "description": "Email notification"
+        },
+        {
+          "name": "SMS",
+          "description": "SMS text message"
+        },
+        {
+          "name": "IN_APP",
+          "description": "In-application notification"
+        },
+        {
+          "name": "PUSH",
+          "description": "Push notification"
+        },
+        {
+          "name": "WEBHOOK",
+          "description": "Webhook callback"
+        }
+      ],
+      "description": "Auto-generated enumeration for Deliveryenum values (inferred from entity attributes)"
+    }
+  ],
   "statistics": {
-    "totalEntities": 21,
+    "totalEntities": 31,
     "totalRelationships": 19,
-    "totalEnums": 0,
+    "totalEnums": 10,
     "totalAttributes": 55
   }
 }

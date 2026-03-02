@@ -65,7 +65,7 @@ function toPascalCase(snakeCase: string): string {
 function convertEnumName(enumId: string): string {
 	// Remove 'enum' suffix and convert to PascalCase
 	let baseName = enumId.replace(/enum$/i, '');
-	
+
 	// Handle special compound words
 	const compoundWords: Record<string, string> = {
 		'notificationtype': 'NotificationType',
@@ -73,11 +73,11 @@ function convertEnumName(enumId: string): string {
 		'diagramtype': 'DiagramType',
 		'reviewstatus': 'ReviewStatus'
 	};
-	
+
 	if (compoundWords[baseName.toLowerCase()]) {
 		return compoundWords[baseName.toLowerCase()] + 'Enum';
 	}
-	
+
 	// Standard PascalCase conversion
 	return toPascalCase(baseName) + 'Enum';
 }
@@ -278,14 +278,14 @@ function generateNavigationProperties(entity: Entity, relationships: Relationshi
 		if (rel.sourceEntity === entity.name) {
 			// This entity is the source - add navigation to target
 			const targetEntity = rel.targetEntity;
-			
+
 			// Find target entity in metadata to check its type
 			const targetEntityDef = metadata.entities.find(e => e.name === targetEntity);
 			if (!targetEntityDef || targetEntityDef.type === 'actor') {
 				// Skip Actor types - they are not generated as entity classes
 				continue;
 			}
-			
+
 			const propName = targetEntity;
 
 			if (rel.cardinality?.includes('*') || rel.type === 'composition') {
@@ -296,14 +296,14 @@ function generateNavigationProperties(entity: Entity, relationships: Relationshi
 		} else if (rel.targetEntity === entity.name) {
 			// This entity is the target - add navigation to source
 			const sourceEntity = rel.sourceEntity;
-			
+
 			// Find source entity in metadata to check its type
 			const sourceEntityDef = metadata.entities.find(e => e.name === sourceEntity);
 			if (!sourceEntityDef || sourceEntityDef.type === 'actor') {
 				// Skip Actor types - they are not generated as entity classes
 				continue;
 			}
-			
+
 			const propName = sourceEntity;
 
 			if (rel.cardinality?.startsWith('*') || rel.type === 'aggregation') {
@@ -446,7 +446,10 @@ function generateEntities(metadataFilePath: string, outputDir: string, namespace
 		}
 	}
 
-	console.log(`🎉 Generation complete! Generated ${generatedCount} entity classes.`);
+	console.log(`🎉 Entity generation complete! Generated ${generatedCount} entity classes.`);
+
+	// Format generated code using dotnet format
+	formatGeneratedCode(outputDir);
 }
 
 // Command line interface
@@ -502,6 +505,36 @@ function main(): void {
 // @ts-ignore
 if (import.meta.main) {
 	main();
+}
+
+// Format generated C# code using dotnet format
+function formatGeneratedCode(outputDir: string): void {
+	try {
+		console.log('🎨 Formatting generated code with dotnet format...');
+
+		// Get the project root (where .slnx file is located)
+		let projectRoot = outputDir;
+		while (projectRoot && projectRoot !== '/') {
+			const files = (execSync(`ls "${projectRoot}"`, { encoding: 'utf-8' }) as string).split('\n');
+			const hasSlnx = files.some(file => file.endsWith('.slnx'));
+			if (hasSlnx) {
+				break;
+			}
+			// Continue searching up
+			const parentDir = join(projectRoot, '..');
+			if (parentDir === projectRoot) break;
+			projectRoot = parentDir;
+		}
+
+		// Run dotnet format on the specific directory
+		const formatCommand = `dotnet format "${projectRoot}" --include "${outputDir}/**/*.cs"`;
+		execSync(formatCommand, { cwd: projectRoot, encoding: 'utf-8' });
+
+		console.log('✅ Code formatting completed successfully!');
+	} catch (error) {
+		console.warn('⚠️  Code formatting failed, but generation was successful:', error);
+		// Don't fail the generation if formatting fails
+	}
 }
 
 // Export for use by other skills

@@ -42,10 +42,10 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Analyze entity relationships
 - Generate structured metadata
 
-### Skill 3: `enum-generator`
+### Skill 3: `enum-generator` ✅ **Finished + Auto-formatting**
 **Responsibility**: Generate C# enum definitions from parsed metadata
 **Input**: JSON output from domain-model-parser (enums array)
-**Output**: C# enum class files
+**Output**: C# enum class files with automatic code formatting
 
 **Script**: `generate-enums.ts` (run with bun)
 - Parse enum definitions from domain model metadata
@@ -53,28 +53,31 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Handle PascalCase conversion for compound words (notificationtype → NotificationType)
 - Create enum files in appropriate project directory
 - Support custom enum values and descriptions
+- **Auto-format generated code with dotnet format**
 
-### Skill 4a: `entity-class-generator` ✅ **Finished**
+### Skill 4a: `entity-class-generator` ✅ **Finished + Auto-formatting**
 **Responsibility**: Generate basic C# entity classes based on parsed metadata
 **Input**: JSON output from domain-model-parser
-**Output**: C# entity class files
+**Output**: C# entity class files with automatic code formatting
 
 **Script**: `generate-entities.ts` (run with bun)
 - Generate basic entity classes with properties
 - Handle attribute type mapping (string, int, DateTime, etc.)
 - Add basic Data Annotations ([Key], [Required], [MaxLength])
-- Generate simple navigation properties
+- Generate simple navigation properties 
+- **Auto-format generated code with dotnet format**
 
-### Skill 4b: `entity-configuration-generator` ✅ **Finished**
+### Skill 4b: `entity-configuration-generator` ✅ **Finished + Auto-formatting**
 **Responsibility**: Generate EF Core Fluent API configurations for entities
 **Input**: JSON entity metadata + relationship metadata
-**Output**: Entity configuration classes
+**Output**: Entity configuration classes with automatic code formatting
 
 **Script**: `generate-entity-configurations.ts` (run with bun)
 - Generate EntityTypeConfiguration classes
 - Configure complex relationships (one-to-many, many-to-many)
 - Add indexes and constraints configuration
 - Handle advanced EF Core features (owned types, value converters)
+- **Auto-format generated code with dotnet format**
 
 ### Skill 5: `database-migration-generator`
 **Responsibility**: Generate EF Core database migration scripts
@@ -290,6 +293,53 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 ```
 
 ## Technical Standards
+
+### Code Formatting Requirements ✅ **Implemented**
+
+**All code generation skills MUST include automatic code formatting using `dotnet format`:**
+
+- Each generation script calls `dotnet format` after code generation completes
+- Formatting targets only the generated output directory to optimize performance  
+- Formatting failures do not fail the generation process (warning only)
+- Formatting provides consistent code style and reduces merge conflicts
+
+**Implementation Standard:**
+```typescript
+// Format generated C# code using dotnet format
+function formatGeneratedCode(outputDir: string): void {
+	try {
+		console.log('🎨 Formatting generated code with dotnet format...');
+		
+		// Get the project root (where .slnx file is located)
+		let projectRoot = outputDir;
+		while (projectRoot && projectRoot !== '/') {
+			const files = execSync(`ls "${projectRoot}"`, { encoding: 'utf-8' }).split('\n');
+			const hasSlnx = files.some(file => file.endsWith('.slnx'));
+			if (hasSlnx) {
+				break;
+			}
+			// Continue searching up
+			const parentDir = join(projectRoot, '..');
+			if (parentDir === projectRoot) break;
+			projectRoot = parentDir;
+		}
+		
+		// Run dotnet format on the specific directory
+		const formatCommand = `dotnet format "${projectRoot}" --include "${outputDir}/**/*.cs"`;
+		execSync(formatCommand, { cwd: projectRoot, encoding: 'utf-8' });
+		
+		console.log('✅ Code formatting completed successfully!');
+	} catch (error) {
+		console.warn('⚠️  Code formatting failed, but generation was successful:', error);
+		// Don't fail the generation if formatting fails
+	}
+}
+```
+
+**Applied to Skills:**
+- ✅ `enum-generator`: Auto-formats generated enum classes  
+- ✅ `entity-class-generator`: Auto-formats generated entity classes
+- ✅ `entity-configuration-generator`: Auto-formats generated configuration classes
 
 ### TypeScript Script Requirements
 

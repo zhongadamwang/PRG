@@ -3,7 +3,7 @@ using System;
 namespace Sanjel.RequestManagement.Core.Entities;
 
 /// <summary>
-/// ElementTypeEnum enumeration
+/// Auto-generated enumeration for Elementtypeenum values (inferred from entity attributes)
 /// </summary>
 public enum ElementTypeEnum
 {

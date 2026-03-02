@@ -3,7 +3,7 @@ using System;
 namespace Sanjel.RequestManagement.Core.Entities;
 
 /// <summary>
-/// Notification delivery status enumeration
+/// Auto-generated enumeration for Deliveryenum values (inferred from entity attributes)
 /// </summary>
 public enum DeliveryEnum
 {

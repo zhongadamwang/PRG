@@ -3,7 +3,7 @@ using System;
 namespace Sanjel.RequestManagement.Core.Entities;
 
 /// <summary>
-/// DiagramTypeEnum enumeration
+/// Auto-generated enumeration for Diagramtypeenum values (inferred from entity attributes)
 /// </summary>
 public enum DiagramTypeEnum
 {

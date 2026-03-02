@@ -67,12 +67,12 @@ function detectProjectConfigurationPath(): { outputDir: string; namespace: strin
 	// @ts-ignore
 	let currentDir = process.cwd();
 	console.log(`🔍 Detecting project structure from: ${currentDir}`);
-	
+
 	// Navigate up to find project root (where src/.slnx files are located)
 	let projectRoot = currentDir;
 	let foundSlnx = false;
 	let slnxFile = '';
-	
+
 	while (projectRoot !== '/' && !foundSlnx) {
 		try {
 			// Check src subdirectory for .slnx files (fixed location)
@@ -82,14 +82,14 @@ function detectProjectConfigurationPath(): { outputDir: string; namespace: strin
 					.split('\n')
 					.filter(line => line.trim())
 					.map(line => line.trim());
-				
+
 				if (slnxFiles.length > 0) {
 					slnxFile = slnxFiles[0];
 					foundSlnx = true;
 					break;
 				}
 			}
-			
+
 			// Move up one directory
 			const parentDir = join(projectRoot, '..');
 			if (parentDir === projectRoot) break; // Reached filesystem root
@@ -101,25 +101,25 @@ function detectProjectConfigurationPath(): { outputDir: string; namespace: strin
 			projectRoot = parentDir;
 		}
 	}
-	
+
 	if (!foundSlnx) {
 		throw new Error('No .slnx file found in src directory. Unable to detect project structure. Please run from project root or provide paths manually.');
 	}
-	
+
 	// Extract project name from .slnx file
 	const projectName = slnxFile.split('/').pop()?.replace('.slnx', '') || 'Unknown';
-	
+
 	console.log(`📦 Detected project: ${projectName}`);
 	console.log(`📂 Project root: ${projectRoot}`);
 	console.log(`🎯 Found .slnx: ${slnxFile}`);
-	
+
 	// Construct configuration directory path (always in src subdirectory)
 	const outputDir = join(projectRoot, `src/${projectName}.Core/Configuration`);
 	const namespace = `${projectName}.Core.Configuration`;
-	
+
 	console.log(`📁 Target directory: ${outputDir}`);
 	console.log(`📦 Target namespace: ${namespace}`);
-	
+
 	return { outputDir, namespace };
 }
 
@@ -158,26 +158,26 @@ function mapToEFCoreType(domainType: string): string {
 function generatePropertyConfiguration(attribute: EntityAttribute): string[] {
 	const configs: string[] = [];
 	const propertyName = toPascalCase(attribute.name);
-	
+
 	// Basic property configuration
 	configs.push(`builder.Property(e => e.${propertyName})`);
-	
+
 	// Column name mapping
 	configs.push(`    .HasColumnName("${attribute.name}")`);
-	
+
 	// Type configuration
 	const efCoreType = mapToEFCoreType(attribute.type);
 	if (efCoreType) {
 		configs.push(`    .${efCoreType}`);
 	}
-	
+
 	// Required/Optional configuration
 	if (!attribute.isOptional && attribute.type === 'string') {
 		configs.push(`    .IsRequired()`);
 	} else if (attribute.isOptional && attribute.type !== 'string') {
 		configs.push(`    .IsRequired(false)`);
 	}
-	
+
 	// Special handling for specific field types (avoid duplicating MaxLength)
 	if (attribute.type === 'string' && !efCoreType.includes('HasMaxLength')) {
 		if (attribute.name.toLowerCase().includes('email')) {
@@ -188,33 +188,33 @@ function generatePropertyConfiguration(attribute: EntityAttribute): string[] {
 			configs.push(`    .HasMaxLength(100)`);
 		}
 	}
-	
+
 	return [configs.join('\n') + ';'];
 }
 
 // Generate relationship configurations
 function generateRelationshipConfigurations(entity: Entity, relationships: Relationship[], metadata: DomainModelMetadata): string[] {
 	const configs: string[] = [];
-	
+
 	// Find relationships involving this entity
 	const entityRelationships = relationships.filter(rel =>
 		rel.sourceEntity === entity.name || rel.targetEntity === entity.name
 	);
-	
+
 	for (const rel of entityRelationships) {
 		if (rel.sourceEntity === entity.name) {
 			// This entity is the source
 			const targetEntity = rel.targetEntity;
-			
+
 			// Find target entity in metadata to check its type
 			const targetEntityDef = metadata.entities.find(e => e.name === targetEntity);
 			if (!targetEntityDef || targetEntityDef.type === 'actor' || targetEntityDef.type === 'system') {
 				// Skip Actor and System types - they are not generated as entity classes
 				continue;
 			}
-			
+
 			const navigationProperty = targetEntity;
-			
+
 			if (rel.cardinality?.includes('*') || rel.type === 'composition') {
 				// One-to-many relationship
 				configs.push(`// One-to-many relationship with ${targetEntity}`);
@@ -232,17 +232,17 @@ function generateRelationshipConfigurations(entity: Entity, relationships: Relat
 		} else if (rel.targetEntity === entity.name) {
 			// This entity is the target - check if source is an Actor/System
 			const sourceEntity = rel.sourceEntity;
-			
+
 			// Find source entity in metadata to check its type
 			const sourceEntityDef = metadata.entities.find(e => e.name === sourceEntity);
 			if (!sourceEntityDef || sourceEntityDef.type === 'actor' || sourceEntityDef.type === 'system') {
 				// Skip Actor and System types - but we might still need foreign key properties
 				// Only add FK if the property actually exists in the entity
 				const fkPropertyName = `${sourceEntity}Id`;
-				const hasProperty = entity.attributes.some(attr => 
+				const hasProperty = entity.attributes.some(attr =>
 					toPascalCase(attr.name) === fkPropertyName
 				);
-				
+
 				if (hasProperty) {
 					configs.push(`// Foreign key reference to ${sourceEntity}`);
 					configs.push(`builder.Property(e => e.${fkPropertyName})`);
@@ -250,25 +250,33 @@ function generateRelationshipConfigurations(entity: Entity, relationships: Relat
 				}
 				continue;
 			}
-			
+
 			// Add foreign key property reference for entity types
-			configs.push(`// Foreign key reference to ${sourceEntity}`);
-			configs.push(`builder.Property(e => e.${sourceEntity}Id)`);
-			configs.push(`    .HasColumnName("${sourceEntity.toLowerCase()}_id");`);
+			// Only if the entity actually has the foreign key property
+			const fkPropertyName = `${sourceEntity}Id`;
+			const hasProperty = entity.attributes.some(attr =>
+				toPascalCase(attr.name) === fkPropertyName
+			);
+
+			if (hasProperty) {
+				configs.push(`// Foreign key reference to ${sourceEntity}`);
+				configs.push(`builder.Property(e => e.${fkPropertyName})`);
+				configs.push(`    .HasColumnName("${sourceEntity.toLowerCase()}_id");`);
+			}
 		}
 	}
-	
+
 	return configs;
 }
 
 // Generate index configurations
 function generateIndexConfigurations(entity: Entity): string[] {
 	const indexes: string[] = [];
-	
+
 	for (const attr of entity.attributes) {
 		if (attr.constraints) {
 			const propertyName = toPascalCase(attr.name);
-			
+
 			for (const constraint of attr.constraints) {
 				if (constraint.toLowerCase() === 'unique') {
 					indexes.push(`// Unique index on ${propertyName}`);
@@ -278,7 +286,7 @@ function generateIndexConfigurations(entity: Entity): string[] {
 				}
 			}
 		}
-		
+
 		// Auto-generate indexes for common patterns
 		if (attr.name.toLowerCase().includes('email')) {
 			const propertyName = toPascalCase(attr.name);
@@ -287,20 +295,20 @@ function generateIndexConfigurations(entity: Entity): string[] {
 			indexes.push(`    .HasDatabaseName("IX_${entity.name}_${propertyName}");`);
 		}
 	}
-	
+
 	return indexes;
 }
 
 // Generate primary key configuration
 function generateKeyConfiguration(entity: Entity): string[] {
 	const keyConfigs: string[] = [];
-	
+
 	// Find primary key properties
-	const keyProperties = entity.attributes.filter(attr => 
+	const keyProperties = entity.attributes.filter(attr =>
 		attr.constraints?.some(c => c.toLowerCase() === 'key' || c.toLowerCase() === 'primarykey') ||
 		attr.name.toLowerCase() === 'id'
 	);
-	
+
 	if (keyProperties.length === 1) {
 		const keyProp = toPascalCase(keyProperties[0].name);
 		keyConfigs.push(`// Primary key configuration`);
@@ -311,24 +319,24 @@ function generateKeyConfiguration(entity: Entity): string[] {
 		keyConfigs.push(`// Composite primary key configuration`);
 		keyConfigs.push(`builder.HasKey(e => new { ${keyProps} });`);
 	}
-	
+
 	return keyConfigs;
 }
 
 // Generate complete entity configuration class
 function generateEntityConfiguration(entity: Entity, metadata: DomainModelMetadata, options: ConfigurationOptions): string {
 	const lines: string[] = [];
-	
+
 	// Using statements
 	lines.push('using Microsoft.EntityFrameworkCore;');
 	lines.push('using Microsoft.EntityFrameworkCore.Metadata.Builders;');
 	lines.push(`using ${options.namespace.replace('.Configuration', '.Entities')};`);
 	lines.push('');
-	
+
 	// Namespace
 	lines.push(`namespace ${options.namespace};`);
 	lines.push('');
-	
+
 	// Class documentation
 	if (options.generateComments && entity.description) {
 		lines.push('/// <summary>');
@@ -336,20 +344,20 @@ function generateEntityConfiguration(entity: Entity, metadata: DomainModelMetada
 		lines.push(`/// ${entity.description}`);
 		lines.push('/// </summary>');
 	}
-	
+
 	// Class declaration
 	lines.push(`public class ${entity.name}Configuration : IEntityTypeConfiguration<${entity.name}>`);
 	lines.push('{');
-	
+
 	// Configure method
 	lines.push(`    public void Configure(EntityTypeBuilder<${entity.name}> builder)`);
 	lines.push('    {');
-	
+
 	// Table configuration
 	lines.push(`        // Table configuration`);
 	lines.push(`        builder.ToTable("${entity.name.toLowerCase()}s");`);
 	lines.push('');
-	
+
 	// Primary key configuration
 	const keyConfigs = generateKeyConfiguration(entity);
 	if (keyConfigs.length > 0) {
@@ -358,7 +366,7 @@ function generateEntityConfiguration(entity: Entity, metadata: DomainModelMetada
 		}
 		lines.push('');
 	}
-	
+
 	// Property configurations
 	lines.push('        // Property configurations');
 	for (const attr of entity.attributes) {
@@ -370,7 +378,7 @@ function generateEntityConfiguration(entity: Entity, metadata: DomainModelMetada
 			lines.push('');
 		}
 	}
-	
+
 	// Index configurations
 	if (options.includeIndexes) {
 		const indexConfigs = generateIndexConfigurations(entity);
@@ -382,7 +390,7 @@ function generateEntityConfiguration(entity: Entity, metadata: DomainModelMetada
 			lines.push('');
 		}
 	}
-	
+
 	// Relationship configurations
 	if (options.includeRelationships) {
 		const relationshipConfigs = generateRelationshipConfigurations(entity, metadata.relationships, metadata);
@@ -394,32 +402,32 @@ function generateEntityConfiguration(entity: Entity, metadata: DomainModelMetada
 			lines.push('');
 		}
 	}
-	
+
 	lines.push('    }');
 	lines.push('}');
-	
+
 	return lines.join('\n');
 }
 
 // Main generation function
 function generateEntityConfigurations(metadataFilePath: string, outputDir?: string, namespace?: string): void {
 	console.log('🚀 Starting entity configuration generation...');
-	
+
 	// Validate input file
 	if (!existsSync(metadataFilePath)) {
 		throw new Error(`Metadata file not found: ${metadataFilePath}`);
 	}
-	
+
 	// Read and parse metadata
 	const metadataContent = readFileSync(metadataFilePath, 'utf-8');
 	const metadata: DomainModelMetadata = JSON.parse(metadataContent);
-	
+
 	console.log(`📋 Found ${metadata.entities.length} entities to configure`);
-	
+
 	// Determine output directory and namespace
 	let finalOutputDir: string;
 	let finalNamespace: string;
-	
+
 	if (outputDir && namespace) {
 		finalOutputDir = outputDir;
 		finalNamespace = namespace;
@@ -430,16 +438,16 @@ function generateEntityConfigurations(metadataFilePath: string, outputDir?: stri
 		finalNamespace = detected.namespace;
 		console.log('🔍 Using auto-detected paths:');
 	}
-	
+
 	console.log(`   📁 Output: ${finalOutputDir}`);
 	console.log(`   📦 Namespace: ${finalNamespace}`);
-	
+
 	// Create output directory if it doesn't exist
 	if (!existsSync(finalOutputDir)) {
 		mkdirSync(finalOutputDir, { recursive: true });
 		console.log(`📁 Created output directory: ${finalOutputDir}`);
 	}
-	
+
 	const options: ConfigurationOptions = {
 		namespace: finalNamespace,
 		outputDirectory: finalOutputDir,
@@ -447,9 +455,9 @@ function generateEntityConfigurations(metadataFilePath: string, outputDir?: stri
 		includeIndexes: true,
 		includeRelationships: true
 	};
-	
+
 	let generatedCount = 0;
-	
+
 	// Generate configuration classes
 	for (const entity of metadata.entities) {
 		// Only generate for actual entities
@@ -457,16 +465,16 @@ function generateEntityConfigurations(metadataFilePath: string, outputDir?: stri
 			console.log(`⏭️  Skipping ${entity.name} (type: ${entity.type})`);
 			continue;
 		}
-		
+
 		console.log(`🔧 Generating ${entity.name}Configuration...`);
-		
+
 		// Generate configuration content
 		const configContent = generateEntityConfiguration(entity, metadata, options);
-		
+
 		// Write to file
 		const fileName = `${entity.name}Configuration.cs`;
 		const filePath = join(finalOutputDir, fileName);
-		
+
 		try {
 			writeFileSync(filePath, configContent, 'utf-8');
 			console.log(`✅ Generated: ${fileName}`);
@@ -475,8 +483,11 @@ function generateEntityConfigurations(metadataFilePath: string, outputDir?: stri
 			console.error(`❌ Failed to generate ${fileName}:`, error);
 		}
 	}
-	
+
 	console.log(`🎉 Configuration generation complete! Generated ${generatedCount} configuration classes.`);
+
+	// Format generated code using dotnet format
+	formatGeneratedCode(finalOutputDir);
 }
 
 // Command line interface
@@ -497,28 +508,58 @@ function main(): void {
 		process.exit(1);
 	}
 
-	 const metadataFile = args[0];
-	 
-	 // Auto-detect project structure if not provided
-	 let outputDir: string | undefined;
-	 let namespace: string | undefined;
-	 
-	 if (args.length >= 2) {
-	 	 // Manual override
-	 	 outputDir = args[1];
-	 	 namespace = args[2];
-	 	 console.log('📝 Using provided paths:');
-	 } else {
-	 	 console.log('🔍 Using auto-detected paths:');
-	 }
-	
-	 console.log(`   📄 Metadata: ${metadataFile}`);
+	const metadataFile = args[0];
+
+	// Auto-detect project structure if not provided
+	let outputDir: string | undefined;
+	let namespace: string | undefined;
+
+	if (args.length >= 2) {
+		// Manual override
+		outputDir = args[1];
+		namespace = args[2];
+		console.log('📝 Using provided paths:');
+	} else {
+		console.log('🔍 Using auto-detected paths:');
+	}
+
+	console.log(`   📄 Metadata: ${metadataFile}`);
 
 	try {
 		generateEntityConfigurations(metadataFile, outputDir, namespace);
 	} catch (error) {
 		console.error('❌ Configuration generation failed:', error);
 		process.exit(1);
+	}
+}
+
+// Format generated C# code using dotnet format
+function formatGeneratedCode(outputDir: string): void {
+	try {
+		console.log('🎨 Formatting generated code with dotnet format...');
+
+		// Get the project root (where .slnx file is located)
+		let projectRoot = outputDir;
+		while (projectRoot && projectRoot !== '/') {
+			const files = (execSync(`ls "${projectRoot}"`, { encoding: 'utf-8' }) as string).split('\n');
+			const hasSlnx = files.some(file => file.endsWith('.slnx'));
+			if (hasSlnx) {
+				break;
+			}
+			// Continue searching up
+			const parentDir = join(projectRoot, '..');
+			if (parentDir === projectRoot) break;
+			projectRoot = parentDir;
+		}
+
+		// Run dotnet format on the specific directory
+		const formatCommand = `dotnet format "${projectRoot}" --include "${outputDir}/**/*.cs"`;
+		execSync(formatCommand, { cwd: projectRoot, encoding: 'utf-8' });
+
+		console.log('✅ Code formatting completed successfully!');
+	} catch (error) {
+		console.warn('⚠️  Code formatting failed, but generation was successful:', error);
+		// Don't fail the generation if formatting fails
 	}
 }
 

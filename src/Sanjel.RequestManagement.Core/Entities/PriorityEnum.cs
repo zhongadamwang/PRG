@@ -3,7 +3,7 @@ using System;
 namespace Sanjel.RequestManagement.Core.Entities;
 
 /// <summary>
-/// PriorityEnum enumeration
+/// Auto-generated enumeration for Priorityenum values (inferred from entity attributes)
 /// </summary>
 public enum PriorityEnum
 {

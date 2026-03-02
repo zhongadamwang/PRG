@@ -3,7 +3,7 @@ using System;
 namespace Sanjel.RequestManagement.Core.Entities;
 
 /// <summary>
-/// Recipient type enumeration for notifications
+/// Auto-generated enumeration for Recipientenum values (inferred from entity attributes)
 /// </summary>
 public enum RecipientEnum
 {
