@@ -1,9 +1,18 @@
 // @ts-ignore
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, writeFileSync } from 'node:fs';
 // @ts-ignore  
 import { join } from 'node:path';
 // @ts-ignore
-import { execSync } from 'node:child_process';
+
+// Import shared utilities
+import {
+	constructEntityPath,
+	ensureDirectoryExists,
+	findDomainModelMetadata,
+	formatGeneratedCode,
+	readJsonFile,
+	toPascalCase
+} from '../../../utilities/project-utilities/scripts/utilities.ts';
 
 // @ts-ignore
 const process = globalThis.process;
@@ -53,13 +62,8 @@ interface GenerationOptions {
 	includeNavigationProperties: boolean;
 }
 
-// Convert snake_case to PascalCase for C# properties
-function toPascalCase(snakeCase: string): string {
-	return snakeCase
-		.split('_')
-		.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-		.join('');
-}
+// PascalCase conversion - USE UTILITY VERSION
+// function toPascalCase() - now imported from utilities
 
 // Enhanced enum name conversion (same as enum-generator)
 function convertEnumName(enumId: string): string {
@@ -82,66 +86,8 @@ function convertEnumName(enumId: string): string {
 	return toPascalCase(baseName) + 'Enum';
 }
 
-// Detect project path and generate appropriate entity directory
-function detectProjectEntityPath(): { outputDir: string; namespace: string } {
-	// @ts-ignore
-	let currentDir = process.cwd();
-	console.log(`🔍 Detecting project structure from: ${currentDir}`);
-
-	// Navigate up to find project root (where src/.slnx files are located)
-	let projectRoot = currentDir;
-	let foundSlnx = false;
-	let slnxFile = '';
-
-	while (projectRoot !== '/' && !foundSlnx) {
-		try {
-			// Check src subdirectory for .slnx files (fixed location)
-			const srcDir = join(projectRoot, 'src');
-			if (existsSync(srcDir)) {
-				const slnxFiles = (execSync(`find "${srcDir}" -maxdepth 1 -name "*.slnx" -type f 2>/dev/null || true`, { encoding: 'utf-8' }) as string)
-					.split('\n')
-					.filter(line => line.trim())
-					.map(line => line.trim());
-
-				if (slnxFiles.length > 0) {
-					slnxFile = slnxFiles[0];
-					foundSlnx = true;
-					break;
-				}
-			}
-
-			// Move up one directory
-			const parentDir = join(projectRoot, '..');
-			if (parentDir === projectRoot) break; // Reached filesystem root
-			projectRoot = parentDir;
-		} catch (error) {
-			// Continue searching up
-			const parentDir = join(projectRoot, '..');
-			if (parentDir === projectRoot) break;
-			projectRoot = parentDir;
-		}
-	}
-
-	if (!foundSlnx) {
-		throw new Error('No .slnx file found in src directory. Unable to detect project structure. Please run from project root or provide paths manually.');
-	}
-
-	// Extract project name from .slnx file
-	const projectName = slnxFile.split('/').pop()?.replace('.slnx', '') || 'Unknown';
-
-	console.log(`📦 Detected project: ${projectName}`);
-	console.log(`📂 Project root: ${projectRoot}`);
-	console.log(`🎯 Found .slnx: ${slnxFile}`);
-
-	// Construct entity directory path (always in src subdirectory)
-	const outputDir = join(projectRoot, `src/${projectName}.Core/Entities`);
-	const namespace = `${projectName}.Core.Entities`;
-
-	console.log(`📁 Target directory: ${outputDir}`);
-	console.log(`📦 Target namespace: ${namespace}`);
-
-	return { outputDir, namespace };
-}
+// Project path detection - USE UTILITY VERSION
+// function detectProjectEntityPath() - now replaced by constructEntityPath() from utilities
 
 // Type mapping from domain model types to C# types
 function mapToCSharpType(domainType: string, isOptional: boolean = false, isArray: boolean = false): string {
@@ -391,7 +337,7 @@ function generateEntityClass(entity: Entity, metadata: DomainModelMetadata, opti
 }
 
 // Main generation function
-function generateEntities(metadataFilePath: string, outputDir: string, namespace: string = 'Sanjel.RequestManagement.Core.Entities'): void {
+function generateEntities(metadataFilePath: string, outputDir?: string, namespace?: string): void {
 	console.log('🚀 Starting entity class generation...');
 
 	// Validate input file
@@ -399,21 +345,35 @@ function generateEntities(metadataFilePath: string, outputDir: string, namespace
 		throw new Error(`Metadata file not found: ${metadataFilePath}`);
 	}
 
-	// Read and parse metadata
-	const metadataContent = readFileSync(metadataFilePath, 'utf-8');
-	const metadata: DomainModelMetadata = JSON.parse(metadataContent);
+	// Read and parse metadata using utility function
+	const metadata: DomainModelMetadata = readJsonFile<DomainModelMetadata>(metadataFilePath);
 
 	console.log(`📋 Found ${metadata.entities.length} entities to generate`);
 
-	// Create output directory if it doesn't exist
-	if (!existsSync(outputDir)) {
-		mkdirSync(outputDir, { recursive: true });
-		console.log(`📁 Created output directory: ${outputDir}`);
+	// Determine output directory and namespace
+	let finalOutputDir: string;
+	let finalNamespace: string;
+
+	if (outputDir && namespace) {
+		finalOutputDir = outputDir;
+		finalNamespace = namespace;
+		console.log('📝 Using provided paths:');
+	} else {
+		const entityPaths = constructEntityPath();
+		finalOutputDir = entityPaths.outputDir;
+		finalNamespace = entityPaths.namespace;
+		console.log('🔍 Using auto-detected paths:');
 	}
 
+	console.log(`   📁 Output: ${finalOutputDir}`);
+	console.log(`   📦 Namespace: ${finalNamespace}`);
+
+	// Create output directory if it doesn't exist using utility
+	ensureDirectoryExists(finalOutputDir);
+
 	const options: GenerationOptions = {
-		namespace: namespace,
-		outputDirectory: outputDir,
+		namespace: finalNamespace,
+		outputDirectory: finalOutputDir,
 		generateComments: true,
 		includeNavigationProperties: true
 	};
@@ -435,7 +395,7 @@ function generateEntities(metadataFilePath: string, outputDir: string, namespace
 
 		// Write to file
 		const fileName = `${entity.name}.cs`;
-		const filePath = join(outputDir, fileName);
+		const filePath = join(finalOutputDir, fileName);
 
 		try {
 			writeFileSync(filePath, classContent, 'utf-8');
@@ -449,49 +409,56 @@ function generateEntities(metadataFilePath: string, outputDir: string, namespace
 	console.log(`🎉 Entity generation complete! Generated ${generatedCount} entity classes.`);
 
 	// Format generated code using dotnet format
-	formatGeneratedCode(outputDir);
+	formatGeneratedCode(finalOutputDir);
 }
 
 // Command line interface
 function main(): void {
 	const args = process.argv.slice(2);
 
-	if (args.length < 1) {
-		console.log('Usage: bun run generate-entities.ts <metadata-file> [output-directory] [namespace]');
-		console.log('');
-		console.log('Arguments:');
-		console.log('  metadata-file    Path to the JSON metadata file from domain-model-parser');
-		console.log('  output-directory Optional: Path to the directory where entity classes will be generated (auto-detected if not provided)');
-		console.log('  namespace        Optional: C# namespace for the entity classes (auto-detected if not provided)');
-		console.log('');
-		console.log('Examples:');
-		console.log('  bun run generate-entities.ts ./domain-metadata.json');
-		console.log('  bun run generate-entities.ts ./domain-metadata.json ./custom/path Custom.Namespace');
-		process.exit(1);
+	// Default to auto-detection if no metadata file provided or empty string
+	let metadataFile = '';
+	if (args.length === 0 || !args[0] || args[0].trim() === '') {
+		try {
+			metadataFile = findDomainModelMetadata();
+			console.log('🔍 Auto-detected metadata file, proceeding with generation...');
+		} catch (error) {
+			console.log('Usage: bun run generate-entities.ts [metadata-file] [output-directory] [namespace]');
+			console.log('');
+			console.log('Arguments:');
+			console.log('  metadata-file    Path to the JSON metadata file from domain-model-parser (auto-detected if not provided)');
+			console.log('  output-directory Optional: Path to the directory where entity classes will be generated (auto-detected if not provided)');
+			console.log('  namespace        Optional: C# namespace for the entity classes (auto-detected if not provided)');
+			console.log('');
+			console.log('Examples:');
+			console.log('  bun run generate-entities.ts                                               # Auto-detect all');
+			console.log('  bun run generate-entities.ts ./domain-metadata.json');
+			console.log('  bun run generate-entities.ts ./domain-metadata.json ./custom/path Custom.Namespace');
+			console.error('');
+			console.error(error);
+			process.exit(1);
+		}
+	} else {
+		metadataFile = args[0];
 	}
 
-	const metadataFile = args[0];
-
 	// Auto-detect project structure if not provided
-	let outputDir: string;
-	let namespace: string;
+	let outputDir: string | undefined;
+	let namespace: string | undefined;
 
-	if (args.length >= 2) {
+	if (args.length >= 2 && args[1]) {
 		// Manual override
 		outputDir = args[1];
-		namespace = args[2] || 'Sanjel.RequestManagement.Core.Entities';
+		namespace = args[2];
 		console.log('📝 Using provided paths:');
 	} else {
 		// Auto-detect
-		const detected = detectProjectEntityPath();
-		outputDir = detected.outputDir;
-		namespace = detected.namespace;
 		console.log('🔍 Using auto-detected paths:');
 	}
 
 	console.log(`   📄 Metadata: ${metadataFile}`);
-	console.log(`   📁 Output: ${outputDir}`);
-	console.log(`   📦 Namespace: ${namespace}`);
+	if (outputDir) console.log(`   📁 Output: ${outputDir}`);
+	if (namespace) console.log(`   📦 Namespace: ${namespace}`);
 
 	try {
 		generateEntities(metadataFile, outputDir, namespace);
@@ -507,36 +474,8 @@ if (import.meta.main) {
 	main();
 }
 
-// Format generated C# code using dotnet format
-function formatGeneratedCode(outputDir: string): void {
-	try {
-		console.log('🎨 Formatting generated code with dotnet format...');
+// Code formatting - USE UTILITY VERSION
+// function formatGeneratedCode() - now imported from utilities
 
-		// Get the project root (where .slnx file is located)
-		let projectRoot = outputDir;
-		while (projectRoot && projectRoot !== '/') {
-			const files = (execSync(`ls "${projectRoot}"`, { encoding: 'utf-8' }) as string).split('\n');
-			const hasSlnx = files.some(file => file.endsWith('.slnx'));
-			if (hasSlnx) {
-				break;
-			}
-			// Continue searching up
-			const parentDir = join(projectRoot, '..');
-			if (parentDir === projectRoot) break;
-			projectRoot = parentDir;
-		}
-
-		// Run dotnet format on the specific directory
-		const formatCommand = `dotnet format "${projectRoot}" --include "${outputDir}/**/*.cs"`;
-		execSync(formatCommand, { cwd: projectRoot, encoding: 'utf-8' });
-
-		console.log('✅ Code formatting completed successfully!');
-	} catch (error) {
-		console.warn('⚠️  Code formatting failed, but generation was successful:', error);
-		// Don't fail the generation if formatting fails
-	}
-}
-
-// Export for use by other skills
-export { convertEnumName, detectProjectEntityPath, generateDataAnnotations, generateEntities, mapToCSharpType, toPascalCase };
+// Note: No exports needed - skills communicate through Copilot, not direct imports
 

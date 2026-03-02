@@ -79,16 +79,18 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Handle advanced EF Core features (owned types, value converters)
 - **Auto-format generated code with dotnet format**
 
-### Skill 5: `database-migration-generator`
-**Responsibility**: Generate EF Core database migration scripts
-**Input**: Entity metadata JSON
-**Output**: EF Core Migration files
+### Skill 5: `database-migration-generator` ✅ **Finished + Auto-formatting**
+**Responsibility**: Generate EF Core database migration scripts from domain model metadata
+**Input**: Entity metadata JSON + Optional migration name and output directory  
+**Output**: EF Core Migration class files with automatic code formatting
 
 **Script**: `generate-migration.ts` (run with bun)
-- Generate Migration classes
-- Create table structure scripts
-- Add indexes and constraints
-- Handle foreign key relationships
+- Generate Migration classes with proper timestamp naming (M{timestamp}_{name})
+- Create complete table structure scripts with appropriate SQL types
+- Add indexes and constraints for email fields and unique attributes
+- Handle foreign key relationships with proper referential actions
+- Generate both Up() and Down() methods for reversible migrations
+- **Auto-format generated code with dotnet format**
 
 ### Skill 6a: `repository-interface-generator`
 **Responsibility**: Generate Repository interface contracts
@@ -216,6 +218,11 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 
 ```
 /.github/skills/sanjel-drb-blazor/
+├── utilities/
+│   └── project-utilities/
+│       ├── SKILL.md
+│       └── scripts/
+│           └── utilities.ts
 ├── workflow/
 │   └── workflow-orchestrator/
 │       ├── SKILL.md
@@ -294,6 +301,39 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 
 ## Technical Standards
 
+### Shared Utilities Skill ✅ **Implemented**
+
+**All code generation skills use centralized utilities from `project-utilities` skill:**
+
+Located at: `/.github/skills/sanjel-drb-blazor/utilities/project-utilities/`
+
+**Available Utility Functions:**
+- `detectProjectRoot()` - Find project root by locating .slnx files
+- `detectProjectInfo()` - Get project name, root path, and solution info
+- `constructMigrationPath()` - Build standard migration directory paths
+- `constructEntityPath()` - Build standard entity directory paths
+- `constructRepositoryPath()` - Build standard repository directory paths  
+- `constructServicePath()` - Build standard service directory paths
+- `formatGeneratedCode(outputDir)` - Format C# code using dotnet format
+- `formatSpecificFiles(filePaths)` - Format specific files only
+- `toPascalCase()` - Convert to PascalCase format
+- `toCamelCase()` - Convert to camelCase format
+- `toKebabCase()` - Convert to kebab-case format
+- `pluralize()` / `singularize()` - Handle singular/plural conversions
+- `ensureDirectoryExists()` - Create directories safely
+- `readJsonFile()` / `writeJsonFile()` - Safe JSON file operations
+- `findDomainModelMetadata()` - Locate domain model metadata file
+
+**Import Pattern:**
+```typescript
+import { 
+    detectProjectInfo, 
+    formatGeneratedCode, 
+    toPascalCase,
+    constructEntityPath 
+} from '../../../utilities/project-utilities/scripts/utilities.ts';
+```
+
 ### Code Formatting Requirements ✅ **Implemented**
 
 **All code generation skills MUST include automatic code formatting using `dotnet format`:**
@@ -340,6 +380,12 @@ function formatGeneratedCode(outputDir: string): void {
 - ✅ `enum-generator`: Auto-formats generated enum classes  
 - ✅ `entity-class-generator`: Auto-formats generated entity classes
 - ✅ `entity-configuration-generator`: Auto-formats generated configuration classes
+- ✅ `database-migration-generator`: Auto-formats generated migration classes
+
+**Code Architecture:**
+- Skills communicate through Copilot orchestration, not direct imports
+- Main generation functions do not export (removed unnecessary exports)
+- Only `project-utilities` exports functions for shared use across skills
 
 ### TypeScript Script Requirements
 
@@ -486,11 +532,12 @@ After splitting larger skills into focused components, we achieve:
 
 ## Implementation Priority
 
-**Phase 1 (Core)**: Skills 1, 2, 3, 4a, 4b, 5, 9 - Basic enum, entity and database generation
-**Phase 2 (Data Access)**: Skills 5a, 5b, 5c - Repository pattern implementation  
-**Phase 3 (Business Logic)**: Skills 6a, 6b - Service layer generation
-**Phase 4 (UI)**: Skills 7a, 7b, 7c - Blazor component generation
-**Phase 5 (Change Management)**: Skills 9, 10 - Model change detection and updates
+**Phase 0 (Utilities)**: `project-utilities` ✅ **Implemented** - Shared utility functions for all skills
+**Phase 1 (Core)**: Skills 1, 2, 3, 4a, 4b, 5, 9 - Basic enum, entity and database generation ✅ **Partially Complete**
+**Phase 2 (Data Access)**: Skills 6a, 6b, 6c - Repository pattern implementation  
+**Phase 3 (Business Logic)**: Skills 7a, 7b - Service layer generation
+**Phase 4 (UI)**: Skills 8a, 8b, 8c - Blazor component generation
+**Phase 5 (Change Management)**: Skills 10, 11 - Model change detection and updates
 
 ## Notes
 
@@ -498,3 +545,24 @@ After splitting larger skills into focused components, we achieve:
 - Uses bun runtime for TypeScript execution
 - No third-party dependencies allowed (Node.js modules only)
 - Follows single responsibility principle (one skill = one focused task)
+
+## Project Utilities Integration ✅ **Completed**
+
+Successfully extracted common functionality into a centralized `project-utilities` skill:
+
+**Benefits Achieved:**
+- ✅ Eliminated code duplication across 4+ skills
+- ✅ Centralized project structure detection logic
+- ✅ Standardized code formatting integration
+- ✅ Improved maintainability and consistency
+- ✅ Added auto-detection for domain model metadata files
+- ✅ Fixed formatting issues with proper .slnx file references
+- ✅ Removed unnecessary exports - skills communicate via Copilot, not direct imports
+
+**Refactored Skills:**
+- ✅ `database-migration-generator` - fully refactored, tested, and cleaned of exports
+- ✅ `enum-generator` - fully refactored, tested, and cleaned of exports  
+- ✅ `entity-class-generator` - fully refactored and cleaned of exports
+- ✅ `entity-configuration-generator` - fully refactored and cleaned of exports
+
+**Next Implementation:** Continue with `repository-interface-generator` (Phase 2 - Data Access)

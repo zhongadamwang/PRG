@@ -1,5 +1,3 @@
-using System;
-
 namespace Sanjel.RequestManagement.Core.Entities;
 
 /// <summary>
@@ -7,23 +5,23 @@ namespace Sanjel.RequestManagement.Core.Entities;
 /// </summary>
 public enum AvailabilityEnum
 {
-    /// <summary>
-    /// Available for work
-    /// </summary>
-    Available = 0,
+	/// <summary>
+	/// Available for work
+	/// </summary>
+	Available = 0,
 
-    /// <summary>
-    /// Currently busy
-    /// </summary>
-    Busy = 1,
+	/// <summary>
+	/// Currently busy
+	/// </summary>
+	Busy = 1,
 
-    /// <summary>
-    /// Away from office
-    /// </summary>
-    Away = 2,
+	/// <summary>
+	/// Away from office
+	/// </summary>
+	Away = 2,
 
-    /// <summary>
-    /// Unavailable
-    /// </summary>
-    Unavailable = 3
+	/// <summary>
+	/// Unavailable
+	/// </summary>
+	Unavailable = 3
 }
