@@ -76,7 +76,6 @@ public class ReviewPackage
 	[MaxLength(255)]
 	public string ReviewFeedback { get; set; }
 
-	// Navigation Properties
-
+	//
 	public virtual Request? Request { get; set; }
 }

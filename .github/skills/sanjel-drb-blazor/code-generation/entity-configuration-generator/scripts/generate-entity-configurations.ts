@@ -1,6 +1,6 @@
 // @ts-ignore
 import { existsSync, writeFileSync } from 'node:fs';
-// @ts-ignore  
+// @ts-ignore
 import { join } from 'node:path';
 // @ts-ignore
 
@@ -12,7 +12,7 @@ import {
 	formatGeneratedCode,
 	readJsonFile,
 	toPascalCase
-} from '../../../utilities/project-utilities/scripts/utilities.ts';
+} from '../../../utilities/project-utilities/scripts/utilities';
 
 // @ts-ignore
 const process = globalThis.process;

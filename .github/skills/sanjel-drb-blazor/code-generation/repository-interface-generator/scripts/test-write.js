@@ -1,0 +1,1 @@
+import { writeFileSync } from 'fs'; const testContent = 'test interface content'; try { writeFileSync('/sanjel/PRG/src/Sanjel.RequestManagement.Repositories/ITestRepository.cs', testContent, 'utf-8'); console.log('Test file created successfully'); } catch (error) { console.error('Error writing test file:', error); }

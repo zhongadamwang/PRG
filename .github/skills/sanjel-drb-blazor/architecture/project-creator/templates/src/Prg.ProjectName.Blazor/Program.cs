@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,10 +9,16 @@ builder.Services.AddRazorComponents()
 // Register HTTP Context Accessor
 builder.Services.AddHttpContextAccessor();
 
+var connectionString = builder.Configuration.GetConnectionString("SanjelMdm:DbConnectionString")
+	?? builder.Configuration["SanjelMdm:DbConnectionString"];
+
+builder.Services.AddDbContext<Prg.ProjectName.Core.Data.ProjectNameDbContext>(options =>
+	options.UseSqlServer(connectionString));
+
 // Use Scrutor for assembly scanning and auto-registration
 builder.Services.Scan(scan => scan
 	// Scan multiple assemblies
-	.FromAssemblyOf<Prg.ProjectName.Repositories.IProgramRequestRepository>()
+	.FromAssemblies(typeof(Prg.ProjectName.Repositories.Common.IRepository<>).Assembly)
 	.FromAssemblyOf<Prg.ProjectName.Core.Services.ICurrentUserService>()
 	.FromAssemblyOf<Prg.ProjectName.Blazor.Components.App>()
 

@@ -1,6 +1,6 @@
 // @ts-ignore
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-// @ts-ignore  
+// @ts-ignore
 import { join } from 'node:path';
 // @ts-ignore
 import { execSync } from 'node:child_process';
@@ -140,6 +140,18 @@ export function constructServicePath(): { outputDir: string; namespace: string }
 	return { outputDir, namespace };
 }
 
+export function constructDataPath(): { outputDir: string; namespace: string; projectName: string } {
+	const { projectRoot, projectName } = detectProjectInfo();
+
+	const outputDir = join(projectRoot, `src/${projectName}.Core/Data`);
+	const namespace = `${projectName}.Core.Data`;
+
+	console.log(`📁 Data directory: ${outputDir}`);
+	console.log(`📦 Data namespace: ${namespace}`);
+
+	return { outputDir, namespace, projectName };
+}
+
 // Format generated C# code using dotnet format
 export function formatGeneratedCode(outputDir: string): void {
 	try {
@@ -148,8 +160,30 @@ export function formatGeneratedCode(outputDir: string): void {
 		const projectInfo = detectProjectInfo();
 
 		// Run dotnet format on the specific .slnx file and include the output directory
-		const formatCommand = `dotnet format "${projectInfo.slnxFile}" --include "${outputDir}/**/*.cs"`;
+		const formatCommand = `dotnet format style "${projectInfo.slnxFile}" --include "${outputDir}/**/*.cs" --verbosity minimal`;
 		execSync(formatCommand, { cwd: projectInfo.projectRoot, encoding: 'utf-8' });
+
+		console.log('✅ Code formatting completed successfully!');
+	} catch (error) {
+		console.warn('⚠️  Code formatting failed, but generation was successful:', error);
+		// Don't fail the generation if formatting fails
+	}
+}
+
+// Format generated C# code for a specific project (used during project creation)
+export function formatGeneratedCodeForProject(projectDir: string, slnxFile: string): void {
+	try {
+		console.log('🎨 Formatting generated code with dotnet format...');
+
+		// Check if solution file exists
+		if (!existsSync(slnxFile)) {
+			console.warn('⚠️  Solution file not found, skipping code formatting:', slnxFile);
+			return;
+		}
+
+		// Run dotnet format on the specific .slnx file and include the project directory
+		const formatCommand = `dotnet format "${slnxFile}" --include "${projectDir}/**/*.cs"`;
+		execSync(formatCommand, { cwd: projectDir, encoding: 'utf-8' });
 
 		console.log('✅ Code formatting completed successfully!');
 	} catch (error) {

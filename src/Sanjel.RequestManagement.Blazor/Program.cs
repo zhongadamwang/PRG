@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,9 +9,15 @@ builder.Services.AddRazorComponents()
 // Register HTTP Context Accessor
 builder.Services.AddHttpContextAccessor();
 
+var connectionString = builder.Configuration.GetConnectionString("SanjelMdm:DbConnectionString")
+	?? builder.Configuration["SanjelMdm:DbConnectionString"];
+
+builder.Services.AddDbContext<Sanjel.RequestManagement.Core.Data.RequestManagementDbContext>(options =>
+	options.UseSqlServer(connectionString));
+
 // Use Scrutor for assembly scanning and auto-registration
 builder.Services.Scan(scan => scan
-	// Scan multiple assemblies  
+	// Scan multiple assemblies
 	.FromAssemblies(typeof(Sanjel.RequestManagement.Repositories.Common.IRepository<>).Assembly)
 	.FromAssemblyOf<Sanjel.RequestManagement.Core.Services.ICurrentUserService>()
 	.FromAssemblyOf<Sanjel.RequestManagement.Blazor.Components.App>()
@@ -52,6 +60,7 @@ if (!app.Environment.IsDevelopment())
 	app.UseHsts();
 	app.UseHttpsRedirection();
 }
+
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
 
 app.UseAntiforgery();

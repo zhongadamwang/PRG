@@ -11,7 +11,7 @@ public enum DiagramTypeEnum
 	ProcessFlow = 0,
 
 	/// <summary>
-	/// P&ID diagram
+	/// P&amp;ID diagram
 	/// </summary>
 	PipingInstrumentation = 1,
 

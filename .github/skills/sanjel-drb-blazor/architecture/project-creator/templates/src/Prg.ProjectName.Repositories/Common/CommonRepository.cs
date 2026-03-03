@@ -1,165 +1,156 @@
-namespace Prg.ProjectName.Repositories.Common
+using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
+
+namespace Prg.ProjectName.Repositories.Common;
+
+/// <summary>
+/// Base repository implementation using EF Core.
+/// </summary>
+/// <typeparam name="TEntity">Entity type.</typeparam>
+public class BaseRepository<TEntity> : IRepository<TEntity>
+	where TEntity : class
 {
-	public abstract class CommonRepository<TEntity, TIDataService> : IRepository<TEntity>
-		where TEntity : MetaShare.Common.Core.Entities.Common, new()
-		where TIDataService : MetaShare.Common.Core.Services.IPagingService<TEntity>, MetaShare.Common.Core.Services.IService<TEntity>, MetaShare.Common.Core.CommonService.IService
+#pragma warning disable SA1401
+	protected readonly Prg.ProjectName.Core.Data.ProjectNameDbContext _context;
+	protected readonly DbSet<TEntity> _dbSet;
+#pragma warning restore SA1401
+
+	public BaseRepository(Prg.ProjectName.Core.Data.ProjectNameDbContext context)
 	{
-#pragma warning disable SA1401 // FieldsMustBePrivate
-		protected readonly TIDataService _dataService;
+		this._context = context;
+		this._dbSet = context.Set<TEntity>();
+	}
 
-		// protected readonly Prg.ProjectName.Core.Services.IDependentDataService _dependentDataService;
-#pragma warning restore SA1401 // FieldsMustBePrivate
+	public virtual IQueryable<TEntity> Query()
+	{
+		return this._dbSet.AsQueryable();
+	}
 
-		public CommonRepository(TIDataService dataService)
+	public virtual async Task<TEntity?> GetByIdAsync(object id, CancellationToken cancellationToken = default)
+	{
+		return await this._dbSet.FindAsync(new object[] { id }, cancellationToken);
+	}
+
+	public virtual async Task<TEntity?> GetSingleAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+	{
+		return await this._dbSet.SingleOrDefaultAsync(predicate, cancellationToken);
+	}
+
+	public virtual async Task<TEntity?> GetFirstAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+	{
+		return await this._dbSet.FirstOrDefaultAsync(predicate, cancellationToken);
+	}
+
+	public virtual async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate = null, CancellationToken cancellationToken = default)
+	{
+		IQueryable<TEntity> query = this._dbSet;
+
+		if (predicate != null)
 		{
-			this._dataService = dataService;
+			query = query.Where(predicate);
 		}
 
-		public virtual async System.Threading.Tasks.Task<Core.Common.PagerResult<TEntity>> GetPagedListAsync(Core.Common.Pager pager, System.Linq.Expressions.Expression<Func<TEntity, bool>> expression)
+		return await query.ToListAsync(cancellationToken);
+	}
+
+	public virtual async Task<PagedResult<TEntity>> GetPagedAsync(
+		int skip,
+		int take,
+		Expression<Func<TEntity, bool>>? predicate = null,
+		Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+		CancellationToken cancellationToken = default)
+	{
+		IQueryable<TEntity> query = this._dbSet;
+
+		if (predicate != null)
 		{
-			var entityPager = new MetaShare.Common.Core.Entities.Pager();
-			pager.PopulateTo(entityPager);
-			var entities = (await System.Threading.Tasks.Task.Run(() => this._dataService.SelectBy(entityPager, new TEntity(), expression))).AsEnumerable();
-
-			pager.PopulateFrom(entityPager);
-
-			var pagerResult = new Core.Common.PagerResult<TEntity>()
-			{
-				Pager = pager,
-				Result = entities.ToList(),
-			};
-
-			return pagerResult;
+			query = query.Where(predicate);
 		}
 
-		public virtual async System.Threading.Tasks.Task<TEntity> GetByIdAsync(int id)
-		{
-			var entity = await System.Threading.Tasks.Task.Run(() => this._dataService.SelectById(new TEntity() { Id = id }));
+		var totalCount = await query.CountAsync(cancellationToken);
 
-			return entity;
+		if (orderBy != null)
+		{
+			query = orderBy(query);
 		}
 
-		public virtual async System.Threading.Tasks.Task<TEntity> GetByIdWithChildrenAsync(int id)
-		{
-			var entity = await System.Threading.Tasks.Task.Run(() => this._dataService.SelectById(new TEntity() { Id = id }, true));
+		var items = await query
+			.Skip(skip)
+			.Take(take)
+			.ToListAsync(cancellationToken);
 
-			return entity;
+		return new PagedResult<TEntity>
+		{
+			Items = items,
+			TotalCount = totalCount,
+			PageNumber = (skip / take) + 1,
+			PageSize = take,
+		};
+	}
+
+	public virtual async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+	{
+		return await this._dbSet.AnyAsync(predicate, cancellationToken);
+	}
+
+	public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>>? predicate = null, CancellationToken cancellationToken = default)
+	{
+		IQueryable<TEntity> query = this._dbSet;
+
+		if (predicate != null)
+		{
+			query = query.Where(predicate);
 		}
 
-		public virtual async System.Threading.Tasks.Task<bool> CreateAsync(TEntity entity)
-		{
-			if (entity == null)
-			{
-				return false;
-			}
+		return await query.CountAsync(cancellationToken);
+	}
 
-			var en = await this.GetEntityAsync(entity);
-			var created = await System.Threading.Tasks.Task.Run(() => this._dataService.Insert(en, false));
-			entity.Id = en.Id; // Update the Id back to the entity after creation
-			return created == 1;
+	public virtual async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
+	{
+		var entry = await this._dbSet.AddAsync(entity, cancellationToken);
+		return entry.Entity;
+	}
+
+	public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+	{
+		await this._dbSet.AddRangeAsync(entities, cancellationToken);
+	}
+
+	public virtual TEntity Update(TEntity entity)
+	{
+		var entry = this._dbSet.Update(entity);
+		return entry.Entity;
+	}
+
+	public virtual void UpdateRange(IEnumerable<TEntity> entities)
+	{
+		this._dbSet.UpdateRange(entities);
+	}
+
+	public virtual void Remove(TEntity entity)
+	{
+		this._dbSet.Remove(entity);
+	}
+
+	public virtual void RemoveRange(IEnumerable<TEntity> entities)
+	{
+		this._dbSet.RemoveRange(entities);
+	}
+
+	public virtual async Task<bool> RemoveByIdAsync(object id, CancellationToken cancellationToken = default)
+	{
+		var entity = await this.GetByIdAsync(id, cancellationToken);
+		if (entity != null)
+		{
+			this.Remove(entity);
+			return true;
 		}
 
-		public async System.Threading.Tasks.Task<bool> CreateWithChildrenAsync(TEntity entity)
-		{
-			if (entity == null)
-			{
-				return false;
-			}
+		return false;
+	}
 
-			var en = await this.GetEntityAsync(entity);
-			var created = await System.Threading.Tasks.Task.Run(() => this._dataService.Insert(en, true));
-			entity.Id = en.Id; // Update the Id back to the entity after creation
-			return created == 1;
-		}
-
-		public virtual async System.Threading.Tasks.Task<bool> UpdateAsync(TEntity entity)
-		{
-			if (entity == null)
-			{
-				return false;
-			}
-
-			var en = await this.GetEntityAsync(entity);
-			var updated = await System.Threading.Tasks.Task.Run(() => this._dataService.Update(en, false));
-			return updated == 1;
-		}
-
-		public async System.Threading.Tasks.Task<bool> UpdateWithChildrenAsync(TEntity entity)
-		{
-			if (entity == null)
-			{
-				return false;
-			}
-
-			var en = await this.GetEntityAsync(entity);
-			var updated = await System.Threading.Tasks.Task.Run(() => this._dataService.Update(en, true));
-			return updated == 1;
-		}
-
-		public virtual async System.Threading.Tasks.Task<bool> DeleteAsync(TEntity entity)
-		{
-			if (entity == null)
-			{
-				return false;
-			}
-
-			var en = await this.GetEntityAsync(entity);
-			var deleted = await System.Threading.Tasks.Task.Run(() => this._dataService.Delete(en, false));
-			return deleted == 1;
-		}
-
-		public virtual async System.Threading.Tasks.Task<bool> DeleteWithChildrenAsync(TEntity entity)
-		{
-			if (entity == null)
-			{
-				return false;
-			}
-
-			var en = await this.GetEntityAsync(entity);
-			var deleted = await System.Threading.Tasks.Task.Run(() => this._dataService.Delete(en, true));
-			return deleted == 1;
-		}
-
-		public virtual async System.Threading.Tasks.Task<bool> DeleteAsync(int id)
-		{
-			var entity = new TEntity { Id = id };
-
-			var deleted = await System.Threading.Tasks.Task.Run(() => this._dataService.Delete(entity, false));
-			return deleted == 1;
-		}
-
-		public virtual async System.Threading.Tasks.Task<bool> DeleteWithChildrenAsync(int id)
-		{
-			var entity = new TEntity { Id = id };
-
-			var deleted = await System.Threading.Tasks.Task.Run(() => this._dataService.Delete(entity, true));
-			return deleted == 1;
-		}
-
-		public virtual async System.Threading.Tasks.Task<List<TEntity>> GetListAsync(System.Linq.Expressions.Expression<Func<TEntity, bool>> expression)
-		{
-			var entities = await System.Threading.Tasks.Task.Run(() => this._dataService.SelectBy(new TEntity(), expression));
-
-			return entities ?? new List<TEntity>();
-		}
-
-		public virtual async System.Threading.Tasks.Task<List<TEntity>> GetListByIdsAsync(string columnName, IEnumerable<int> ids)
-		{
-			var entities = await System.Threading.Tasks.Task.Run(() => this._dataService.SelectByColumnIds(columnName, ids.ToArray(), false));
-
-			return entities ?? new List<TEntity>();
-		}
-
-		public virtual async System.Threading.Tasks.Task<List<TEntity>> GetListWithChildrenByIdsAsync(string columnName, IEnumerable<int> ids)
-		{
-			var entities = await System.Threading.Tasks.Task.Run(() => this._dataService.SelectByColumnIds(columnName, ids.ToArray(), true));
-
-			return entities ?? new List<TEntity>();
-		}
-
-		protected virtual async System.Threading.Tasks.Task<TEntity> GetEntityAsync(TEntity entity)
-		{
-			return entity;
-		}
+	public virtual async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+	{
+		return await this._context.SaveChangesAsync(cancellationToken);
 	}
 }

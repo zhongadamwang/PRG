@@ -1,5 +1,4 @@
 using System.Security.Claims;
-
 namespace Sanjel.RequestManagement.Core.Services
 {
 	public interface ICurrentUserService

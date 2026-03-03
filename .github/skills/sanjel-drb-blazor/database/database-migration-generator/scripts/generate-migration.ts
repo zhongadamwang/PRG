@@ -1,6 +1,6 @@
 // @ts-ignore
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
-// @ts-ignore  
+// @ts-ignore
 import { join } from 'node:path';
 // @ts-ignore
 
@@ -12,7 +12,7 @@ import {
 	findDomainModelMetadata,
 	formatGeneratedCode,
 	toPascalCase
-} from '../../../utilities/project-utilities/scripts/utilities.ts';
+} from '../../../utilities/project-utilities/scripts/utilities';
 
 // @ts-ignore
 const process = globalThis.process;
@@ -85,12 +85,12 @@ function mapToSqlType(domainType: string, constraints?: string[]): string {
 		'Guid': 'uniqueidentifier'
 	};
 
-	// Handle email constraint 
+	// Handle email constraint
 	if (constraints && constraints.includes('email')) {
 		return 'nvarchar(320)';
 	}
 
-	// Handle enum types 
+	// Handle enum types
 	if (domainType.toLowerCase().endsWith('enum')) {
 		return 'int';
 	}
@@ -101,17 +101,67 @@ function mapToSqlType(domainType: string, constraints?: string[]): string {
 // Project path detection - USE UTILITY VERSION
 // function detectMigrationPath() - now replaced by constructMigrationPath() from utilities
 
-// Generate migration timestamp
-function generateMigrationTimestamp(): string {
+// Generate migration timestamp using system timezone or specified timezone
+function generateMigrationTimestamp(timezone: string = 'Asia/Shanghai'): string {
 	const now = new Date();
-	const year = now.getFullYear();
-	const month = String(now.getMonth() + 1).padStart(2, '0');
-	const day = String(now.getDate()).padStart(2, '0');
-	const hours = String(now.getHours()).padStart(2, '0');
-	const minutes = String(now.getMinutes()).padStart(2, '0');
-	const seconds = String(now.getSeconds()).padStart(2, '0');
 
-	return `${year}${month}${day}${hours}${minutes}${seconds}`;
+	// Method 1: Using Intl.DateTimeFormat with timezone (most modern and reliable)
+	try {
+		const formatter = new Intl.DateTimeFormat('en-CA', {
+			timeZone: timezone,
+			year: 'numeric',
+			month: '2-digit',
+			day: '2-digit',
+			hour: '2-digit',
+			minute: '2-digit',
+			second: '2-digit',
+			hour12: false
+		});
+
+		const parts = formatter.formatToParts(now);
+		const partsMap = Object.fromEntries(parts.map(part => [part.type, part.value]));
+
+		return `${partsMap.year}${partsMap.month}${partsMap.day}${partsMap.hour}${partsMap.minute}${partsMap.second}`;
+
+	} catch (error) {
+		// Fallback: Method 2 - Using toLocaleString with timezone 
+		console.warn(`⚠️  Timezone ${timezone} not supported, falling back to locale-based formatting`);
+
+		try {
+			const timeStr = now.toLocaleString('zh-CN', {
+				timeZone: timezone,
+				year: 'numeric',
+				month: '2-digit',
+				day: '2-digit',
+				hour: '2-digit',
+				minute: '2-digit',
+				second: '2-digit',
+				hour12: false
+			});
+
+			// Parse the formatted string (format: YYYY/MM/DD HH:mm:ss)
+			const match = timeStr.match(/(\d{4})\/(\d{2})\/(\d{2})\s+(\d{2}):(\d{2}):(\d{2})/);
+			if (match) {
+				const [, year, month, day, hours, minutes, seconds] = match;
+				return `${year}${month}${day}${hours}${minutes}${seconds}`;
+			}
+		} catch (localeError) {
+			console.warn('⚠️  Locale-based formatting failed, using manual offset calculation');
+		}
+
+		// Fallback: Method 3 - Manual UTC offset for China Standard Time (UTC+8)
+		const chinaOffset = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
+		const chinaTime = new Date(now.getTime() + chinaOffset);
+
+		const year = chinaTime.getUTCFullYear();
+		const month = String(chinaTime.getUTCMonth() + 1).padStart(2, '0');
+		const day = String(chinaTime.getUTCDate()).padStart(2, '0');
+		const hours = String(chinaTime.getUTCHours()).padStart(2, '0');
+		const minutes = String(chinaTime.getUTCMinutes()).padStart(2, '0');
+		const seconds = String(chinaTime.getUTCSeconds()).padStart(2, '0');
+
+		return `${year}${month}${day}${hours}${minutes}${seconds}`;
+	}
 }
 
 // Generate table creation statements for Up() method
@@ -372,7 +422,7 @@ function generateMigrationClass(entities: Entity[], relationships: Relationship[
 	return lines.join('\n');
 }
 
-// Code formatting - USE UTILITY VERSION  
+// Code formatting - USE UTILITY VERSION
 // function formatGeneratedCode() - now imported from utilities
 
 // Main generation function
@@ -452,7 +502,7 @@ function generateMigration(metadataFilePath: string, migrationName?: string, out
 	}
 }
 
-// Command line interface  
+// Command line interface
 function main(): void {
 	const args = process.argv.slice(2);
 

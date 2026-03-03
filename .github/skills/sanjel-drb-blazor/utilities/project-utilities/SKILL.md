@@ -50,5 +50,5 @@ This utility skill is imported and used by other skills rather than being run di
 ```bash
 # Not run directly - imported by other skills
 # Example import in other skills:
-# import { detectProjectRoot, formatGeneratedCode, toPascalCase } from '../../../utilities/project-utilities/scripts/utilities.ts';
+# import { detectProjectRoot, formatGeneratedCode, toPascalCase } from '../../../utilities/project-utilities/scripts/utilities';
 ```

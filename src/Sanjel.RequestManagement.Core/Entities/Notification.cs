@@ -67,7 +67,5 @@ public class Notification
 	[MaxLength(255)]
 	public ICollection<string> ActionButtons { get; set; } = new List<string>();
 
-	// Navigation Properties
-
 	public virtual Request? Request { get; set; }
 }

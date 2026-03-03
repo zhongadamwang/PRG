@@ -1,15 +1,28 @@
 # Domain Model-Driven Code Generation Skills Suite Planning
 
-**Document ID**: ANA-02  
-**Project**: 01 - Program Request Management  
-**Created**: February 28, 2026  
-**Status**: Planning Phase  
+**Document ID**: ANA-02
+**Project**: 01 - Program Request Management
+**Created**: February 28, 2026
+**Status**: Planning Phase
 
 ## Overview
 
 This document outlines the planning for a comprehensive GitHub Skills suite that automates code generation from domain models. The skills are designed to be used within VS Code with Copilot integration, providing intelligent workflow orchestration and automated code generation capabilities.
 
 ## Skill Architecture
+
+### Skill 0: `project-creator` ✅ **Required - Currently Missing**
+**Responsibility**: Create and configure project architecture, folder structure, and basic setup files
+**Input**: Project name, target framework, and architectural preferences
+**Output**: Complete project structure with configured files
+
+**Script**: `create-project.ts` (run with bun)
+- Generate solution (.slnx) and project (.csproj) files
+- Create standard folder structure (Core, Repositories, BusinessProcess, Blazor, Tests)
+- Configure development environment settings (.editorconfig, .vscode/settings.json)
+- Set up StyleCop analyzers and code formatting rules
+- Configure XML documentation generation for all projects
+- Add dependency injection and EF Core package references
 
 ### Skill 1: `workflow-orchestrator`
 **Responsibility**: Guide users to call related skills in the correct sequence to complete full workflows
@@ -30,7 +43,7 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 ```json
 {
   "entities": [...],
-  "relationships": [...], 
+  "relationships": [...],
   "enums": [...],
   "attributes": [...]
 }
@@ -64,7 +77,7 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Generate basic entity classes with properties
 - Handle attribute type mapping (string, int, DateTime, etc.)
 - Add basic Data Annotations ([Key], [Required], [MaxLength])
-- Generate simple navigation properties 
+- Generate simple navigation properties
 - **Auto-format generated code with dotnet format**
 
 ### Skill 4b: `entity-configuration-generator` ✅ **Finished + Auto-formatting**
@@ -81,7 +94,7 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 
 ### Skill 5: `database-migration-generator` ✅ **Finished + Auto-formatting**
 **Responsibility**: Generate EF Core database migration scripts from domain model metadata
-**Input**: Entity metadata JSON + Optional migration name and output directory  
+**Input**: Entity metadata JSON + Optional migration name and output directory
 **Output**: EF Core Migration class files with automatic code formatting
 
 **Script**: `generate-migration.ts` (run with bun)
@@ -92,18 +105,22 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Generate both Up() and Down() methods for reversible migrations
 - **Auto-format generated code with dotnet format**
 
-### Skill 6a: `repository-interface-generator`
-**Responsibility**: Generate Repository interface contracts
+### Skill 6a: `repository-interface-generator` ✅ **Finished + Modern EF Core + Format Verified**
+**Responsibility**: Generate Repository interface contracts using modern EF Core patterns
 **Input**: Entity metadata JSON
-**Output**: IRepository interface files
+**Output**: EF Core-based IRepository interface files
 
 **Script**: `generate-repository-interfaces.ts` (run with bun)
-- Generate IRepository<T> base interface
-- Generate entity-specific repository interfaces
-- Define CRUD method signatures
-- Add performance annotation markers for Dapper optimization
+- Generate modern IRepository<T> base interface with EF Core patterns
+- Generate entity-specific repository interfaces with CancellationToken support
+- Define modern CRUD method signatures (Query, GetByIdAsync, GetAllAsync, etc.)
+- Add performance markers for EF Core query optimization
+- Include PagedResult<T> class for pagination support
+- **Completely modernized EF Core approach - no legacy dependencies**
+- **Auto-format generated code with dotnet format**
+- **✅ Confirmed: Calls shared `formatGeneratedCode()` method from project-utilities**
 
-### Skill 6b: `efcore-repository-generator`
+### Skill 6b: `efcore-repository-generator` ✅ **Finished**
 **Responsibility**: Generate EF Core Repository implementations
 **Input**: Entity metadata JSON + Repository interfaces
 **Output**: EF Core Repository implementation classes
@@ -113,17 +130,6 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Implement LINQ-based query methods
 - Add transaction management
 - Include change tracking and lazy loading features
-
-### Skill 6c: `dapper-repository-generator`
-**Responsibility**: Generate Dapper Repository implementations for performance-critical operations
-**Input**: Entity metadata JSON + Performance markers
-**Output**: Dapper Repository implementation classes
-
-**Script**: `generate-dapper-repositories.ts` (run with bun)
-- Generate Dapper-based repository implementations
-- Create optimized SQL queries
-- Add parameter mapping
-- Handle complex JOIN operations
 
 ### Skill 7a: `service-interface-generator`
 **Responsibility**: Generate business service interface contracts
@@ -180,7 +186,7 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Add navigation to related entities
 - Include action buttons
 
-### Skill 9: `data-context-generator` 
+### Skill 9: `data-context-generator`
 **Responsibility**: Generate EF Core DbContext class
 **Input**: Entity metadata JSON + Connection configuration
 **Output**: DbContext class file
@@ -223,6 +229,11 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 │       ├── SKILL.md
 │       └── scripts/
 │           └── utilities.ts
+├── architecture/
+│   └── project-creator/
+│       ├── SKILL.md
+│       └── scripts/
+│           └── create-project-structure.ts
 ├── workflow/
 │   └── workflow-orchestrator/
 │       ├── SKILL.md
@@ -258,10 +269,7 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 │   │   ├── SKILL.md
 │   │   └── scripts/
 │   │       └── generate-efcore-repositories.ts
-│   ├── dapper-repository-generator/
-│   │   ├── SKILL.md
-│   │   └── scripts/
-│   │       └── generate-dapper-repositories.ts
+
 │   ├── service-interface-generator/
 │   │   ├── SKILL.md
 │   │   └── scripts/
@@ -312,7 +320,7 @@ Located at: `/.github/skills/sanjel-drb-blazor/utilities/project-utilities/`
 - `detectProjectInfo()` - Get project name, root path, and solution info
 - `constructMigrationPath()` - Build standard migration directory paths
 - `constructEntityPath()` - Build standard entity directory paths
-- `constructRepositoryPath()` - Build standard repository directory paths  
+- `constructRepositoryPath()` - Build standard repository directory paths
 - `constructServicePath()` - Build standard service directory paths
 - `formatGeneratedCode(outputDir)` - Format C# code using dotnet format
 - `formatSpecificFiles(filePaths)` - Format specific files only
@@ -326,12 +334,12 @@ Located at: `/.github/skills/sanjel-drb-blazor/utilities/project-utilities/`
 
 **Import Pattern:**
 ```typescript
-import { 
-    detectProjectInfo, 
-    formatGeneratedCode, 
+import {
+    detectProjectInfo,
+    formatGeneratedCode,
     toPascalCase,
-    constructEntityPath 
-} from '../../../utilities/project-utilities/scripts/utilities.ts';
+    constructEntityPath
+} from '../../../utilities/project-utilities/scripts/utilities';
 ```
 
 ### Code Formatting Requirements ✅ **Implemented**
@@ -339,7 +347,7 @@ import {
 **All code generation skills MUST include automatic code formatting using `dotnet format`:**
 
 - Each generation script calls `dotnet format` after code generation completes
-- Formatting targets only the generated output directory to optimize performance  
+- Formatting targets only the generated output directory to optimize performance
 - Formatting failures do not fail the generation process (warning only)
 - Formatting provides consistent code style and reduces merge conflicts
 
@@ -349,7 +357,7 @@ import {
 function formatGeneratedCode(outputDir: string): void {
 	try {
 		console.log('🎨 Formatting generated code with dotnet format...');
-		
+
 		// Get the project root (where .slnx file is located)
 		let projectRoot = outputDir;
 		while (projectRoot && projectRoot !== '/') {
@@ -363,11 +371,11 @@ function formatGeneratedCode(outputDir: string): void {
 			if (parentDir === projectRoot) break;
 			projectRoot = parentDir;
 		}
-		
+
 		// Run dotnet format on the specific directory
 		const formatCommand = `dotnet format "${projectRoot}" --include "${outputDir}/**/*.cs"`;
 		execSync(formatCommand, { cwd: projectRoot, encoding: 'utf-8' });
-		
+
 		console.log('✅ Code formatting completed successfully!');
 	} catch (error) {
 		console.warn('⚠️  Code formatting failed, but generation was successful:', error);
@@ -377,7 +385,7 @@ function formatGeneratedCode(outputDir: string): void {
 ```
 
 **Applied to Skills:**
-- ✅ `enum-generator`: Auto-formats generated enum classes  
+- ✅ `enum-generator`: Auto-formats generated enum classes
 - ✅ `entity-class-generator`: Auto-formats generated entity classes
 - ✅ `entity-configuration-generator`: Auto-formats generated configuration classes
 - ✅ `database-migration-generator`: Auto-formats generated migration classes
@@ -394,7 +402,7 @@ All scripts must follow these standards:
 ```typescript
 // @ts-ignore
 import { readFileSync, writeFileSync } from 'node:fs';
-// @ts-ignore  
+// @ts-ignore
 import { join, dirname } from 'node:path';
 // @ts-ignore
 import { execSync } from 'node:child_process';
@@ -440,6 +448,7 @@ bun run scripts/[script-name].ts
 ## Workflow Scenarios
 
 ### Scenario 1: New Project
+0. `project-creator` → Create project structure, configure .csproj files, set up development environment
 1. `workflow-orchestrator` → Analyze project state, recommend complete generation process
 2. `domain-model-parser` → Parse domain models
 3. `enum-generator` → Generate enum definitions
@@ -449,8 +458,7 @@ bun run scripts/[script-name].ts
 7. `database-migration-generator` → Generate database scripts
 8. `repository-interface-generator` → Generate Repository interfaces
 9. `efcore-repository-generator` → Generate EF Core Repository implementations
-10. `dapper-repository-generator` → Generate optimized Dapper implementations
-11. `service-interface-generator` → Generate service interfaces
+10. `service-interface-generator` → Generate service interfaces
 12. `service-implementation-generator` → Generate service implementations
 13. `blazor-list-component-generator` → Generate list components
 14. `blazor-form-component-generator` → Generate form components
@@ -464,14 +472,14 @@ bun run scripts/[script-name].ts
    - Entity changes: `enum-generator` + `entity-class-generator` + `entity-configuration-generator`
    - New entities: Full generation sequence for new entities only
    - Relationship changes: `entity-configuration-generator` + `data-context-generator`
-   - Repository changes: `repository-interface-generator` + implementation generators
+   - Repository changes: `repository-interface-generator` + `efcore-repository-generator`
    - UI changes: Relevant Blazor component generators
 
 ### Scenario 3: Update Specific Layer Only
 1. `workflow-orchestrator` → Based on user intent, recommend specific skill combinations
 2. Call relevant specific generators:
    **Entity Layer**: `enum-generator` + `entity-class-generator` + `entity-configuration-generator`
-   **Data Layer**: `repository-interface-generator` + `efcore-repository-generator` + `dapper-repository-generator`
+   **Data Layer**: `repository-interface-generator` + `efcore-repository-generator`
    **Business Layer**: `service-interface-generator` + `service-implementation-generator`
    **UI Layer**: `blazor-list-component-generator` + `blazor-form-component-generator` + `blazor-detail-component-generator`
    **Database**: `database-migration-generator` + `data-context-generator`
@@ -500,7 +508,7 @@ bun run scripts/[script-name].ts
 4. **Quality**: Enforces best practices and design patterns
 5. **Traceability**: Maintains clear connection between domain models and implementation
 6. **Modularity**: Fine-grained skills allow selective updates and easier debugging
-7. **Flexibility**: Can generate EF Core or Dapper implementations as needed
+5. **Flexibility**: Uses modern EF Core implementation with performance optimization
 8. **Scalability**: Individual skills can be enhanced without affecting others
 
 ## Skill Architecture Benefits
@@ -508,7 +516,7 @@ bun run scripts/[script-name].ts
 After splitting larger skills into focused components, we achieve:
 
 - **Single Responsibility**: Each skill has one clear, focused task
-- **Easier Testing**: Individual skills can be tested in isolation  
+- **Easier Testing**: Individual skills can be tested in isolation
 - **Incremental Development**: Skills can be implemented and refined independently
 - **Selective Updates**: Only affected skills need to run when models change
 - **Parallel Development**: Multiple developers can work on different skills simultaneously
@@ -516,25 +524,28 @@ After splitting larger skills into focused components, we achieve:
 
 ## Next Steps
 
-1. Create the skill directory structure with all 15+ individual skills
-2. Implement the workflow-orchestrator skill first to coordinate other skills
-3. Develop core skills in this order:
+1. Create the skill directory structure with all 16+ individual skills
+2. **Priority: Implement missing `project-creator` skill first** - Essential for project scaffolding
+3. Implement the workflow-orchestrator skill to coordinate other skills
+4. Develop core skills in this order:
    - `domain-model-parser` (foundation for all others)
    - `entity-class-generator` + `entity-configuration-generator` (entity layer)
    - `data-context-generator` (database context)
    - `repository-interface-generator` (contracts)
    - `efcore-repository-generator` (primary implementation)
-4. Add service layer skills: `service-interface-generator` + `service-implementation-generator`
-5. Implement UI generation skills: Blazor list, form, and detail generators
-6. Add optimization skills: `dapper-repository-generator` for performance
+5. Add service layer skills: `service-interface-generator` + `service-implementation-generator`
+6. Implement UI generation skills: Blazor list, form, and detail generators
 7. Implement change management: `model-change-detector` + `incremental-update-generator`
-8. Test with existing domain model and refine based on real-world usage
+9. Test with existing domain model and refine based on real-world usage
 
 ## Implementation Priority
 
-**Phase 0 (Utilities)**: `project-utilities` ✅ **Implemented** - Shared utility functions for all skills
-**Phase 1 (Core)**: Skills 1, 2, 3, 4a, 4b, 5, 9 - Basic enum, entity and database generation ✅ **Partially Complete**
-**Phase 2 (Data Access)**: Skills 6a, 6b, 6c - Repository pattern implementation  
+**Phase 0 (Foundation)**:
+- `project-utilities` ✅ **Implemented** - Shared utility functions for all skills
+- `project-creator` ❌ **Missing** - Project structure and configuration setup
+
+**Phase 1 (Core)**: Skills 1, 2, 3, 4a, 4b, 5, 9 - Basic enum, entity and database generation ✅ **Complete**
+**Phase 2 (Data Access)**: Skills 6a, 6b - Repository pattern implementation ✅ **Started (6a Complete)**
 **Phase 3 (Business Logic)**: Skills 7a, 7b - Service layer generation
 **Phase 4 (UI)**: Skills 8a, 8b, 8c - Blazor component generation
 **Phase 5 (Change Management)**: Skills 10, 11 - Model change detection and updates
@@ -561,8 +572,31 @@ Successfully extracted common functionality into a centralized `project-utilitie
 
 **Refactored Skills:**
 - ✅ `database-migration-generator` - fully refactored, tested, and cleaned of exports
-- ✅ `enum-generator` - fully refactored, tested, and cleaned of exports  
+- ✅ `enum-generator` - fully refactored, tested, and cleaned of exports
 - ✅ `entity-class-generator` - fully refactored and cleaned of exports
 - ✅ `entity-configuration-generator` - fully refactored and cleaned of exports
 
-**Next Implementation:** Continue with `repository-interface-generator` (Phase 2 - Data Access)
+**Phase 2 Skills:**
+- ✅ `repository-interface-generator` - Generated modern EF Core repository interfaces with 16 methods, CancellationToken support, and PagedResult<T> pagination
+
+**Modern EF Core Architecture:** ✅ **Implemented**
+Successfully migrated from legacy data access patterns to modern EF Core:
+
+**Architecture Changes:**
+- ✅ Created `RequestManagementDbContext` with DbSet<T> properties
+- ✅ Modern `IRepository<TEntity>` interface with 16 standardized methods
+- ✅ `BaseRepository<TEntity>` implementation using EF Core DbContext
+- ✅ `PagedResult<T>` class for advanced pagination with metadata
+- ✅ CancellationToken support throughout all async operations
+- ✅ IQueryable<T> exposure for advanced LINQ queries
+- ✅ Performance markers changed from "Dapper" to "EF Core Query" annotations
+
+**Generated Interface Features:**
+- Query() method for direct IQueryable<T> access
+- Modern async/await patterns with CancellationToken
+- Flexible pagination with PagedResult<T>
+- Expression<Func<T, bool>> predicate support
+- Batch operations (AddRangeAsync, UpdateRange, RemoveRange)
+- Automatic SaveChanges integration
+
+**Next Implementation:** Continue with `efcore-repository-generator` and complete Phase 2 - Data Access

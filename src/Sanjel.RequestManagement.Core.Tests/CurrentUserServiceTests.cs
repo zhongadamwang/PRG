@@ -41,8 +41,7 @@ public class CurrentUserServiceTests
 	public void GetCurrentUsername_FallbackToSetUsername_TrimsEmail()
 	{
 		var accessor = new FakeHttpContextAccessor();
-		accessor.HttpContext = new DefaultHttpContext(); // unauthenticated
-
+		accessor.HttpContext = new DefaultHttpContext(); //
 		var svc = new CurrentUserService(accessor);
 		svc.SetCurrentUsername("mark@example.org");
 
