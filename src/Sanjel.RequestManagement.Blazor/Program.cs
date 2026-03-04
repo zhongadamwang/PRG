@@ -10,6 +10,18 @@ builder.Services.AddRazorComponents()
 
 // Add Syncfusion Blazor service
 builder.Services.AddSyncfusionBlazor();
+var syncfusionLicenseKey = builder.Configuration["Blazor:SyncfusionLicenseKey"];
+Console.WriteLine($"Syncfusion License Key loaded: {syncfusionLicenseKey}");
+if (!string.IsNullOrEmpty(syncfusionLicenseKey))
+{
+	Console.WriteLine($"Registering Syncfusion license (length: {syncfusionLicenseKey.Length})");
+	Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(syncfusionLicenseKey);
+	Console.WriteLine("Syncfusion license registered successfully");
+}
+else
+{
+	Console.WriteLine("WARNING: Syncfusion license key is empty or null!");
+}
 
 // Register HTTP Context Accessor
 builder.Services.AddHttpContextAccessor();

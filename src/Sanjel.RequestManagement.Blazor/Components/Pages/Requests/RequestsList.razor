@@ -1,4 +1,5 @@
 @page "/requests"
+@rendermode InteractiveServer
 @using Sanjel.RequestManagement.Core.Entities
 @using Sanjel.RequestManagement.Blazor.Components.Pages.Requests
 @using Sanjel.RequestManagement.Blazor.Services
@@ -11,7 +12,7 @@
 <div class="requests-page">
 	<div class="page-header">
 		<h3>Program Requests</h3>
-		<SfButton CssClass="e-primary" @onclick="this.HandleAddRequest">
+		<SfButton CssClass="e-primary" OnClick="this.HandleAddRequest">
 			<i class="fas fa-plus"></i> Add New Request
 		</SfButton>
 	</div>
@@ -69,11 +70,11 @@
 							var request = context as Request;
 						}
 						<div class="action-buttons">
-							<SfButton CssClass="e-small e-info" @onclick="() => HandleEditRequest(request)">
-								<i class="fas fa-edit"></i>
+							<SfButton CssClass="e-small e-info" OnClick="() => this.HandleEditRequest(request)">
+								<i class="fas fa-edit"></i> Edit
 							</SfButton>
-							<SfButton CssClass="e-small e-danger" @onclick="() => HandleDeleteRequest(request)">
-								<i class="fas fa-trash"></i>
+							<SfButton CssClass="e-small e-danger" OnClick="() => this.HandleDeleteRequest(request)">
+								<i class="fas fa-trash"></i> Delete
 							</SfButton>
 						</div>
 					</Template>
@@ -87,7 +88,7 @@
 										OnSave="this.HandleSaveRequestAsync" OnCancel="this.HandleCancelEdit" />
 
 	<!-- Delete Confirmation Dialog -->
-	<SfDialog @ref="deleteDialog" Target="#requests-page" Width="400px" Height="200px" IsModal="true"
+	<SfDialog @ref="this.deleteDialog" Target="#requests-page" Width="400px" Height="200px" IsModal="true"
 						Visible="@isDeleteDialogVisible" ShowCloseIcon="false" AllowDragging="false">
 		<DialogTemplates>
 			<Header>Confirm Delete</Header>

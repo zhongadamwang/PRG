@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Sanjel.RequestManagement.Blazor.Services;
 using Sanjel.RequestManagement.Core.Entities;
 using Syncfusion.Blazor.Grids;
@@ -34,6 +35,9 @@ public partial class RequestsList : ComponentBase
 
 	[Inject]
 	private IRequestsMockService RequestsService { get; set; } = default!;
+
+	[Inject]
+	private IJSRuntime JSRuntime { get; set; } = default!;
 
 	/// <summary>
 	/// Initialize component and load data
@@ -109,9 +113,14 @@ public partial class RequestsList : ComponentBase
 	{
 		this.currentRequest = new Request
 		{
+			RequestId = string.Empty, // Will be generated on save
 			Status = StatusEnum.Draft,
 			Priority = PriorityEnum.Normal,
 			CreatedDate = DateTime.Now,
+			ClientId = string.Empty,
+			SourceEmail = string.Empty,
+			AssignedEngineerId = string.Empty,
+			AssignedBy = string.Empty,
 		};
 
 		this.isEditModalVisible = true;
@@ -135,10 +144,10 @@ public partial class RequestsList : ComponentBase
 			Status = request.Status,
 			CreatedDate = request.CreatedDate,
 			Priority = request.Priority,
-			ClientId = request.ClientId,
-			SourceEmail = request.SourceEmail,
-			AssignedEngineerId = request.AssignedEngineerId,
-			AssignedBy = request.AssignedBy,
+			ClientId = request.ClientId ?? string.Empty,
+			SourceEmail = request.SourceEmail ?? string.Empty,
+			AssignedEngineerId = request.AssignedEngineerId ?? string.Empty,
+			AssignedBy = request.AssignedBy ?? string.Empty,
 			AcknowledgmentDate = request.AcknowledgmentDate,
 			CompletionDate = request.CompletionDate,
 		};
@@ -148,7 +157,7 @@ public partial class RequestsList : ComponentBase
 	}
 
 	/// <summary>
-	/// Handle save request (create or update)
+	/// Handle save request (create or update) with improved error handling
 	/// </summary>
 	private async Task HandleSaveRequestAsync(Request request)
 	{
@@ -160,7 +169,11 @@ public partial class RequestsList : ComponentBase
 
 			if (string.IsNullOrEmpty(request.RequestId) || !this.requests.Any(r => r.RequestId == request.RequestId))
 			{
-				// Create new request
+				// Create new request - generate ID if needed
+				if (string.IsNullOrEmpty(request.RequestId))
+				{
+					request.RequestId = this.GenerateRequestId();
+				}
 				await this.RequestsService.CreateRequestAsync(request);
 			}
 			else
@@ -182,6 +195,7 @@ public partial class RequestsList : ComponentBase
 		{
 			Console.WriteLine($"Error saving request: {ex.Message}");
 			// In a real app, show error message to user
+			// You could add a toast notification here
 		}
 		finally
 		{
@@ -248,6 +262,7 @@ public partial class RequestsList : ComponentBase
 		catch (Exception ex)
 		{
 			Console.WriteLine($"Error deleting request: {ex.Message}");
+			await this.JSRuntime.InvokeVoidAsync("console.error", $"Error deleting request: {ex.Message}");
 			// In a real app, show error message to user
 		}
 		finally
@@ -266,5 +281,16 @@ public partial class RequestsList : ComponentBase
 		this.isDeleteDialogVisible = false;
 		this.currentRequest = null;
 		this.StateHasChanged();
+	}
+
+	/// <summary>
+	/// Generate a unique request ID
+	/// </summary>
+	private string GenerateRequestId()
+	{
+		// Generate a unique ID based on timestamp and random component
+		var timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+		var random = new Random().Next(1000, 9999);
+		return $"REQ-{timestamp}-{random}";
 	}
 }

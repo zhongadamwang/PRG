@@ -5,12 +5,11 @@
 @using Syncfusion.Blazor.Calendars
 @using Syncfusion.Blazor.Buttons
 
-<SfDialog @ref="this.dlg" Target="#requests-page" Width="600px" Height="auto" IsModal="true" Visible="@IsVisible"
-					ShowCloseIcon="false" AllowDragging="true" @onopen="HandleDialogOpen">
-
+<SfDialog @bind-Visible="this.IsVisible" Width="800px" Height="auto" ShowCloseIcon="true" IsModal="true"
+					CloseOnEscape="true">
 	<DialogTemplates>
 		<Header>
-			<span>@DialogTitle</span>
+			<div class="dialog-header">@DialogTitle</div>
 		</Header>
 		<Content>
 			@if (RequestModel != null)
@@ -112,10 +111,5 @@
 			}
 		</Content>
 	</DialogTemplates>
-
-	<DialogButtons>
-		<DialogButton Content="Cancel" CssClass="e-flat" OnClick="this.HandleCancelAsync" />
-		<DialogButton Content="@SaveButtonText" CssClass="e-primary e-flat" IsPrimary="true"
-									OnClick="this.HandleSaveAsync" />
-	</DialogButtons>
+	<DialogEvents Opened="this.OnDialogOpen" Closed="this.OnDialogClose"></DialogEvents>
 </SfDialog>
