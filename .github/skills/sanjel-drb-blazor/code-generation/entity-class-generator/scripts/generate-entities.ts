@@ -382,8 +382,8 @@ function generateEntities(metadataFilePath: string, outputDir?: string, namespac
 
 	// Generate entity classes
 	for (const entity of metadata.entities) {
-		// Skip non-entity types for now
-		if (entity.type !== 'entity') {
+		// Skip system and enum types, but include entities and actors
+		if (entity.type === 'system' || entity.type === 'enum') {
 			console.log(`⏭️  Skipping ${entity.name} (type: ${entity.type})`);
 			continue;
 		}

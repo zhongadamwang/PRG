@@ -1,4 +1,3 @@
-
 namespace Sanjel.RequestManagement.Blazor.Components.Pages
 {
 	public partial class Counter
@@ -7,7 +6,7 @@ namespace Sanjel.RequestManagement.Blazor.Components.Pages
 
 		private void IncrementCount()
 		{
-			currentCount++;
+			this.currentCount++;
 		}
 	}
 }

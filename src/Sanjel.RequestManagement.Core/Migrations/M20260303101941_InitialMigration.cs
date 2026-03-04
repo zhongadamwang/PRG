@@ -6,7 +6,7 @@ namespace Sanjel.RequestManagement.Core.Migrations;
 /// Database migration: InitialMigration
 /// Generated from domain model metadata
 /// </summary>
-public partial class M20260302143147_InitialMigration : Migration
+public partial class M20260303101941_InitialMigration : Migration
 {
 	/// <summary>
 	/// Create database schema from domain model

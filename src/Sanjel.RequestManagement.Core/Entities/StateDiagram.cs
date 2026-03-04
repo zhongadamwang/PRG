@@ -5,7 +5,6 @@ namespace Sanjel.RequestManagement.Core.Entities;
 
 public class StateDiagram
 {
-
 	/// <summary>
 	/// diagram_id property
 	/// </summary>
@@ -66,7 +65,8 @@ public class StateDiagram
 	[Column("diagram_type")]
 	public DiagramTypeEnum DiagramType { get; set; }
 
-	//
+	// Navigation Properties
+
 	public virtual DataElement? DataElement { get; set; }
 
 	public virtual Request? Request { get; set; }

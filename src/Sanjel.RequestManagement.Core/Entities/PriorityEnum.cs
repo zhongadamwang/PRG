@@ -23,5 +23,5 @@ public enum PriorityEnum
 	/// <summary>
 	/// Critical priority request
 	/// </summary>
-	Critical = 3
+	Critical = 3,
 }

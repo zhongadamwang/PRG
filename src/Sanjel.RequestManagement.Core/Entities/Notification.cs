@@ -8,7 +8,6 @@ namespace Sanjel.RequestManagement.Core.Entities;
 /// </summary>
 public class Notification
 {
-
 	/// <summary>
 	/// notification_id property
 	/// </summary>
@@ -66,6 +65,8 @@ public class Notification
 	[Required]
 	[MaxLength(255)]
 	public ICollection<string> ActionButtons { get; set; } = new List<string>();
+
+	// Navigation Properties
 
 	public virtual Request? Request { get; set; }
 }

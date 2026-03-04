@@ -23,5 +23,5 @@ public enum AvailabilityEnum
 	/// <summary>
 	/// Unavailable
 	/// </summary>
-	Unavailable = 3
+	Unavailable = 3,
 }

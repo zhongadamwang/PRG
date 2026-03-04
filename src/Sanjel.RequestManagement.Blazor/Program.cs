@@ -1,10 +1,15 @@
 using Microsoft.EntityFrameworkCore;
+using Sanjel.RequestManagement.Blazor.Services;
+using Syncfusion.Blazor;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
 		.AddInteractiveServerComponents();
+
+// Add Syncfusion Blazor service
+builder.Services.AddSyncfusionBlazor();
 
 // Register HTTP Context Accessor
 builder.Services.AddHttpContextAccessor();
@@ -14,6 +19,9 @@ var connectionString = builder.Configuration.GetConnectionString("SanjelMdm:DbCo
 
 builder.Services.AddDbContext<Sanjel.RequestManagement.Core.Data.RequestManagementDbContext>(options =>
 	options.UseSqlServer(connectionString));
+
+// Register Mock Services for demo
+builder.Services.AddScoped<IRequestsMockService, RequestsMockService>();
 
 // Use Scrutor for assembly scanning and auto-registration
 builder.Services.Scan(scan => scan

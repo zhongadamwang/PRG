@@ -5,7 +5,6 @@ namespace Sanjel.RequestManagement.Core.Entities;
 
 public class DataElement
 {
-
 	/// <summary>
 	/// element_id property
 	/// </summary>
@@ -68,7 +67,8 @@ public class DataElement
 	[MaxLength(255)]
 	public string ValidationNotes { get; set; }
 
-	//
+	// Navigation Properties
+
 	public virtual Request? Request { get; set; }
 
 	public virtual StateDiagram? StateDiagram { get; set; }

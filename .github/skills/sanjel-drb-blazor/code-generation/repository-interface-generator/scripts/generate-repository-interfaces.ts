@@ -536,8 +536,8 @@ function generateRepositoryInterfaces(metadataFilePath?: string, outputDir?: str
 
 	// Generate entity-specific repository interfaces
 	for (const entity of metadata.entities) {
-		// Only generate interfaces for entity types
-		if (entity.type !== 'entity') {
+		// Skip system and enum types, but include entities and actors
+		if (entity.type === 'system' || entity.type === 'enum') {
 			console.log(`⏭️  Skipping ${entity.name} (type: ${entity.type})`);
 			continue;
 		}

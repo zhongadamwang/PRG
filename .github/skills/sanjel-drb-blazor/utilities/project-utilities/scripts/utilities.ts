@@ -140,6 +140,18 @@ export function constructServicePath(): { outputDir: string; namespace: string }
 	return { outputDir, namespace };
 }
 
+export function constructPagePath(): { outputDir: string; namespace: string } {
+	const { projectRoot, projectName } = detectProjectInfo();
+
+	const outputDir = join(projectRoot, `src/${projectName}.Blazor/Pages`);
+	const namespace = `${projectName}.Blazor.Pages`;
+
+	console.log(`📁 Page directory: ${outputDir}`);
+	console.log(`📦 Page namespace: ${namespace}`);
+
+	return { outputDir, namespace };
+}
+
 export function constructDataPath(): { outputDir: string; namespace: string; projectName: string } {
 	const { projectRoot, projectName } = detectProjectInfo();
 

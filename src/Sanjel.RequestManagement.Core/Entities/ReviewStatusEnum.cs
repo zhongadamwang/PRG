@@ -28,5 +28,5 @@ public enum ReviewStatusEnum
 	/// <summary>
 	/// Review rejected
 	/// </summary>
-	Rejected = 4
+	Rejected = 4,
 }

@@ -5,7 +5,6 @@ namespace Sanjel.RequestManagement.Core.Entities;
 
 public class ReviewPackage
 {
-
 	/// <summary>
 	/// package_id property
 	/// </summary>
@@ -76,6 +75,7 @@ public class ReviewPackage
 	[MaxLength(255)]
 	public string ReviewFeedback { get; set; }
 
-	//
+	// Navigation Properties
+
 	public virtual Request? Request { get; set; }
 }

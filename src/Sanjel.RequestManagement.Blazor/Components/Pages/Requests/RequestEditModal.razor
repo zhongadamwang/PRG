@@ -1,0 +1,121 @@
+@using Sanjel.RequestManagement.Core.Entities
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.Buttons
+
+<SfDialog @ref="this.dlg" Target="#requests-page" Width="600px" Height="auto" IsModal="true" Visible="@IsVisible"
+					ShowCloseIcon="false" AllowDragging="true" @onopen="HandleDialogOpen">
+
+	<DialogTemplates>
+		<Header>
+			<span>@DialogTitle</span>
+		</Header>
+		<Content>
+			@if (RequestModel != null)
+			{
+				<div class="modal-form">
+					<div class="form-row">
+						<div class="form-group">
+							<label class="form-label">Request ID</label>
+							<SfTextBox @bind-Value="@RequestModel.RequestId" Placeholder="Auto-generated" Readonly="@(!IsNewRequest)"
+												 CssClass="form-input">
+							</SfTextBox>
+						</div>
+
+						<div class="form-group">
+							<label class="form-label">Status <span class="required">*</span></label>
+							<SfDropDownList @bind-Value="@RequestModel.Status" DataSource="@StatusOptions" CssClass="form-input">
+								<DropDownListFieldSettings Value="Value" Text="Text"></DropDownListFieldSettings>
+							</SfDropDownList>
+						</div>
+					</div>
+
+					<div class="form-row">
+						<div class="form-group">
+							<label class="form-label">Priority <span class="required">*</span></label>
+							<SfDropDownList @bind-Value="@RequestModel.Priority" DataSource="@PriorityOptions" CssClass="form-input">
+								<DropDownListFieldSettings Value="Value" Text="Text"></DropDownListFieldSettings>
+							</SfDropDownList>
+						</div>
+
+						<div class="form-group">
+							<label class="form-label">Client ID <span class="required">*</span></label>
+							<SfTextBox @bind-Value="@RequestModel.ClientId" Placeholder="Enter client ID" CssClass="form-input">
+							</SfTextBox>
+						</div>
+					</div>
+
+					<div class="form-row">
+						<div class="form-group full-width">
+							<label class="form-label">Source Email <span class="required">*</span></label>
+							<SfTextBox @bind-Value="@RequestModel.SourceEmail" Placeholder="Enter source email" CssClass="form-input">
+							</SfTextBox>
+						</div>
+					</div>
+
+					<div class="form-row">
+						<div class="form-group">
+							<label class="form-label">Assigned Engineer ID <span class="required">*</span></label>
+							<SfTextBox @bind-Value="@RequestModel.AssignedEngineerId" Placeholder="Enter engineer ID"
+												 CssClass="form-input">
+							</SfTextBox>
+						</div>
+
+						<div class="form-group">
+							<label class="form-label">Assigned By <span class="required">*</span></label>
+							<SfTextBox @bind-Value="@RequestModel.AssignedBy" Placeholder="Enter manager ID" CssClass="form-input">
+							</SfTextBox>
+						</div>
+					</div>
+
+					<div class="form-row">
+						<div class="form-group">
+							<label class="form-label">Created Date</label>
+							<SfDateTimePicker @bind-Value="@RequestModel.CreatedDate" Format="MM/dd/yyyy HH:mm" Readonly="true"
+																CssClass="form-input">
+							</SfDateTimePicker>
+						</div>
+
+						<div class="form-group">
+							<label class="form-label">Acknowledgment Date</label>
+							<SfDateTimePicker @bind-Value="@AcknowledgmentDate" Format="MM/dd/yyyy HH:mm" AllowEdit="true"
+																CssClass="form-input">
+							</SfDateTimePicker>
+						</div>
+					</div>
+
+					<div class="form-row">
+						<div class="form-group">
+							<label class="form-label">Completion Date</label>
+							<SfDateTimePicker @bind-Value="@CompletionDate" Format="MM/dd/yyyy HH:mm" AllowEdit="true"
+																CssClass="form-input">
+							</SfDateTimePicker>
+						</div>
+					</div>
+
+					<!-- Validation Messages -->
+					@if (ValidationMessages.Any())
+					{
+						<div class="validation-summary">
+							<ul>
+								@foreach (var message in ValidationMessages)
+								{
+									< li> @message </ li>
+								}
+							</ul>
+						</div>
+
+					}
+				</div>
+			}
+		</Content>
+	</DialogTemplates>
+
+	<DialogButtons>
+		<DialogButton Content="Cancel" CssClass="e-flat" OnClick="this.HandleCancelAsync" />
+		<DialogButton Content="@SaveButtonText" CssClass="e-primary e-flat" IsPrimary="true"
+									OnClick="this.HandleSaveAsync" />
+	</DialogButtons>
+</SfDialog>

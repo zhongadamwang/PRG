@@ -73,3 +73,8 @@ bun run scripts/generate-efcore-repositories.ts /path/to/metadata.json /output/d
 - Uses shared utilities from `project-utilities`
 - Includes automatic code formatting with `dotnet format`
 - Follows established project conventions
+
+
+## UnitTests
+
+- Should add unit tests for all the entities in Repositories.Tests project after Repository classes are generated. This will ensure that the generated repository classes and interfaces are correct and can be used in the application without any issues.

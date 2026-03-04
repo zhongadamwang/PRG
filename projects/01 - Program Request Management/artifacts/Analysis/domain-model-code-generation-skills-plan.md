@@ -134,26 +134,29 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 ### Skill 7a: `service-interface-generator`
 **Responsibility**: Generate business service interface contracts
 **Input**: Entity metadata JSON + Business rules
-**Output**: Service interface files
+**Output**: Service interface files with automatic code formatting
 
 **Script**: `generate-service-interfaces.ts` (run with bun)
-- Generate IService interface definitions
-- Define business operation method signatures
-- Add validation and business rule placeholders
-- Include async/await patterns
+- Generate IService<T> base interface with business operations
+- Generate entity-specific service interfaces (IRequestService, IDataElementService, etc.)
+- Add validation and business rule placeholders with ValidationResult support
+- Include async/await patterns with CancellationToken support
+- **Auto-format generated code with dotnet format**
 
-### Skill 7b: `service-implementation-generator`
-**Responsibility**: Generate business service implementation classes
-**Input**: Service interfaces + Repository interfaces
-**Output**: Service implementation classes
+### Skill 8a: `blazor-page-generator` ✅ **Finished - Page-First Development**
+**Responsibility**: Generate complete Blazor page (.razor) files with routing and page structure
+**Input**: Entity metadata JSON + Page type (List/Create/Edit/Detail)
+**Output**: Complete Blazor page files with navigation and layout
 
-**Script**: `generate-service-implementations.ts` (run with bun)
-- Generate service implementation classes
-- Add dependency injection for repositories
-- Implement basic CRUD business operations
-- Add transaction management and error handling
+**Script**: `generate-blazor-pages.ts` (run with bun)
+- Generate page-level .razor files with @page directives
+- Include MudBlazor layout and container structure
+- Add page-specific toolbars and navigation
+- Integrate with component hierarchy
+- Support multi-entity page relationships
+- **Generated 28 complete Blazor pages (4 types × 7 entities)**
 
-### Skill 8a: `blazor-list-component-generator`
+### Skill 8b: `blazor-list-component-generator`
 **Responsibility**: Generate Blazor list/grid components for entities
 **Input**: Entity metadata JSON
 **Output**: Blazor list component files
@@ -164,7 +167,7 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Include pagination support
 - Add action buttons (Edit, Delete, View)
 
-### Skill 8b: `blazor-form-component-generator`
+### Skill 8c: `blazor-form-component-generator`
 **Responsibility**: Generate Blazor form components for entity editing
 **Input**: Entity metadata JSON + Validation rules
 **Output**: Blazor form component files
@@ -175,7 +178,7 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Include input components for different data types
 - Add save/cancel functionality
 
-### Skill 8c: `blazor-detail-component-generator`
+### Skill 8d: `blazor-detail-component-generator`
 **Responsibility**: Generate Blazor detail view components
 **Input**: Entity metadata JSON
 **Output**: Blazor detail component files
@@ -185,6 +188,19 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Format display for different data types
 - Add navigation to related entities
 - Include action buttons
+
+### Skill 7b: `page-driven-service-generator` 🔄 **Redesigned - Based on Page Operations**
+**Responsibility**: Generate service implementation classes based on actual page operations and business requirements
+**Input**: Generated Blazor pages + Service interfaces + Repository interfaces
+**Output**: Service implementation classes with page-specific business methods
+
+**Script**: `generate-page-driven-services.ts` (run with bun)
+- Analyze generated pages for actual business operations (Create, Edit, Delete, Search, etc.)
+- Generate service implementations with only required methods
+- Add dependency injection for repositories
+- Implement business validation based on page form requirements
+- Add transaction management for multi-step page operations
+- Generate custom business methods based on page-specific workflows
 
 ### Skill 9: `data-context-generator`
 **Responsibility**: Generate EF Core DbContext class
@@ -269,15 +285,10 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 │   │   ├── SKILL.md
 │   │   └── scripts/
 │   │       └── generate-efcore-repositories.ts
-
-│   ├── service-interface-generator/
-│   │   ├── SKILL.md
-│   │   └── scripts/
-│   │       └── generate-service-interfaces.ts
-│   └── service-implementation-generator/
+│   └── service-interface-generator/
 │       ├── SKILL.md
 │       └── scripts/
-│           └── generate-service-implementations.ts
+│           └── generate-service-interfaces.ts
 ├── database/
 │   ├── database-migration-generator/
 │   │   ├── SKILL.md
@@ -287,7 +298,11 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 │       ├── SKILL.md
 │       └── scripts/
 │           └── generate-context.ts
-├── ui-generation/
+├── presentation/
+│   ├── blazor-page-generator/
+│   │   ├── SKILL.md
+│   │   └── scripts/
+│   │       └── generate-blazor-pages.ts
 │   ├── blazor-list-component-generator/
 │   │   ├── SKILL.md
 │   │   └── scripts/
@@ -300,6 +315,11 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 │       ├── SKILL.md
 │       └── scripts/
 │           └── generate-blazor-details.ts
+├── business-logic/
+│   └── page-driven-service-generator/
+│       ├── SKILL.md
+│       └── scripts/
+│           └── generate-page-driven-services.ts
 └── change-management/
     └── incremental-update-generator/
         ├── SKILL.md
@@ -447,7 +467,7 @@ bun run scripts/[script-name].ts
 
 ## Workflow Scenarios
 
-### Scenario 1: New Project
+### Scenario 1: New Project (Page-First Development)
 0. `project-creator` → Create project structure, configure .csproj files, set up development environment
 1. `workflow-orchestrator` → Analyze project state, recommend complete generation process
 2. `domain-model-parser` → Parse domain models
@@ -458,11 +478,14 @@ bun run scripts/[script-name].ts
 7. `database-migration-generator` → Generate database scripts
 8. `repository-interface-generator` → Generate Repository interfaces
 9. `efcore-repository-generator` → Generate EF Core Repository implementations
-10. `service-interface-generator` → Generate service interfaces
-12. `service-implementation-generator` → Generate service implementations
-13. `blazor-list-component-generator` → Generate list components
-14. `blazor-form-component-generator` → Generate form components
-15. `blazor-detail-component-generator` → Generate detail components
+10. `service-interface-generator` → Generate service interfaces (contracts only)
+**[Page-First Development Phase]**
+11. `blazor-page-generator` → Generate complete page structure with routing (NEW)
+12. `blazor-list-component-generator` → Generate list components
+13. `blazor-form-component-generator` → Generate form components
+14. `blazor-detail-component-generator` → Generate detail components
+**[Page-Driven Service Implementation]**
+15. `page-driven-service-generator` → Generate service implementations based on actual page operations (REDESIGNED)
 
 ### Scenario 2: Domain Model Modification
 1. `workflow-orchestrator` → Detect model changes, recommend incremental update process
@@ -480,8 +503,8 @@ bun run scripts/[script-name].ts
 2. Call relevant specific generators:
    **Entity Layer**: `enum-generator` + `entity-class-generator` + `entity-configuration-generator`
    **Data Layer**: `repository-interface-generator` + `efcore-repository-generator`
-   **Business Layer**: `service-interface-generator` + `service-implementation-generator`
-   **UI Layer**: `blazor-list-component-generator` + `blazor-form-component-generator` + `blazor-detail-component-generator`
+   **Business Layer**: `service-interface-generator` + `page-driven-service-generator`
+   **UI Layer**: `blazor-page-generator` + `blazor-list-component-generator` + `blazor-form-component-generator` + `blazor-detail-component-generator`
    **Database**: `database-migration-generator` + `data-context-generator`
 
 ## Integration Points
@@ -489,7 +512,8 @@ bun run scripts/[script-name].ts
 ### Target Code Locations
 - `src/Sanjel.RequestManagement.Core/` - Entity classes and services
 - `src/Sanjel.RequestManagement.Repositories/` - Repository classes
-- `src/Sanjel.RequestManagement.Blazor/Components/` - UI components
+- `src/Sanjel.RequestManagement.Blazor/Pages/` - Blazor pages (NEW)
+- `src/Sanjel.RequestManagement.Blazor/Components/` - Blazor components
 
 ### Configuration Integration
 - Update `.csproj` file dependencies
@@ -544,11 +568,12 @@ After splitting larger skills into focused components, we achieve:
 - `project-utilities` ✅ **Implemented** - Shared utility functions for all skills
 - `project-creator` ❌ **Missing** - Project structure and configuration setup
 
-**Phase 1 (Core)**: Skills 1, 2, 3, 4a, 4b, 5, 9 - Basic enum, entity and database generation ✅ **Complete**
-**Phase 2 (Data Access)**: Skills 6a, 6b - Repository pattern implementation ✅ **Started (6a Complete)**
-**Phase 3 (Business Logic)**: Skills 7a, 7b - Service layer generation
-**Phase 4 (UI)**: Skills 8a, 8b, 8c - Blazor component generation
-**Phase 5 (Change Management)**: Skills 10, 11 - Model change detection and updates
+**Phase 1 (Foundation)**: Skills 1, 2, 3, 4a, 4b, 5, 9 - Basic enum, entity and database generation ✅ **Complete**
+**Phase 2 (Data Access)**: Skills 6a, 6b - Repository pattern implementation ✅ **Complete (6a Complete, 6b Implemented)**
+**Phase 3 (Service Contracts)**: Skill 7a - Service interface generation ✅ **Complete**
+**Phase 4 (Page-First UI)**: Skills 8a, 8b, 8c, 8d - Page and component generation ✅ **Started (8a Complete)**
+**Phase 5 (Page-Driven Services)**: Skill 7b - Service implementation based on page operations 🔄 **REDESIGNED**
+**Phase 6 (Change Management)**: Skills 10, 11 - Model change detection and updates
 
 ## Notes
 
@@ -599,4 +624,84 @@ Successfully migrated from legacy data access patterns to modern EF Core:
 - Batch operations (AddRangeAsync, UpdateRange, RemoveRange)
 - Automatic SaveChanges integration
 
-**Next Implementation:** Continue with `efcore-repository-generator` and complete Phase 2 - Data Access
+**Next Implementation:** Continue with `blazor-list-component-generator`, `blazor-form-component-generator`, and `blazor-detail-component-generator` to complete the UI layer, then implement page-driven service implementations
+
+**Phase 4 Progress: `blazor-page-generator` ✅ COMPLETED**
+
+Successfully implemented and tested the `blazor-page-generator` skill:
+
+**Generated Pages:** 28 complete Blazor pages across 7 entities
+- **Request Pages**: List, Create, Edit, Detail (.razor files with full routing)
+- **DataElement Pages**: List, Create, Edit, Detail  
+- **Engineer Pages**: List, Create, Edit, Detail
+- **Manager Pages**: List, Create, Edit, Detail
+- **Notification Pages**: List, Create, Edit, Detail
+- **ReviewPackage Pages**: List, Create, Edit, Detail
+- **StateDiagram Pages**: List, Create, Edit, Detail
+
+**Key Features Implemented:**
+- ✅ Auto-detection of project structure and metadata
+- ✅ MudBlazor integration with responsive layouts
+- ✅ Route generation with @page directives
+- ✅ Service injection and dependency integration
+- ✅ Navigation breadcrumbs and user-friendly URLs
+- ✅ Error handling and loading states
+- ✅ Action buttons and toolbar integration
+- ✅ Component composition (references to List/Form/Detail components)
+
+**Architecture Benefits:**
+- **Page-First Development**: Establishes UI structure before component implementation
+- **Service Integration**: Pages reference generated service interfaces
+- **Consistent Patterns**: All pages follow the same architectural patterns
+- **Component Ready**: Pages are prepared for integration with component generators
+
+## 🔄 Architecture Shift: Service-First → Page-First Development
+
+**Planning Adjustment Made**: March 3, 2026
+
+### 📋 Key Changes
+
+**1. Reordered Skill Execution Priority:**
+- **Before**: Service Interface → Service Implementation → UI Components
+- **After**: Service Interface → UI Pages → UI Components → Page-Driven Service Implementation
+
+**2. New Skill Added: `blazor-page-generator`**
+- Generates complete `.razor` page files with routing
+- Creates page-level structure and navigation
+- Establishes the foundation for component integration
+
+**3. Redesigned: `service-implementation-generator` → `page-driven-service-generator`**
+- Analyzes actual page operations to determine required service methods
+- Generates only necessary business logic based on UI requirements
+- Prevents over-engineering and ensures UI-Service alignment
+
+### 🎯 Benefits of Page-First Approach
+
+**1. Requirements-Driven Development:**
+- Service methods generated based on actual UI operations
+- Eliminates unused or speculative business logic
+- Ensures tight coupling between user requirements and implementation
+
+**2. Iterative Development Support:**
+- Pages can be developed and tested independently
+- Service logic follows proven UI workflows
+- Faster feedback cycles through UI-first prototyping
+
+**3. Better Architecture Alignment:**
+- Follows modern front-end development patterns
+- Supports MVP (Minimum Viable Product) approach
+- Enables user testing before backend complexity
+
+**4. Reference Implementation Compliance:**
+- Aligns with `/sanjel/eServiceCloud/docs/实现模式-008-Service.md` patterns
+- Follows `/sanjel/eServiceCloud/docs/实现模式-002-Page.md` page structure guidelines
+- Maintains organizational development standards
+
+### 🚀 Implementation Flow
+
+```
+Domain Model → Entities → Data Layer → Service Contracts → 
+Pages → Components → Page-Driven Services → Testing
+```
+
+This approach ensures that the generated code directly supports user workflows while maintaining clean architecture principles.

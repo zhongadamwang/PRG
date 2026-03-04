@@ -550,8 +550,8 @@ function generateRepositoryImplementations(metadataFile?: string, outputDir?: st
 	// Generate repository implementations for domain entities
 	let generatedCount = 0;
 	for (const entity of metadata.entities) {
-		// Skip non-entity types (actors, enums, systems)
-		if (entity.type !== 'entity') {
+		// Skip system and enum types, but include entities and actors
+		if (entity.type === 'system' || entity.type === 'enum') {
 			console.log(`⏭️  Skipping ${entity.name} (type: ${entity.type})`);
 			continue;
 		}

@@ -57,6 +57,5 @@ public class StateDiagramConfiguration : IEntityTypeConfiguration<StateDiagram>
 		builder.HasOne(d => d.Request)
 			.WithOne()
 			.HasForeignKey<Request>("StateDiagramId");
-
 	}
 }

@@ -23,5 +23,5 @@ public enum ValidationEnum
 	/// <summary>
 	/// Validation pending
 	/// </summary>
-	Pending = 3
+	Pending = 3,
 }

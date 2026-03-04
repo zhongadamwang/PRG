@@ -48,6 +48,5 @@ public class NotificationConfiguration : IEntityTypeConfiguration<Notification>
 		// Foreign key reference to Request
 		builder.Property(e => e.RequestId)
 			.HasColumnName("request_id");
-
 	}
 }

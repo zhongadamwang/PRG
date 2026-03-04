@@ -404,8 +404,8 @@ function generateEntityConfigurations(metadataFilePath: string, outputDir?: stri
 
 	// Generate configuration classes
 	for (const entity of metadata.entities) {
-		// Only generate for actual entities
-		if (entity.type !== 'entity') {
+		// Skip system and enum types, but include entities and actors
+		if (entity.type === 'system' || entity.type === 'enum') {
 			console.log(`⏭️  Skipping ${entity.name} (type: ${entity.type})`);
 			continue;
 		}

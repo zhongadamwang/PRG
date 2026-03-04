@@ -23,5 +23,5 @@ public enum ElementTypeEnum
 	/// <summary>
 	/// Selection input element
 	/// </summary>
-	Selection = 3
+	Selection = 3,
 }

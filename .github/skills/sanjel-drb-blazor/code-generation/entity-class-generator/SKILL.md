@@ -62,3 +62,7 @@ bun run scripts/generate-entities.ts
 - Integrates with `entity-configuration-generator` for Fluent API configs
 - Compatible with `data-context-generator` for DbContext generation
 - Supports incremental updates via `model-change-detector`
+
+## UnitTests
+
+- Should add unit tests for all the entities in Core.Tests project after Entity classes are generated. This will ensure that the generated entity classes are correct and can be used in the application without any issues.

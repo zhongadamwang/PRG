@@ -43,5 +43,5 @@ public enum StatusEnum
 	/// <summary>
 	/// Request has been cancelled
 	/// </summary>
-	Cancelled = 7
+	Cancelled = 7,
 }

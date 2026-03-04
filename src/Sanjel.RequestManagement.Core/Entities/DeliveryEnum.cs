@@ -23,5 +23,5 @@ public enum DeliveryEnum
 	/// <summary>
 	/// Notification delivery failed
 	/// </summary>
-	Failed = 3
+	Failed = 3,
 }

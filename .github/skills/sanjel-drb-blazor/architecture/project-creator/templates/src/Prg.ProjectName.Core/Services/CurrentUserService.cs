@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace Prg.ProjectName.Core.Services
+namespace Sanjel.RequestManagement.Core.Services
 {
 	public interface ICurrentUserService
 	{
@@ -15,21 +15,21 @@ namespace Prg.ProjectName.Core.Services
 
 		public CurrentUserService(Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor)
 		{
-			_httpContextAccessor = httpContextAccessor;
+			this._httpContextAccessor = httpContextAccessor;
 		}
 
 		public void SetCurrentUsername(string username)
 		{
-			_currentUsername = username ?? "SYSTEM";
+			this._currentUsername = username ?? "SYSTEM";
 		}
 
 		public string GetCurrentUsername()
 		{
 			// First try to get from HTTP context (for web requests)
-			if (_httpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated == true)
+			if (this._httpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated == true)
 			{
 				// Try to get the username from different claim types based on the auth provider
-				var user = _httpContextAccessor.HttpContext.User;
+				var user = this._httpContextAccessor.HttpContext.User;
 
 				// For Azure AD, try preferred_username first, then name, then email, then identity name
 				var username = user.FindFirst("preferred_username")?.Value ??
@@ -52,7 +52,7 @@ namespace Prg.ProjectName.Core.Services
 			}
 
 			// Fallback to manually set username (for background tasks, tests, etc.)
-			var fallbackUsername = _currentUsername;
+			var fallbackUsername = this._currentUsername;
 			if (!string.IsNullOrEmpty(fallbackUsername))
 			{
 				// Also check fallback username for email format

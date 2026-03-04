@@ -23,5 +23,5 @@ public enum RecipientEnum
 	/// <summary>
 	/// System notification
 	/// </summary>
-	System = 3
+	System = 3,
 }

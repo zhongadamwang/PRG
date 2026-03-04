@@ -78,6 +78,5 @@ public class RequestConfiguration : IEntityTypeConfiguration<Request>
 		builder.HasOne(d => d.Notification)
 			.WithOne()
 			.HasForeignKey<Notification>("RequestId");
-
 	}
 }
