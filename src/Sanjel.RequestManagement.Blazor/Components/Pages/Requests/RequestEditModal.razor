@@ -9,23 +9,24 @@
 					CloseOnEscape="true">
 	<DialogTemplates>
 		<Header>
-			<div class="dialog-header">@DialogTitle</div>
+			<div class="dialog-header">@this.DialogTitle</div>
 		</Header>
 		<Content>
-			@if (RequestModel != null)
+			@if (this.RequestModel != null)
 			{
 				<div class="modal-form">
 					<div class="form-row">
 						<div class="form-group">
 							<label class="form-label">Request ID</label>
-							<SfTextBox @bind-Value="@RequestModel.RequestId" Placeholder="Auto-generated" Readonly="@(!IsNewRequest)"
-												 CssClass="form-input">
+							<SfTextBox @bind-Value="@this.RequestModel.RequestId" Placeholder="Auto-generated"
+												 Readonly="@(!this.IsNewRequest)" CssClass="form-input">
 							</SfTextBox>
 						</div>
 
 						<div class="form-group">
 							<label class="form-label">Status <span class="required">*</span></label>
-							<SfDropDownList @bind-Value="@RequestModel.Status" DataSource="@StatusOptions" CssClass="form-input">
+							<SfDropDownList @bind-Value="@this.RequestModel.Status" DataSource="@this.StatusOptions"
+															CssClass="form-input">
 								<DropDownListFieldSettings Value="Value" Text="Text"></DropDownListFieldSettings>
 							</SfDropDownList>
 						</div>
@@ -34,14 +35,15 @@
 					<div class="form-row">
 						<div class="form-group">
 							<label class="form-label">Priority <span class="required">*</span></label>
-							<SfDropDownList @bind-Value="@RequestModel.Priority" DataSource="@PriorityOptions" CssClass="form-input">
+							<SfDropDownList @bind-Value="@this.RequestModel.Priority" DataSource="@this.PriorityOptions"
+															CssClass="form-input">
 								<DropDownListFieldSettings Value="Value" Text="Text"></DropDownListFieldSettings>
 							</SfDropDownList>
 						</div>
 
 						<div class="form-group">
 							<label class="form-label">Client ID <span class="required">*</span></label>
-							<SfTextBox @bind-Value="@RequestModel.ClientId" Placeholder="Enter client ID" CssClass="form-input">
+							<SfTextBox @bind-Value="@this.RequestModel.ClientId" Placeholder="Enter client ID" CssClass="form-input">
 							</SfTextBox>
 						</div>
 					</div>
@@ -49,7 +51,8 @@
 					<div class="form-row">
 						<div class="form-group full-width">
 							<label class="form-label">Source Email <span class="required">*</span></label>
-							<SfTextBox @bind-Value="@RequestModel.SourceEmail" Placeholder="Enter source email" CssClass="form-input">
+							<SfTextBox @bind-Value="@this.RequestModel.SourceEmail" Placeholder="Enter source email"
+												 CssClass="form-input">
 							</SfTextBox>
 						</div>
 					</div>
@@ -57,14 +60,14 @@
 					<div class="form-row">
 						<div class="form-group">
 							<label class="form-label">Assigned Engineer ID <span class="required">*</span></label>
-							<SfTextBox @bind-Value="@RequestModel.AssignedEngineerId" Placeholder="Enter engineer ID"
+							<SfTextBox @bind-Value="@this.RequestModel.AssignedEngineerId" Placeholder="Enter engineer ID"
 												 CssClass="form-input">
 							</SfTextBox>
 						</div>
 
 						<div class="form-group">
 							<label class="form-label">Assigned By <span class="required">*</span></label>
-							<SfTextBox @bind-Value="@RequestModel.AssignedBy" Placeholder="Enter manager ID" CssClass="form-input">
+							<SfTextBox @bind-Value="@this.RequestModel.AssignedBy" Placeholder="Enter manager ID" CssClass="form-input">
 							</SfTextBox>
 						</div>
 					</div>
@@ -72,14 +75,14 @@
 					<div class="form-row">
 						<div class="form-group">
 							<label class="form-label">Created Date</label>
-							<SfDateTimePicker @bind-Value="@RequestModel.CreatedDate" Format="MM/dd/yyyy HH:mm" Readonly="true"
+							<SfDateTimePicker @bind-Value="@this.RequestModel.CreatedDate" Format="MM/dd/yyyy HH:mm" Readonly="true"
 																CssClass="form-input">
 							</SfDateTimePicker>
 						</div>
 
 						<div class="form-group">
 							<label class="form-label">Acknowledgment Date</label>
-							<SfDateTimePicker @bind-Value="@AcknowledgmentDate" Format="MM/dd/yyyy HH:mm" AllowEdit="true"
+							<SfDateTimePicker @bind-Value="@this.AcknowledgmentDate" Format="MM/dd/yyyy HH:mm" AllowEdit="true"
 																CssClass="form-input">
 							</SfDateTimePicker>
 						</div>
@@ -88,20 +91,20 @@
 					<div class="form-row">
 						<div class="form-group">
 							<label class="form-label">Completion Date</label>
-							<SfDateTimePicker @bind-Value="@CompletionDate" Format="MM/dd/yyyy HH:mm" AllowEdit="true"
+							<SfDateTimePicker @bind-Value="@this.CompletionDate" Format="MM/dd/yyyy HH:mm" AllowEdit="true"
 																CssClass="form-input">
 							</SfDateTimePicker>
 						</div>
 					</div>
 
 					<!-- Validation Messages -->
-					@if (ValidationMessages.Any())
+					@if (this.ValidationMessages.Any())
 					{
 						<div class="validation-summary">
 							<ul>
-								@foreach (var message in ValidationMessages)
+								@foreach (var message in this.ValidationMessages)
 								{
-									< li> @message </ li>
+									<li>@message</li>
 								}
 							</ul>
 						</div>
@@ -112,14 +115,14 @@
 		</Content>
 		<FooterTemplate>
 			<div class="modal-footer">
-				<SfButton @onclick="this.HandleSaveAsync" IsPrimary="true" Disabled="@IsProcessing" CssClass="btn-save">
-					@if (IsProcessing)
+				<SfButton @onclick="this.HandleSaveAsync" IsPrimary="true" Disabled="@this.IsProcessing" CssClass="btn-save">
+					@if (this.IsProcessing)
 					{
 						<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
 					}
-					@SaveButtonText
+					@this.SaveButtonText
 				</SfButton>
-				<SfButton @onclick="this.HandleCancelAsync" Disabled="@IsProcessing" CssClass="btn-cancel">
+				<SfButton @onclick="this.HandleCancelAsync" Disabled="@this.IsProcessing" CssClass="btn-cancel">
 					Cancel
 				</SfButton>
 			</div>
