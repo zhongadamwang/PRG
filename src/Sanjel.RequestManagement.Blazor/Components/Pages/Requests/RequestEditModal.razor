@@ -110,6 +110,20 @@
 				</div>
 			}
 		</Content>
+		<FooterTemplate>
+			<div class="modal-footer">
+				<SfButton @onclick="this.HandleSaveAsync" IsPrimary="true" Disabled="@IsProcessing" CssClass="btn-save">
+					@if (IsProcessing)
+					{
+						<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+					}
+					@SaveButtonText
+				</SfButton>
+				<SfButton @onclick="this.HandleCancelAsync" Disabled="@IsProcessing" CssClass="btn-cancel">
+					Cancel
+				</SfButton>
+			</div>
+		</FooterTemplate>
 	</DialogTemplates>
 	<DialogEvents Opened="this.OnDialogOpen" Closed="this.OnDialogClose"></DialogEvents>
 </SfDialog>
