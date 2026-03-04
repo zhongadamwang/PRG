@@ -1,0 +1,16 @@
+@page "/"
+@namespace {{PROJECT_NAMESPACE}}.Pages
+
+<PageTitle>Home</PageTitle>
+
+<h1>Welcome to {{PROJECT_DISPLAY_NAME}}</h1>
+
+<p>Your application is successfully running with {{COMPONENT_LIBRARY_NAME}}.</p>
+
+<div class="getting-started">
+    <h3>Getting Started</h3>
+    <p>This application was generated using the Blazor Architecture Generator skill.</p>
+    <p>You can now add your domain-specific pages and components.</p>
+    
+    <a href="/counter" class="demo-link">Try Counter Example</a>
+</div>

@@ -1,0 +1,29 @@
+{
+	"Logging": {
+		"LogLevel": {
+			"Default": "Information",
+			"Microsoft.AspNetCore": "Warning"
+		}
+	},
+	"AllowedHosts": "*",
+	"APPINSIGHTS_INSTRUMENTATIONKEY": "placeholder",
+	"AzureAd": {
+		"Instance": "https://login.microsoftonline.com/",
+		"CallbackPath": "/signin-oidc",
+		"SignedOutCallbackPath": "/signout-callback-oidc",
+		"ClientId": "",
+		"ClientSecret": "",
+		"ClientDomain": "{{DOMAIN_NAME}}",
+		"TenantId": ""
+	},
+	"Blazor": {
+		"Version": "0.0.0",
+		"Build": "1",
+		"BuildDate": "{{BUILD_DATE}}",
+		"SourceBranch": "main",
+		"SyncfusionLicenseKey": "{{SYNCFUSION_LICENSE_KEY}}"
+	},
+	"SanjelMdm": {
+		"DbConnectionString": "{{CONNECTION_STRING}}"
+	}
+}

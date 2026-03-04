@@ -145,26 +145,49 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 
 ## 🆕 Blazor Layered Architecture Design - Supporting Flexible Component Library Selection
 
+### 🎯 Critical Design Principle: Skills Layering vs Code Layering
+
+**Important Clarification (Added March 4, 2026):**
+
+**Skills Layering ≠ Code Layering**
+- **Skills Layering**: Organization and execution sequence of AI skills (this document's layer design)
+- **Code Layering**: Architecture of the generated Blazor application code
+- **Key Understanding**: Do NOT push Skills layer abstractions into generated code
+
+**Correct Approach:**
+- Skills should generate **concrete, working code** with specific component library implementations
+- Component library switching achieved through **Skills re-generation**, not code-level abstractions
+- Each skill produces **simple, direct implementations** without unnecessary abstraction layers
+- **Skills orchestration** handles complexity, **generated code** remains straightforward
+
+**Example:**
+- ❌ Wrong: Generate IComponentAdapter interfaces and adapter pattern code
+- ✅ Correct: Generate MainLayout.razor directly using MudBlazor components
+- ✅ Switching: Run `blazor-syncfusion-adapter` skill to replace MudBlazor with Syncfusion
+
 ### Layer 1: Architecture Foundation Layer
 
-#### Skill 8a: `blazor-architecture-generator` 🔄 **Redesigned**
-**Responsibility**: Generate .NET Blazor architecture foundation and configure component library ecosystem
-**Input**: Project configuration + .NET Blazor component library selection (Syncfusion/MudBlazor/Telerik/DevExpress etc.)
-**Output**: Complete Blazor architecture setup with configured component libraries
+#### Skill 8a: `blazor-architecture-generator` 🔄 **Redesigned** [Priority 1]
+**Responsibility**: Generate complete Blazor application foundation with a specific component library (direct implementation)
+**Input**: Project configuration + Component library selection (e.g., MudBlazor, Syncfusion, Bootstrap)
+**Output**: Working Blazor application with concrete component library implementation
 
 **Script**: `generate-blazor-architecture.ts` (run with bun)
-- Generate foundational page layout structure (Layout.razor, MainLayout.razor, NavMenu.razor)
-- Install NuGet packages for selected Blazor component libraries
-- Configure component library dependencies in .csproj files
-- Set up license registration for commercial libraries (Syncfusion, Telerik, DevExpress)
-- Create CSS/SCSS imports and theme configuration files
-- Generate Program.cs service registrations for component libraries
-- Configure routing and navigation structure
-- Set up dependency injection container configuration for Blazor services
-- Generate _Imports.razor with component library namespaces
-- Configure appsettings.json for component library settings
+- Generate standard Blazor project structure (Components/, Pages/, wwwroot/)
+- Create concrete layout files (MainLayout.razor, NavMenu.razor) using selected component library
+- Install and configure NuGet packages for chosen component library
+- Generate Program.cs with specific component library service registrations
+- Create _Imports.razor with component library namespaces
+- Generate working CSS/JS files and theme configuration
+- Configure appsettings.json with component library-specific settings
+- **Output**: Complete, runnable Blazor application (no abstractions, direct implementation)
 
-#### Skill 8b: `blazor-data-integration-generator`
+**Component Library Switching Strategy:**
+- Switching = Re-run different adapter skill (e.g., `blazor-syncfusion-adapter`)
+- Adapter skills replace/update concrete implementations in existing files
+- No code-level abstraction layers - switching handled by Skills orchestration
+
+#### Skill 8b: `blazor-data-integration-generator` [Priority 2]
 **Responsibility**: Generate data integration and state management layer
 **Input**: Entity metadata JSON + Service interfaces
 **Output**: Data access layer and state management components
@@ -177,18 +200,20 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 
 ### Layer 2: Page Pattern Layer
 
-#### Skill 8c: `blazor-page-pattern-generator` 🔄 **Enhanced - Component Library Agnostic**
-**Responsibility**: Generate abstract page patterns and routing structure (component library agnostic)
-**Input**: Entity metadata JSON + Page patterns (List/Form/Detail/Dashboard)
-**Output**: Page pattern interfaces and abstract structure
+#### Skill 8c: `blazor-page-pattern-generator` 🔄 **Enhanced - Component Library Agnostic** [Priority 3]
+**Responsibility**: Generate concrete page files using current component library (not abstractions)
+**Input**: Entity metadata JSON + Current project component library detection
+**Output**: Concrete .razor page files using detected component library
 
 **Script**: `generate-page-patterns.ts` (run with bun)
-- Define page interfaces and abstract classes (IListPage<T>, IFormPage<T>, IDetailPage<T>)
-- Generate page lifecycle management
-- Create inter-page navigation and parameter passing mechanisms
-- Add permission control and user interaction patterns
+- Detect current component library in project (MudBlazor, Syncfusion, etc.)
+- Generate concrete List.razor, Create.razor, Edit.razor, Detail.razor pages
+- Use specific component library components directly (no abstraction layer)
+- Configure routing with @page directives
+- Implement navigation and parameter passing using concrete components
+- **Output**: Working page files with direct component implementations
 
-#### Skill 8d: `blazor-list-pattern-generator`
+#### Skill 8d: `blazor-list-pattern-generator` [Priority 4]
 **Responsibility**: Generate business logic patterns for list pages
 **Input**: Entity metadata JSON + Sorting, filtering, pagination requirements
 **Output**: List page business logic and interaction patterns
@@ -199,7 +224,7 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Create batch operation functionality (batch delete, export, etc.)
 - Generate list item interaction event handling
 
-#### Skill 8e: `blazor-form-pattern-generator`
+#### Skill 8e: `blazor-form-pattern-generator` [Priority 5]
 **Responsibility**: Generate form page business logic and validation patterns
 **Input**: Entity metadata JSON + Validation rules + Form layout requirements
 **Output**: Form business logic and validation mechanisms
@@ -210,7 +235,7 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Create form state tracking (dirty data detection, auto-save)
 - Generate complex form interactions (cascading selection, conditional display)
 
-#### Skill 8f: `blazor-detail-pattern-generator`
+#### Skill 8f: `blazor-detail-pattern-generator` [Priority 6]
 **Responsibility**: Generate detail page display logic and related data processing
 **Input**: Entity metadata JSON + Related entity information
 **Output**: Detail page business logic and related data management
@@ -223,41 +248,37 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 
 ### Layer 3: Component Library Adapter Layer
 
-#### Skill 8g: `blazor-component-adapter-base`
-**Responsibility**: Component adapter foundation framework and interface definition
-**Input**: Page pattern interfaces
-**Output**: Component adapter base classes and interfaces
+#### Skill 8g: `blazor-component-adapter-base` [Priority 7] **⚠️ DEPRECATED**
+**Status**: This skill concept has been revised - no longer needed
+**Reason**: Component library switching handled by direct replacement skills, not abstraction layers
 
-**Script**: `generate-adapter-base.ts` (run with bun)
-- Define component adapter interfaces (IComponentAdapter)
-- Create adapter base classes (BaseComponentAdapter)
-- Generate component mapping and transformation mechanisms
-- Add theme and style adaptation interfaces
-
-#### Skill 8h: `blazor-syncfusion-adapter` 🎯 **Current Priority**
-**Responsibility**: Syncfusion Blazor component library adapter implementation
-**Input**: Page patterns + Syncfusion component configuration
-**Output**: Syncfusion concrete component implementations
+#### Skill 8h: `blazor-syncfusion-adapter` 🎯 **Current Priority** [Priority 8]
+**Responsibility**: Replace existing component library implementation with Syncfusion Blazor components
+**Input**: Existing Blazor project + Syncfusion configuration preferences
+**Output**: Updated project files with Syncfusion component implementations
 
 **Script**: `generate-syncfusion-adapter.ts` (run with bun)
-- Implement Syncfusion data grid adaptation (SfGrid)
-- Generate Syncfusion form component adaptation (SfTextBox, SfDropDownList, etc.)
-- Add Syncfusion theme and style configuration
-- Create Syncfusion-specific feature integration (charts, calendar, etc.)
+- Replace NuGet package references (remove old library, add Syncfusion packages)
+- Update Program.cs service registrations for Syncfusion
+- Replace _Imports.razor namespaces with Syncfusion imports  
+- Update MainLayout.razor and NavMenu.razor to use Syncfusion components (SfSidebar, SfAppBar, etc.)
+- Replace CSS/theme files with Syncfusion theme configuration
+- Update appsettings.json with Syncfusion license and configuration
+- **Result**: Direct Syncfusion implementation (no abstraction layers)
 
-#### Skill 8i: `blazor-material-adapter` 📋 **Future Extension**
-**Responsibility**: Material Design Blazor component library adapter
-**Input**: Page patterns + Material Design configuration
-**Output**: Material Design concrete component implementations
+#### Skill 8i: `blazor-material-adapter` 📋 **Future Extension** [Optional]
+**Responsibility**: Replace existing component library implementation with Material Design Blazor components  
+**Input**: Existing Blazor project + Material Design preferences
+**Output**: Updated project files with Material Design component implementations
 
 **Script**: `generate-material-adapter.ts` (run with bun)
-- Prepare for future extension of MudBlazor or other Material Design libraries
-- Support Material Design design style
-- Provide smooth component library migration path
+- Replace component library with MudBlazor or other Material Design library
+- Update all layout and configuration files for Material Design components
+- **Result**: Direct Material Design implementation (no abstraction layers)
 
 ### Layer 4: Styling and Theme Layer
 
-#### Skill 8j: `blazor-theme-generator`
+#### Skill 8j: `blazor-theme-generator` [Priority 9]
 **Responsibility**: Theme, styling, and brand customization generation
 **Input**: Brand configuration + Design system specifications
 **Output**: Theme CSS, brand styling, and customization configuration
@@ -314,6 +335,30 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Update existing entity classes
 - Add new Repository methods
 - Update service layer code
+
+### Skill 12: `test-code-generator`
+**Responsibility**: Generate unit tests for generated code (entities, repositories, services, pages)
+**Input**: Entity metadata JSON + Generated code files
+**Output**: Unit test files in corresponding test projects
+
+**Script**: `generate-tests.ts` (run with bun)
+- Generate unit tests for entity classes
+- Generate repository tests (CRUD, query, transaction)
+- Generate service layer tests (business logic, validation)
+- Generate page/component tests for Blazor UI
+- Support for test data generation and mocking
+
+### Skill 13: `configuration-file-manager`
+**Responsibility**: Manage and generate environment configuration files and application settings
+**Input**: Environment specifications + Feature requirements
+**Output**: Complete appsettings.json, logging, middleware, and DI configuration files
+
+**Script**: `generate-configurations.ts` (run with bun)
+- Generate appsettings.json for all environments (Development, Production, etc.)
+- Generate logging configuration
+- Generate middleware configuration
+- Update DI container setup
+- Support for custom feature flags and secrets
 
 ## Directory Structure
 
@@ -600,13 +645,17 @@ bun run scripts/[script-name].ts
 **[Business Logic Integration Phase]**
 20. `page-driven-service-generator` → Generate service implementations based on page operations
 
-### Scenario 2: Component Library Migration (Syncfusion → Material Design)
-1. `workflow-orchestrator` → Detect component library migration requirements
-2. `blazor-architecture-generator` → Update project configuration for new component library
-3. `blazor-material-adapter` → Generate Material Design component implementations
-4. `blazor-theme-generator` → Regenerate themes for new component library
-5. **No business logic layer changes needed** - Page pattern layer remains unchanged
-6. **No data layer changes needed** - Data integration layer remains unchanged
+### Scenario 2: Component Library Migration (MudBlazor → Syncfusion) **🔄 UPDATED**
+1. `workflow-orchestrator` → Detect component library migration intent
+2. `blazor-syncfusion-adapter` → Replace all MudBlazor references and implementations with Syncfusion
+   - Update .csproj package references
+   - Replace Program.cs service registrations  
+   - Update _Imports.razor namespaces
+   - Replace MainLayout.razor and NavMenu.razor components
+   - Update CSS/theme files
+3. **No page pattern regeneration needed** - Existing pages continue to work with new component library
+4. **No data layer changes needed** - Only UI layer files are updated
+5. **Result**: Same application functionality with different component library (direct replacement)
 
 ### Scenario 3: Domain Model Modification
 1. `workflow-orchestrator` → Detect model changes, recommend incremental update process
@@ -617,6 +666,8 @@ bun run scripts/[script-name].ts
    - **New entities**: 数据层 + 页面模式层 (only abstract patterns, adapters remain)
    - **Relationship changes**: `entity-configuration-generator` + `data-context-generator` + `blazor-data-integration-generator`
    - **UI changes**: Only regenerate affected page patterns, adapters auto-adapt
+ 5. `test-code-generator` → Generate/Update unit tests for changed code
+ 6. `configuration-file-manager` → Update configuration files if required by changes
 
 ### Scenario 4: Add New Component Library (Maintain Multi-Library Coexistence)
 1. `workflow-orchestrator` → Based on user intent, recommend adapter-only generation
@@ -641,13 +692,12 @@ bun run scripts/[script-name].ts
 
 ### Target Code Locations
 - `src/Sanjel.RequestManagement.Core/` - Entity classes and services
-- `src/Sanjel.RequestManagement.Repositories/` - Repository classes
-- `src/Sanjel.RequestManagement.Blazor/Architecture/` - Architecture foundation and configuration (NEW)
-- `src/Sanjel.RequestManagement.Blazor/Data/` - Data integration and state management (NEW)
-- `src/Sanjel.RequestManagement.Blazor/Pages/` - Page patterns and abstract structure (REDESIGNED)
-- `src/Sanjel.RequestManagement.Blazor/Components/` - Component library adapter implementations (REDESIGNED)
-- `src/Sanjel.RequestManagement.Blazor/Themes/` - Theme and styling configuration (NEW)
-- `src/Sanjel.RequestManagement.Blazor/Adapters/` - Component adapter interfaces (NEW)
+- `src/Sanjel.RequestManagement.Repositories/` - Repository classes  
+- `src/Sanjel.RequestManagement.Blazor/Components/` - Layout components (MainLayout.razor, NavMenu.razor)
+- `src/Sanjel.RequestManagement.Blazor/Pages/` - Page files (List, Create, Edit, Detail pages)
+- `src/Sanjel.RequestManagement.Blazor/wwwroot/` - Static assets (CSS, JS, theme files)
+- `src/Sanjel.RequestManagement.Blazor/_Imports.razor` - Component library namespace imports
+- `src/Sanjel.RequestManagement.Blazor/Program.cs` - Service registrations and configuration
 
 ### Configuration Integration
 - Update `.csproj` file dependencies
@@ -700,6 +750,8 @@ After splitting larger skills into focused components, we achieve:
 6. Implement UI generation skills: Blazor list, form, and detail generators
 7. Implement change management: `model-change-detector` + `incremental-update-generator`
 9. Test with existing domain model and refine based on real-world usage
+10. Implement `test-code-generator` for automated unit test generation
+11. Implement `configuration-file-manager` for environment and appsettings management
 
 ## Implementation Priority
 

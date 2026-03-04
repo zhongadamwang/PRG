@@ -1,0 +1,18 @@
+using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+
+namespace {{PROJECT_NAMESPACE}}.Pages;
+
+public partial class Error : ComponentBase
+{
+    [Parameter]
+    public string? ErrorMessage { get; set; }
+    
+    [Inject]
+    public IJSRuntime JSRuntime { get; set; } = null!;
+    
+    private async Task RefreshPage()
+    {
+        await JSRuntime.InvokeVoidAsync("location.reload");
+    }
+}

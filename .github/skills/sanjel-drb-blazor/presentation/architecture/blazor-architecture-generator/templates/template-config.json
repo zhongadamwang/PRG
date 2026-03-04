@@ -1,0 +1,160 @@
+{
+	"templateVersion": "1.0.0",
+	"description": "Blazor Architecture Generator Templates",
+	"componentLibraries": {
+		"mudblazor": {
+			"name": "MudBlazor",
+			"version": "6.11.2",
+			"templates": {
+				"mainLayout": "mudblazor/MainLayout.razor.template",
+				"mainLayoutCs": "mudblazor/MainLayout.razor.cs.template",
+				"navMenu": "mudblazor/NavMenu.razor.template",
+				"navMenuCs": "mudblazor/NavMenu.razor.cs.template",
+				"app": "mudblazor/App.razor.template",
+				"appCs": "mudblazor/App.razor.cs.template",
+				"routes": "mudblazor/Routes.razor.template",
+				"routesCs": "mudblazor/Routes.razor.cs.template",
+				"imports": "mudblazor/_Imports.razor.template",
+				"programCs": "mudblazor/Program.cs.template",
+				"siteCss": "mudblazor/site.css.template",
+				"csproj": "mudblazor/.csproj.template"
+			},
+			"packageReferences": [
+				{
+					"name": "MudBlazor",
+					"version": "6.11.2"
+				}
+			],
+			"serviceRegistrations": [
+				"builder.Services.AddMudServices();"
+			],
+			"namespaceImports": [
+				"@using MudBlazor"
+			]
+		},
+
+		"syncfusion": {
+			"name": "Syncfusion Blazor",
+			"version": "23.2.4",
+			"templates": {
+				"mainLayout": "syncfusion/MainLayout.razor.template",
+				"mainLayoutCs": "syncfusion/MainLayout.razor.cs.template",
+				"navMenu": "syncfusion/NavMenu.razor.template",
+				"navMenuCs": "syncfusion/NavMenu.razor.cs.template",
+				"app": "syncfusion/App.razor.template",
+				"appCs": "syncfusion/App.razor.cs.template",
+				"routes": "syncfusion/Routes.razor.template",
+				"routesCs": "syncfusion/Routes.razor.cs.template",
+				"imports": "syncfusion/_Imports.razor.template",
+				"programCs": "syncfusion/Program.cs.template",
+				"siteCss": "syncfusion/site.css.template",
+				"csproj": "syncfusion/.csproj.template"
+			},
+			"packageReferences": [
+				{
+					"name": "Syncfusion.Blazor.Core",
+					"version": "23.2.4"
+				},
+				{
+					"name": "Syncfusion.Blazor.Themes",
+					"version": "23.2.4"
+				},
+				{
+					"name": "Syncfusion.Blazor.Grid",
+					"version": "23.2.4"
+				},
+				{
+					"name": "Syncfusion.Blazor.Inputs",
+					"version": "23.2.4"
+				}
+			],
+			"serviceRegistrations": [
+				"builder.Services.AddSyncfusionBlazor();"
+			],
+			"namespaceImports": [
+				"@using Syncfusion.Blazor",
+				"@using Syncfusion.Blazor.Grids",
+				"@using Syncfusion.Blazor.Inputs"
+			],
+			"licenseRequired": true,
+			"licenseConfiguration": {
+				"configKey": "Syncfusion:LicenseKey",
+				"registrationCode": "Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(builder.Configuration[\"Syncfusion:LicenseKey\"]);"
+			}
+		},
+
+		"bootstrap": {
+			"name": "Bootstrap",
+			"version": "5.3.0",
+			"templates": {
+				"mainLayout": "bootstrap/MainLayout.razor.template",
+				"mainLayoutCs": "bootstrap/MainLayout.razor.cs.template",
+				"navMenu": "bootstrap/NavMenu.razor.template",
+				"navMenuCs": "bootstrap/NavMenu.razor.cs.template",
+				"app": "bootstrap/App.razor.template",
+				"appCs": "bootstrap/App.razor.cs.template",
+				"routes": "bootstrap/Routes.razor.template",
+				"routesCs": "bootstrap/Routes.razor.cs.template",
+				"imports": "bootstrap/_Imports.razor.template",
+				"programCs": "bootstrap/Program.cs.template",
+				"siteCss": "bootstrap/site.css.template",
+				"csproj": "bootstrap/.csproj.template"
+			},
+			"packageReferences": [ ],
+			"serviceRegistrations": [ ],
+			"namespaceImports": [ ],
+			"cdnReferences": {
+				"css": [
+					"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+				],
+				"js": [
+					"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+				]
+			}
+		},
+
+		"none": {
+			"name": "None (Minimal)",
+			"version": "1.0.0",
+			"templates": {
+				"mainLayout": "minimal/MainLayout.razor.template",
+				"mainLayoutCs": "minimal/MainLayout.razor.cs.template",
+				"navMenu": "minimal/NavMenu.razor.template",
+				"navMenuCs": "minimal/NavMenu.razor.cs.template",
+				"app": "minimal/App.razor.template",
+				"appCs": "minimal/App.razor.cs.template",
+				"routes": "minimal/Routes.razor.template",
+				"routesCs": "minimal/Routes.razor.cs.template",
+				"imports": "minimal/_Imports.razor.template",
+				"programCs": "minimal/Program.cs.template",
+				"siteCss": "minimal/site.css.template",
+				"csproj": "minimal/.csproj.template"
+			},
+			"packageReferences": [ ],
+			"serviceRegistrations": [ ],
+			"namespaceImports": [ ]
+		}
+	},
+
+	"commonTemplates": {
+		"homeRazor": "common/Home.razor.template",
+		"homeRazorCs": "common/Home.razor.cs.template",
+		"errorRazor": "common/Error.razor.template",
+		"errorRazorCs": "common/Error.razor.cs.template",
+		"counterRazor": "common/Counter.razor.template",
+		"counterRazorCs": "common/Counter.razor.cs.template",
+		"appSettings": "common/appsettings.json.template",
+		"siteJs": "common/site.js.template",
+		"installationGuide": "common/installation-guide.md.template"
+	},
+
+	"extensions": {
+		"description": "Extension points for adding new component libraries",
+		"howToAdd": [
+			"1. Add library configuration to this JSON file",
+			"2. Create template files in templates/{library-name}/ directory",
+			"3. Update TypeScript script to handle new library type",
+			"4. Test generation with new library"
+		]
+	}
+}

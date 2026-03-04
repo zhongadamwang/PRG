@@ -1,4 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using MudBlazor.Services;
+using {{PROJECT_NAMESPACE}}.Components;
+using {{PROJECT_NAMESPACE}}.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,21 +9,27 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
 		.AddInteractiveServerComponents();
 
+// Add MudBlazor services
+builder.Services.AddMudServices();
+
 // Register HTTP Context Accessor
 builder.Services.AddHttpContextAccessor();
 
 var connectionString = builder.Configuration.GetConnectionString("SanjelMdm:DbConnectionString")
 	?? builder.Configuration["SanjelMdm:DbConnectionString"];
 
-builder.Services.AddDbContext<Prg.ProjectName.Core.Data.ProjectNameDbContext>(options =>
+builder.Services.AddDbContext<{{PROJECT_NAMESPACE}}.Core.Data.RequestManagementDbContext>(options =>
 	options.UseSqlServer(connectionString));
+
+// Register Mock Services for demo
+builder.Services.AddScoped<IRequestsMockService, RequestsMockService>();
 
 // Use Scrutor for assembly scanning and auto-registration
 builder.Services.Scan(scan => scan
 	// Scan multiple assemblies
-	.FromAssemblies(typeof(Prg.ProjectName.Repositories.Common.IRepository<>).Assembly)
-	.FromAssemblyOf<Prg.ProjectName.Core.Services.ICurrentUserService>()
-	.FromAssemblyOf<Prg.ProjectName.Blazor.Components.App>()
+	.FromAssemblies(typeof({{PROJECT_NAMESPACE}}.Repositories.Common.IRepository<>).Assembly)
+	.FromAssemblyOf<{{PROJECT_NAMESPACE}}.Core.Services.ICurrentUserService>()
+	.FromAssemblyOf<{{PROJECT_NAMESPACE}}.Components.App>()
 
 	// Register by naming convention: IService -> Service, IRepository -> Repository
 	.AddClasses(classes => classes
@@ -37,7 +46,7 @@ builder.Services.Scan(scan => scan
 
 	// Register all classes that implement IRepository<T>
 	.AddClasses(classes => classes
-		.AssignableTo(typeof(Prg.ProjectName.Repositories.Common.IRepository<>)))
+		.AssignableTo(typeof({{PROJECT_NAMESPACE}}.Repositories.Common.IRepository<>)))
 	.AsImplementedInterfaces()
 	.WithScopedLifetime()
 
@@ -60,12 +69,13 @@ if (!app.Environment.IsDevelopment())
 	app.UseHsts();
 	app.UseHttpsRedirection();
 }
+
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
 
 app.UseAntiforgery();
 
 app.MapStaticAssets();
-app.MapRazorComponents<Prg.ProjectName.Blazor.Components.App>()
+app.MapRazorComponents<{{PROJECT_NAMESPACE}}.Components.App>()
 		.AddInteractiveServerRenderMode();
 
 app.Run();
