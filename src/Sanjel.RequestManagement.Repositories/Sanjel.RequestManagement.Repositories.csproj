@@ -1,7 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<ItemGroup>
-		<ProjectReference Include="..\Sanjel.RequestManagement.Core\Sanjel.RequestManagement.Core.csproj" />
+		<ProjectReference
+			Include="..\Sanjel.RequestManagement.Core\Sanjel.RequestManagement.Core.csproj" />
+		<ProjectReference
+			Include="..\Sanjel.RequestManagement.Entities\Sanjel.RequestManagement.Entities.csproj" />
 		<ProjectReference
 			Include="..\Sanjel.RequestManagement.BusinessProcess\Sanjel.RequestManagement.BusinessProcess.csproj" />
 	</ItemGroup>

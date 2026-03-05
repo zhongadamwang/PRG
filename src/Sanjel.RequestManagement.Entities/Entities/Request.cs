@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Sanjel.RequestManagement.Core.Entities;
+namespace Sanjel.RequestManagement.Entities.Entities;
 
 /// <summary>
 /// Program request submitted for engineering work with complete lifecycle tracking

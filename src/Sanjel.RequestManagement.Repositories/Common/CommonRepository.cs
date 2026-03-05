@@ -11,11 +11,11 @@ public class BaseRepository<TEntity> : IRepository<TEntity>
 	where TEntity : class
 {
 #pragma warning disable SA1401
-	protected readonly Sanjel.RequestManagement.Core.Data.RequestManagementDbContext _context;
+	protected readonly Sanjel.RequestManagement.Entities.Data.RequestManagementDbContext _context;
 	protected readonly DbSet<TEntity> _dbSet;
 #pragma warning restore SA1401
 
-	public BaseRepository(Sanjel.RequestManagement.Core.Data.RequestManagementDbContext context)
+	public BaseRepository(Sanjel.RequestManagement.Entities.Data.RequestManagementDbContext context)
 	{
 		this._context = context;
 		this._dbSet = context.Set<TEntity>();

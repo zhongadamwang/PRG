@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Linq.Expressions;
 using Sanjel.RequestManagement.Repositories.Common;
-using Entity = Sanjel.RequestManagement.Core.Entities.Notification;
+using Entity = Sanjel.RequestManagement.Entities.Entities.Notification;
 
 namespace Sanjel.RequestManagement.Repositories;
 

@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Sanjel.RequestManagement.Core.Migrations;
+namespace Sanjel.RequestManagement.Entities.Migrations;
 
 /// <summary>
 /// Database migration: InitialMigration

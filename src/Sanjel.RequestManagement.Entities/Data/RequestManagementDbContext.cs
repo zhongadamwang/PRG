@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Sanjel.RequestManagement.Core.Entities;
+using Sanjel.RequestManagement.Entities.Entities;
 
-namespace Sanjel.RequestManagement.Core.Data;
+namespace Sanjel.RequestManagement.Entities.Data;
 
 /// <summary>
 /// EF Core DbContext for request management application with complete entity framework setup

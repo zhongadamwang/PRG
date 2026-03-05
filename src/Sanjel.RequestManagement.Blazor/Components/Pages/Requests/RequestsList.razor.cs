@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Sanjel.RequestManagement.Blazor.Services;
-using Sanjel.RequestManagement.Core.Entities;
+using Sanjel.RequestManagement.Entities.Entities;
 using Syncfusion.Blazor.Grids;
 using Syncfusion.Blazor.Popups;
 

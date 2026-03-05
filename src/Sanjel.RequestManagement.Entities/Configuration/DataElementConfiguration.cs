@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Sanjel.RequestManagement.Core.Entities;
+using Sanjel.RequestManagement.Entities.Entities;
 
-namespace Sanjel.RequestManagement.Core.Configuration;
+namespace Sanjel.RequestManagement.Entities.Configuration;
 
 public class DataElementConfiguration : IEntityTypeConfiguration<DataElement>
 {

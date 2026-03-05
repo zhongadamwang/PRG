@@ -1,4 +1,4 @@
-namespace Sanjel.RequestManagement.Core.Entities;
+namespace Sanjel.RequestManagement.Entities.Entities;
 
 /// <summary>
 /// Auto-generated enumeration for Validationenum values (inferred from entity attributes)

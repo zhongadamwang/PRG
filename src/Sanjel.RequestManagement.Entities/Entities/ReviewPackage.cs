@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Sanjel.RequestManagement.Core.Entities;
+namespace Sanjel.RequestManagement.Entities.Entities;
 
 public class ReviewPackage
 {

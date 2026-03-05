@@ -29,7 +29,7 @@ builder.Services.AddHttpContextAccessor();
 var connectionString = builder.Configuration.GetConnectionString("SanjelMdm:DbConnectionString")
 	?? builder.Configuration["SanjelMdm:DbConnectionString"];
 
-builder.Services.AddDbContext<Sanjel.RequestManagement.Core.Data.RequestManagementDbContext>(options =>
+builder.Services.AddDbContext<Sanjel.RequestManagement.Entities.Data.RequestManagementDbContext>(options =>
 	options.UseSqlServer(connectionString));
 
 // Register Mock Services for demo

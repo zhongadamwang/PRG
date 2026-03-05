@@ -1,8 +1,8 @@
 using System.ComponentModel;
 using System.Linq.Expressions;
-using Sanjel.RequestManagement.Core.Entities;
+using Sanjel.RequestManagement.Entities.Entities;
 using Sanjel.RequestManagement.Repositories.Common;
-using Entity = Sanjel.RequestManagement.Core.Entities.ReviewPackage;
+using Entity = Sanjel.RequestManagement.Entities.Entities.ReviewPackage;
 
 namespace Sanjel.RequestManagement.Repositories;
 

@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Components;
-using Sanjel.RequestManagement.Core.Entities;
+using Sanjel.RequestManagement.Entities.Entities;
 
 namespace Sanjel.RequestManagement.Blazor.Components.Pages.Requests;
 

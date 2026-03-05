@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using Sanjel.RequestManagement.Core.Data;
-using Sanjel.RequestManagement.Core.Entities;
+using Sanjel.RequestManagement.Entities.Data;
+using Sanjel.RequestManagement.Entities.Entities;
 using Sanjel.RequestManagement.Repositories.Common;
 
 namespace Sanjel.RequestManagement.Repositories;

@@ -4,6 +4,8 @@
 		<ProjectReference
 			Include="..\Sanjel.RequestManagement.Core\Sanjel.RequestManagement.Core.csproj" />
 		<ProjectReference
+			Include="..\Sanjel.RequestManagement.Entities\Sanjel.RequestManagement.Entities.csproj" />
+		<ProjectReference
 			Include="..\Sanjel.RequestManagement.Repositories\Sanjel.RequestManagement.Repositories.csproj" />
 		<ProjectReference
 			Include="..\Sanjel.RequestManagement.Core\Sanjel.RequestManagement.Core.csproj" />

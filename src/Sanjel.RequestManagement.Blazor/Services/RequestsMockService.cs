@@ -1,4 +1,4 @@
-using Sanjel.RequestManagement.Core.Entities;
+using Sanjel.RequestManagement.Entities.Entities;
 
 namespace Sanjel.RequestManagement.Blazor.Services;
 
