@@ -1,9 +1,0 @@
-using Microsoft.AspNetCore.Components;
-
-namespace Sanjel.RequestManagement.Blazor.Components;
-
-public partial class Routes : ComponentBase
-{
-	[Inject]
-	private NavigationManager NavigationManager { get; set; } = null!;
-}

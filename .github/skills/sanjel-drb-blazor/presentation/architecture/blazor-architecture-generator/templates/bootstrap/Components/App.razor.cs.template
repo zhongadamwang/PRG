@@ -1,9 +1,0 @@
-using Microsoft.AspNetCore.Components;
-
-namespace {{PROJECT_NAMESPACE}}.Blazor.Components;
-
-public partial class App : ComponentBase
-{
-	// App component handles application-wide routing
-	// No specific logic required for basic routing setup
-}

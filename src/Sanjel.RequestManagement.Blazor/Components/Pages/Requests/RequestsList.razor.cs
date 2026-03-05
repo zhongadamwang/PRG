@@ -111,6 +111,9 @@ public partial class RequestsList : ComponentBase
 	/// </summary>
 	private void HandleAddRequest()
 	{
+		// Ensure delete dialog is not visible when showing edit modal
+		this.isDeleteDialogVisible = false;
+
 		this.currentRequest = new Request
 		{
 			RequestId = string.Empty, // Will be generated on save
@@ -136,6 +139,9 @@ public partial class RequestsList : ComponentBase
 		{
 			return;
 		}
+
+		// Ensure delete dialog is not visible when showing edit modal
+		this.isDeleteDialogVisible = false;
 
 		// Create a copy to avoid modifying the original while editing
 		this.currentRequest = new Request
@@ -224,6 +230,8 @@ public partial class RequestsList : ComponentBase
 			return;
 		}
 
+		// Ensure edit modal is not visible when showing delete dialog
+		this.isEditModalVisible = false;
 		this.currentRequest = request;
 		this.isDeleteDialogVisible = true;
 		this.StateHasChanged();

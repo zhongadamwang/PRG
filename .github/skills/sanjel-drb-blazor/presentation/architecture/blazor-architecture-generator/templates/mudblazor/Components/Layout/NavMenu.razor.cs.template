@@ -1,9 +1,0 @@
-using Microsoft.AspNetCore.Components;
-
-namespace {{PROJECT_NAMESPACE}}.Blazor.Components.Layout;
-
-public partial class NavMenu : ComponentBase
-{
-	// Navigation menu component logic
-	// Future enhancements will be added by blazor-page-pattern-generator skill
-}

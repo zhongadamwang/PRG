@@ -8,8 +8,6 @@
 	<ResourcePreloader />
 	<link href="_content/Syncfusion.Blazor.Themes/fluent.css" rel="stylesheet" />
 	<script src="_content/Syncfusion.Blazor/scripts/syncfusion-blazor.min.js" type="text/javascript"></script>
-	<link href="app.css" rel="stylesheet" />
-	<link rel="stylesheet" href="@Assets["app.css"]" />
 	<link rel="stylesheet" href="@Assets["Sanjel.RequestManagement.Blazor.styles.css"]" />
 	<ImportMap />
 	<link rel="icon" type="image/png" href="favicon.png" />
@@ -17,7 +15,26 @@
 </head>
 
 <body>
-	<Routes />
+	<div id="app">
+		<Router AppAssembly="@typeof(App).Assembly">
+			<Found Context="routeData">
+				<RouteView RouteData="@routeData" />
+			</Found>
+			<NotFound>
+				<PageTitle>Not found</PageTitle>
+				<LayoutView>
+					<h1>Sorry, there's nothing at this address.</h1>
+				</LayoutView>
+			</NotFound>
+		</Router>
+	</div>
+	
+	<div id="blazor-error-ui">
+		An unhandled error has occurred.
+		<a href="" class="reload">Reload</a>
+		<a class="dismiss">🗙</a>
+	</div>
+	
 	<ReconnectModal />
 	<script src="@Assets["_framework/blazor.web.js"]"></script>
 </body>

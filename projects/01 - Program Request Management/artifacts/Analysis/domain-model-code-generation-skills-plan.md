@@ -3,15 +3,25 @@
 **Document ID**: ANA-02
 **Project**: 01 - Program Request Management
 **Created**: February 28, 2026
+**Last Updated**: March 5, 2026
 **Status**: Planning Phase
+
+## 🆕 **Critical Architecture Update (March 5, 2026)**
+
+**Major Shift: AI-Driven Skills Preferred Over Script-Driven Approach**
+
+- **Primary Approach**: AI-driven consultation and guidance (🤖 AI-Driven)
+- **Secondary Approach**: Script-driven automation (🔧 Script-Driven) for well-defined tasks only
+- **Rationale**: AI-driven skills provide superior flexibility, educational value, and adaptation capabilities
+- **Impact**: Enhanced user experience through consultative approach rather than rigid code generation
 
 ## Overview
 
-This document outlines the planning for a comprehensive GitHub Skills suite that automates code generation from domain models. The skills are designed to be used within VS Code with Copilot integration, providing intelligent workflow orchestration and automated code generation capabilities.
+This document outlines the planning for a comprehensive GitHub Skills suite that combines AI-driven consultation with selective automation for domain model-driven development. The skills are designed to be used within VS Code with Copilot integration, providing intelligent workflow orchestration and adaptive architectural guidance.
 
 ## Skill Architecture
 
-### Skill 0: `project-creator` ✅ **Required - Currently Missing**
+### Skill 0: `project-creator` ✅ **Required - Currently Missing** **🔧 Script-Driven**
 **Responsibility**: Create and configure project architecture, folder structure, and basic setup files
 **Input**: Project name, target framework, and architectural preferences
 **Output**: Complete project structure with configured files
@@ -24,18 +34,31 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Configure XML documentation generation for all projects
 - Add dependency injection and EF Core package references
 
-### Skill 1: `workflow-orchestrator`
-**Responsibility**: Guide users to call related skills in the correct sequence to complete full workflows
-**Input**: Current project state or user intent
-**Output**: Recommended skill invocation sequence and detailed guidance
+### Skill 0.5: `solution-code-formatter` **🔧 Script-Driven**
+**Responsibility**: Format all code in the entire solution using dotnet format commands
+**Input**: Solution file path (.slnx)
+**Output**: Formatted code across entire solution
 
-**Script**: `orchestrate-workflow.ts` (run with bun)
-- Analyze current project state
-- Detect domain model changes
-- Generate recommended skill invocation sequence
-- Provide detailed instructions for each step
+**Script**: `format-solution.ts` (run with bun)
+- Execute `dotnet format` on the entire solution
+- Execute `dotnet format style` for comprehensive style formatting
+- Provide formatting status and results
+- Handle formatting errors gracefully
+- Support selective formatting by project if needed
 
-### Skill 2: `domain-model-parser` ✅ **Finished**
+### Skill 1: `workflow-orchestrator` **🤖 AI-Driven**
+**Responsibility**: Intelligent workflow guidance and skill orchestration consultation
+**Input**: Current project state + User intent + Project constraints
+**Output**: Smart workflow recommendations and skill sequence guidance
+
+**Approach**: **AI-Driven Workflow Intelligence**
+- Analyzes current project state and requirements
+- Provides intelligent skill sequence recommendations
+- Adapts workflow based on project complexity and constraints
+- Offers contextual guidance for each workflow step
+- **Output**: Intelligent workflow orchestration + adaptive skill recommendations
+
+### Skill 2: `domain-model-parser` ✅ **Finished** **🔧 Script-Driven**
 **Responsibility**: Parse domain model documents and extract structured metadata
 **Input**: Domain model markdown files
 **Output**: JSON format parsing results
@@ -55,10 +78,10 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Analyze entity relationships
 - Generate structured metadata
 
-### Skill 3: `enum-generator` ✅ **Finished + Auto-formatting**
+### Skill 3: `enum-generator` ✅ **Finished** **🔧 Script-Driven**
 **Responsibility**: Generate C# enum definitions from parsed metadata
 **Input**: JSON output from domain-model-parser (enums array)
-**Output**: C# enum class files with automatic code formatting
+**Output**: C# enum class files
 
 **Script**: `generate-enums.ts` (run with bun)
 - Parse enum definitions from domain model metadata
@@ -66,36 +89,36 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Handle PascalCase conversion for compound words (notificationtype → NotificationType)
 - Create enum files in appropriate project directory
 - Support custom enum values and descriptions
-- **Auto-format generated code with dotnet format**
+- **Formatting handled by `solution-code-formatter` skill**
 
-### Skill 4a: `entity-class-generator` ✅ **Finished + Auto-formatting**
+### Skill 4a: `entity-class-generator` ✅ **Finished** **🔧 Script-Driven**
 **Responsibility**: Generate basic C# entity classes based on parsed metadata
 **Input**: JSON output from domain-model-parser
-**Output**: C# entity class files with automatic code formatting
+**Output**: C# entity class files
 
 **Script**: `generate-entities.ts` (run with bun)
 - Generate basic entity classes with properties
 - Handle attribute type mapping (string, int, DateTime, etc.)
 - Add basic Data Annotations ([Key], [Required], [MaxLength])
 - Generate simple navigation properties
-- **Auto-format generated code with dotnet format**
+- **Formatting handled by `solution-code-formatter` skill**
 
-### Skill 4b: `entity-configuration-generator` ✅ **Finished + Auto-formatting**
+### Skill 4b: `entity-configuration-generator` ✅ **Finished** **🔧 Script-Driven**
 **Responsibility**: Generate EF Core Fluent API configurations for entities
 **Input**: JSON entity metadata + relationship metadata
-**Output**: Entity configuration classes with automatic code formatting
+**Output**: Entity configuration classes
 
 **Script**: `generate-entity-configurations.ts` (run with bun)
 - Generate EntityTypeConfiguration classes
 - Configure complex relationships (one-to-many, many-to-many)
 - Add indexes and constraints configuration
 - Handle advanced EF Core features (owned types, value converters)
-- **Auto-format generated code with dotnet format**
+- **Formatting handled by `solution-code-formatter` skill**
 
-### Skill 5: `database-migration-generator` ✅ **Finished + Auto-formatting**
+### Skill 5: `database-migration-generator` ✅ **Finished** **🔧 Script-Driven**
 **Responsibility**: Generate EF Core database migration scripts from domain model metadata
 **Input**: Entity metadata JSON + Optional migration name and output directory
-**Output**: EF Core Migration class files with automatic code formatting
+**Output**: EF Core Migration class files
 
 **Script**: `generate-migration.ts` (run with bun)
 - Generate Migration classes with proper timestamp naming (M{timestamp}_{name})
@@ -103,9 +126,9 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Add indexes and constraints for email fields and unique attributes
 - Handle foreign key relationships with proper referential actions
 - Generate both Up() and Down() methods for reversible migrations
-- **Auto-format generated code with dotnet format**
+- **Formatting handled by `solution-code-formatter` skill**
 
-### Skill 6a: `repository-interface-generator` ✅ **Finished + Modern EF Core + Format Verified**
+### Skill 6a: `repository-interface-generator` ✅ **Finished + Modern EF Core** **🔧 Script-Driven**
 **Responsibility**: Generate Repository interface contracts using modern EF Core patterns
 **Input**: Entity metadata JSON
 **Output**: EF Core-based IRepository interface files
@@ -117,10 +140,9 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Add performance markers for EF Core query optimization
 - Include PagedResult<T> class for pagination support
 - **Completely modernized EF Core approach - no legacy dependencies**
-- **Auto-format generated code with dotnet format**
-- **✅ Confirmed: Calls shared `formatGeneratedCode()` method from project-utilities**
+- **Formatting handled by `solution-code-formatter` skill**
 
-### Skill 6b: `efcore-repository-generator` ✅ **Finished**
+### Skill 6b: `efcore-repository-generator` ✅ **Finished** **🔧 Script-Driven**
 **Responsibility**: Generate EF Core Repository implementations
 **Input**: Entity metadata JSON + Repository interfaces
 **Output**: EF Core Repository implementation classes
@@ -131,17 +153,17 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Add transaction management
 - Include change tracking and lazy loading features
 
-### Skill 7a: `service-interface-generator`
+### Skill 7a: `service-interface-generator` **🔧 Script-Driven**
 **Responsibility**: Generate business service interface contracts
 **Input**: Entity metadata JSON + Business rules
-**Output**: Service interface files with automatic code formatting
+**Output**: Service interface files
 
 **Script**: `generate-service-interfaces.ts` (run with bun)
 - Generate IService<T> base interface with business operations
 - Generate entity-specific service interfaces (IRequestService, IDataElementService, etc.)
 - Add validation and business rule placeholders with ValidationResult support
 - Include async/await patterns with CancellationToken support
-- **Auto-format generated code with dotnet format**
+- **Formatting handled by `solution-code-formatter` skill**
 
 ## 🆕 Blazor Layered Architecture Design - Supporting Flexible Component Library Selection
 
@@ -167,27 +189,75 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 
 ### Layer 1: Architecture Foundation Layer
 
-#### Skill 8a: `blazor-architecture-generator` ✅ **Finished** [Priority 1]
-**Responsibility**: Generate complete Blazor application foundation with a specific component library (direct implementation)
-**Input**: Project configuration + Component library selection (e.g., MudBlazor, Syncfusion, Bootstrap)
-**Output**: Working Blazor application with concrete component library implementation
+#### Skill 8a: `blazor-architecture-generator` ✅ **Finished** [Priority 1] **🤖 AI-Driven**
+**Responsibility**: Simple component library selector and friendly architecture guidance
+**Input**: Project preferences + Basic requirements
+**Output**: Component library selection guidance + Automatic generator launch
 
-**Script**: `generate-blazor-architecture.ts` (run with bun)
-- Generate standard Blazor project structure (Components/, Pages/, wwwroot/)
-- Create concrete layout files (MainLayout.razor, NavMenu.razor) using selected component library
-- Install and configure NuGet packages for chosen component library
-- Generate Program.cs with specific component library service registrations
-- Create _Imports.razor with component library namespaces
-- Generate working CSS/JS files and theme configuration
-- Configure appsettings.json with component library-specific settings
-- **Output**: Complete, runnable Blazor application (no abstractions, direct implementation)
+**Approach**: **AI-Driven Simple Selection**
+- Acts as friendly Blazor architecture guide
+- Presents 4 clear component library options (MudBlazor, Syncfusion, Bootstrap, Minimal)
+- Provides conversational guidance and answers questions
+- Launches selected specialized generator automatically
+- **Output**: User-friendly selection process + automated skill orchestration
 
 **Component Library Switching Strategy:**
-- Switching = Re-run different adapter skill (e.g., `blazor-syncfusion-adapter`)
-- Adapter skills replace/update concrete implementations in existing files
+- Switching = Re-run different component library generator (e.g., `syncfusion-generator`)
+- Component library generators replace/update concrete implementations in existing files
 - No code-level abstraction layers - switching handled by Skills orchestration
 
-#### Skill 8b: `blazor-data-integration-generator` [Priority 2]
+### Layer 1.5: Component Library Generator Layer 🆕 **Updated Architecture**
+
+#### Skill 8a1: `mudblazor-generator` ✅ **Finished** [Priority 1.1] **🔧 Script-Driven**
+**Responsibility**: Generate complete MudBlazor Material Design Blazor architecture
+**Input**: Project configuration + Material Design preferences
+**Output**: Complete Blazor foundation with MudBlazor components
+
+**Script**: `generate-mudblazor-architecture.ts` (run with bun)
+- Install and configure MudBlazor NuGet packages
+- Generate MainLayout.razor and NavMenu.razor with Material Design components
+- Configure MudBlazor services in Program.cs
+- Set up Material Design themes and icons
+- Create responsive layout with MudBlazor responsive system
+- **Output**: Complete, runnable Blazor application with MudBlazor
+
+#### Skill 8a2: `syncfusion-generator` ✅ **Finished** [Priority 1.2] **🤖 AI-Driven**
+**Responsibility**: Enterprise architecture consultant for Syncfusion Blazor integration
+**Input**: Enterprise requirements + Syncfusion license + Performance needs
+**Output**: Strategic Syncfusion architecture guidance and implementation recommendations
+
+**Approach**: **AI-Driven Enterprise Consultation**
+- Acts as Senior Enterprise Architect with Syncfusion expertise
+- Provides license optimization and ROI maximization guidance
+- Recommends optimal component selection for business requirements
+- Guides performance optimization for large-scale enterprise data
+- **Output**: Expert enterprise architecture guidance + implementation strategies
+
+#### Skill 8a3: `bootstrap-generator` ✅ **Finished** [Priority 1.3] **🤖 AI-Driven**
+**Responsibility**: CSS Framework Architecture consultant for Bootstrap 5 Blazor integration
+**Input**: Responsive design requirements + Bootstrap customization needs + Performance constraints
+**Output**: Strategic Bootstrap architecture guidance and responsive design recommendations
+
+**Approach**: **AI-Driven CSS Framework Consultation**
+- Acts as Senior CSS Framework Architect with Bootstrap expertise
+- Provides utility-first design strategies and responsive implementation guidance
+- Recommends optimal Bootstrap component usage and customization approaches
+- Guides performance optimization and CSS architecture best practices
+- **Output**: Expert CSS framework guidance + responsive design strategies
+
+#### Skill 8a4: `minimal-generator` ✅ **Finished** [Priority 1.4] **🤖 AI-Driven**
+**Responsibility**: Senior Frontend Architect for zero-dependency Blazor applications
+**Input**: Performance requirements + Brand specifications + Accessibility needs
+**Output**: Consultative guidance for lean, high-performance Blazor architecture
+
+**Approach**: **AI-Driven Performance Consultation**
+- Acts as Senior Frontend Architect specializing in minimal dependencies
+- Provides consultative guidance for custom design systems
+- Recommends progressive enhancement and accessibility strategies
+- Guides performance optimization and bundle size reduction
+- **Output**: Architectural mentorship + performance-focused guidance
+
+#### Skill 8b: `blazor-data-integration-generator` [Priority 2] **🔧 Script-Driven**
 **Responsibility**: Generate data integration and state management layer
 **Input**: Entity metadata JSON + Service interfaces
 **Output**: Data access layer and state management components
@@ -278,18 +348,20 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 
 ### Layer 4: Styling and Theme Layer
 
-#### Skill 8j: `blazor-theme-generator` [Priority 9]
-**Responsibility**: Theme, styling, and brand customization generation
-**Input**: Brand configuration + Design system specifications
-**Output**: Theme CSS, brand styling, and customization configuration
+#### Skill 8j: `blazor-theme-generator` [Priority 9] **🤖 AI-Driven**
+**Responsibility**: Design system consultation and brand customization guidance
+**Input**: Brand requirements + Design system needs + Accessibility standards + Performance constraints
+**Output**: Consultative guidance for theme architecture and implementation strategies
 
-**Script**: `generate-themes.ts` (run with bun)
-- Generate enterprise brand themes (colors, fonts, spacing)
-- Create responsive design configuration
-- Add dark/light theme switching support
-- Generate accessibility optimization styles
+**Approach**: **AI-Driven Design System Consultant**
+- Acts as brand design system architect and consultant
+- Provides adaptive theme strategies based on brand identity
+- Guides responsive design implementation approaches
+- Recommends accessibility-first theme architectures
+- Offers performance-optimized styling strategies
+- **Output**: Flexible design system guidance + adaptive theme recommendations
 
-### Skill 7b: `page-driven-service-generator` 🔄 **Redesigned - Based on Page Operations**
+### Skill 7b: `page-driven-service-generator` 🔄 **Redesigned - Based on Page Operations** **🤖 AI-Driven**
 **Responsibility**: Generate service implementation classes based on actual page operations and business requirements
 **Input**: Generated Blazor pages + Service interfaces + Repository interfaces
 **Output**: Service implementation classes with page-specific business methods
@@ -302,7 +374,7 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Add transaction management for multi-step page operations
 - Generate custom business methods based on page-specific workflows
 
-### Skill 9: `data-context-generator`
+### Skill 9: `data-context-generator` **🔧 Script-Driven**
 **Responsibility**: Generate EF Core DbContext class
 **Input**: Entity metadata JSON + Connection configuration
 **Output**: DbContext class file
@@ -365,10 +437,14 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 ```
 /.github/skills/sanjel-drb-blazor/
 ├── utilities/
-│   └── project-utilities/
+│   ├── project-utilities/
+│   │   ├── SKILL.md
+│   │   └── scripts/
+│   │       └── utilities.ts
+│   └── solution-code-formatter/
 │       ├── SKILL.md
 │       └── scripts/
-│           └── utilities.ts
+│           └── format-solution.ts
 ├── architecture/
 │   └── project-creator/
 │       ├── SKILL.md
@@ -424,14 +500,18 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 │           └── generate-context.ts
 ├── presentation/
 │   ├── architecture/
-│   │   ├── blazor-architecture-generator/
-│   │   │   ├── SKILL.md
-│   │   │   └── scripts/
-│   │   │       └── generate-blazor-architecture.ts
-│   │   └── blazor-data-integration-generator/
-│   │       ├── SKILL.md
-│   │       └── scripts/
-│   │           └── generate-data-integration.ts
+│   │   └── blazor-architecture-generator/
+│   │       └── SKILL.md
+│   ├── mudblazor-generator/
+│   │   ├── SKILL.md
+│   │   └── scripts/
+│   │       └── generate-mudblazor-architecture.ts
+│   ├── syncfusion-generator/
+│   │   └── SKILL.md
+│   ├── bootstrap-generator/
+│   │   └── SKILL.md
+│   ├── minimal-generator/
+│   │   └── SKILL.md
 │   ├── patterns/
 │   │   ├── blazor-page-pattern-generator/
 │   │   │   ├── SKILL.md
@@ -449,24 +529,9 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 │   │       ├── SKILL.md
 │   │       └── scripts/
 │   │           └── generate-detail-patterns.ts
-│   ├── adapters/
-│   │   ├── blazor-component-adapter-base/
-│   │   │   ├── SKILL.md
-│   │   │   └── scripts/
-│   │   │       └── generate-adapter-base.ts
-│   │   ├── blazor-syncfusion-adapter/
-│   │   │   ├── SKILL.md
-│   │   │   └── scripts/
-│   │   │       └── generate-syncfusion-adapter.ts
-│   │   └── blazor-material-adapter/
-│   │       ├── SKILL.md
-│   │       └── scripts/
-│   │           └── generate-material-adapter.ts
 │   └── styling/
 │       └── blazor-theme-generator/
-│           ├── SKILL.md
-│           └── scripts/
-│               └── generate-themes.ts
+│           └── SKILL.md
 ├── business-logic/
 │   └── page-driven-service-generator/
 │       ├── SKILL.md
@@ -481,6 +546,65 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 
 ## Technical Standards
 
+### Skill Implementation Approaches 🆕 **Critical Architecture Decision**
+
+**Skills can be implemented using two distinct approaches, chosen based on flexibility requirements:**
+
+#### AI-Driven Skills (Preferred Approach)
+**Characteristics:**
+- No TypeScript scripts or automation
+- Uses AI persona and consultative guidance
+- Provides flexible, context-aware recommendations
+- Adapts to specific project requirements and constraints
+- Educational and mentoring approach
+
+**When To Use AI-Driven Approach:**
+- **Architectural Consulting**: Where flexibility and adaptation are crucial
+- **Design System Creation**: Custom solutions that reflect unique brand identity
+- **Performance Optimization**: Context-specific recommendations 
+- **Accessibility Guidance**: Adaptive compliance strategies
+- **Learning and Mentoring**: Educational value and skill transfer
+- **Complex Decision Making**: Trade-offs require human-like reasoning
+
+**Examples:**
+- ✅ `minimal-generator` - AI architect persona for zero-dependency Blazor guidance
+- ✅ `blazor-theme-generator` - Consultative theme and design system guidance
+- ✅ `workflow-orchestrator` - Intelligent skill sequence recommendations
+
+#### Script-Driven Skills (Legacy/Specific Use Cases)
+**Characteristics:**
+- Uses bun + TypeScript automation scripts
+- Generates consistent, standardized code structures
+- Follows rigid templates and patterns
+- Optimal for repetitive, well-defined tasks
+
+**When To Use Script-Driven Approach:**
+- **Data Structure Generation**: Entities, enums, configurations (well-defined patterns)
+- **Database Operations**: Migrations, contexts (standardized EF Core patterns)
+- **Repository Pattern**: CRUD operations with consistent interfaces
+- **Boilerplate Code**: Repetitive code that follows strict conventions
+- **Integration Tasks**: File manipulation, project structure setup
+
+**Examples:**
+- ✅ `enum-generator` - Standardized C# enum class generation
+- ✅ `entity-class-generator` - Consistent entity class structure
+- ✅ `database-migration-generator` - EF Core migration scripts
+- ✅ `repository-interface-generator` - Standardized repository contracts
+
+#### Decision Matrix
+
+| Factor             | AI-Driven                | Script-Driven           |
+| ------------------ | ------------------------ | ----------------------- |
+| **Flexibility**    | ✅ Maximum adaptation     | ❌ Fixed templates       |
+| **Consistency**    | ⚠️ Varies by context      | ✅ Always consistent     |
+| **Learning Value** | ✅ Educational guidance   | ❌ Black box output      |
+| **Customization**  | ✅ Infinite possibilities | ❌ Template limitations  |
+| **Speed**          | ⚠️ Interactive process    | ✅ Instant generation    |
+| **Maintenance**    | ✅ Self-improving AI      | ❌ Manual script updates |
+
+#### **Current Preference: AI-Driven Approach**
+**Rationale**: AI-driven skills provide superior flexibility, educational value, and adaptation capabilities. Script-driven approach reserved only for highly repetitive, well-standardized code generation tasks.
+
 ### Shared Utilities Skill ✅ **Implemented**
 
 **All code generation skills use centralized utilities from `project-utilities` skill:**
@@ -494,7 +618,6 @@ Located at: `/.github/skills/sanjel-drb-blazor/utilities/project-utilities/`
 - `constructEntityPath()` - Build standard entity directory paths
 - `constructRepositoryPath()` - Build standard repository directory paths
 - `constructServicePath()` - Build standard service directory paths
-- `formatGeneratedCode()` - Format C# code using dotnet format
 - `toPascalCase()` - Convert to PascalCase format
 - `toCamelCase()` - Convert to camelCase format
 - `toKebabCase()` - Convert to kebab-case format
@@ -513,24 +636,26 @@ import {
 } from '../../../utilities/project-utilities/scripts/utilities';
 ```
 
-### Code Formatting Requirements ✅ **Implemented**
+### Code Formatting Requirements ✅ **Updated Architecture**
 
-**All code generation skills MUST include automatic code formatting using `dotnet format`:**
+**Code formatting is handled by dedicated `solution-code-formatter` skill:**
 
-- Formatting targets only the generated output directory to optimize performance
-- Formatting failures do not fail the generation process (warning only)
-- Formatting provides consistent code style and reduces merge conflicts
+- Uses `dotnet format` and `dotnet format style` commands on entire solution
+- Called after code generation skills complete their work
+- Provides comprehensive formatting across all generated files
+- Handles formatting errors gracefully with status reporting
 
-**Applied to Skills:**
-- ✅ `enum-generator`: Auto-formats generated enum classes
-- ✅ `entity-class-generator`: Auto-formats generated entity classes
-- ✅ `entity-configuration-generator`: Auto-formats generated configuration classes
-- ✅ `database-migration-generator`: Auto-formats generated migration classes
+**Formatting Workflow:**
+- Code generation skills focus purely on code generation
+- `solution-code-formatter` skill called at appropriate workflow points
+- Provides consistent code style across entire solution
+- Reduces merge conflicts and maintains code quality standards
 
 **Code Architecture:**
 - Skills communicate through Copilot orchestration, not direct imports
 - Main generation functions do not export (removed unnecessary exports)
 - Only `project-utilities` exports functions for shared use across skills
+- Formatting logic centralized in dedicated skill
 
 ### TypeScript Script Requirements
 
@@ -593,34 +718,37 @@ bun run scripts/[script-name].ts
 5. `entity-configuration-generator` → Generate EF Core configurations
 6. `data-context-generator` → Generate DbContext class
 7. `database-migration-generator` → Generate database scripts
-8. `repository-interface-generator` → Generate Repository interfaces
-9. `efcore-repository-generator` → Generate EF Core Repository implementations
-10. `service-interface-generator` → Generate service interfaces (contracts only)
+8. `solution-code-formatter` → Format all generated code (data layer)
+9. `repository-interface-generator` → Generate Repository interfaces
+10. `efcore-repository-generator` → Generate EF Core Repository implementations
+11. `service-interface-generator` → Generate service interfaces (contracts only)
+12. `solution-code-formatter` → Format all generated code (service layer)
 **[Layered Architecture UI Development Phase]**
-11. `blazor-architecture-generator` → Generate project architecture and component library configuration
-12. `blazor-data-integration-generator` → Generate data integration layer and state management
-13. `blazor-page-pattern-generator` → Generate abstract page patterns and routing
-14. `blazor-list-pattern-generator` → Generate list page business logic patterns
-15. `blazor-form-pattern-generator` → Generate form page business logic and validation
-16. `blazor-detail-pattern-generator` → Generate detail page logic and related data handling
-**[Component Library Adaptation Phase]**
-17. `blazor-component-adapter-base` → Generate component adapter framework and interfaces
-18. `blazor-syncfusion-adapter` → Generate Syncfusion component implementations (Current)
-19. `blazor-theme-generator` → Generate enterprise themes and styling
-**[Business Logic Integration Phase]**
-20. `page-driven-service-generator` → Generate service implementations based on page operations
+13. `blazor-architecture-generator` → Intelligent component library selection and architectural guidance
+**[Component Library Generation Phase]**
+14a. **Choose One**: `mudblazor-generator` | `syncfusion-generator` | `bootstrap-generator` | `minimal-generator`
+14b. `blazor-data-integration-generator` → Generate data integration layer and state management
+**[Page Pattern Generation Phase]**
+15. `blazor-page-pattern-generator` → Generate abstract page patterns and routing
+16. `blazor-list-pattern-generator` → Generate list page business logic patterns
+17. `blazor-form-pattern-generator` → Generate form page business logic and validation
+18. `blazor-detail-pattern-generator` → Generate detail page logic and related data handling
+19. `solution-code-formatter` → Format all generated code (UI layer)
+**[Theming and Business Logic Phase]**
+20. `blazor-theme-generator` → Enterprise theme consultation and styling guidance
+21. `page-driven-service-generator` → Generate service implementations based on page operations
+22. `solution-code-formatter` → Format all generated code (final formatting)
 
 ### Scenario 2: Component Library Migration (MudBlazor → Syncfusion) **🔄 UPDATED**
 1. `workflow-orchestrator` → Detect component library migration intent
-2. `blazor-syncfusion-adapter` → Replace all MudBlazor references and implementations with Syncfusion
-   - Update .csproj package references
-   - Replace Program.cs service registrations  
-   - Update _Imports.razor namespaces
-   - Replace MainLayout.razor and NavMenu.razor components
-   - Update CSS/theme files
-3. **No page pattern regeneration needed** - Existing pages continue to work with new component library
-4. **No data layer changes needed** - Only UI layer files are updated
-5. **Result**: Same application functionality with different component library (direct replacement)
+2. `syncfusion-generator` → **AI-Driven**: Provide consultation for migration strategy and implementation approach
+   - Analyze existing MudBlazor implementation
+   - Recommend optimal Syncfusion component mappings
+   - Guide migration path and resource optimization
+   - Provide enterprise-specific implementation recommendations
+3. **Implementation Approach**: Manual implementation guided by AI consultant
+4. **No data layer changes needed** - Only UI layer files need updates
+5. **Result**: Strategic migration plan with expert guidance (consultative approach)
 
 ### Scenario 3: Domain Model Modification
 1. `workflow-orchestrator` → Detect model changes, recommend incremental update process
@@ -631,8 +759,9 @@ bun run scripts/[script-name].ts
    - **New entities**: 数据层 + 页面模式层 (only abstract patterns, adapters remain)
    - **Relationship changes**: `entity-configuration-generator` + `data-context-generator` + `blazor-data-integration-generator`
    - **UI changes**: Only regenerate affected page patterns, adapters auto-adapt
- 5. `test-code-generator` → Generate/Update unit tests for changed code
- 6. `configuration-file-manager` → Update configuration files if required by changes
+5. `solution-code-formatter` → Format all modified code
+6. `test-code-generator` → Generate/Update unit tests for changed code
+7. `configuration-file-manager` → Update configuration files if required by changes
 
 ### Scenario 4: Add New Component Library (Maintain Multi-Library Coexistence)
 1. `workflow-orchestrator` → Based on user intent, recommend adapter-only generation
@@ -722,17 +851,23 @@ After splitting larger skills into focused components, we achieve:
 
 **Phase 0 (Foundation)**:
 - `project-utilities` ✅ **Implemented** - Shared utility functions for all skills
+- `solution-code-formatter` ✅ **Required** - Dedicated code formatting skill
 - `project-creator` ❌ **Missing** - Project structure and configuration setup
 
 **Phase 1 (Foundation)**: Skills 1, 2, 3, 4a, 4b, 5, 9 - Basic enum, entity and database generation ✅ **Complete**
 **Phase 2 (Data Access)**: Skills 6a, 6b - Repository pattern implementation ✅ **Complete (6a Complete, 6b Implemented)**
 **Phase 3 (Service Contracts)**: Skill 7a - Service interface generation ✅ **Complete**
-**Phase 4 (Layered UI Architecture)**: Skills 8a, 8b - Foundation architecture and data integration 🔄 **REDESIGNED**
-**Phase 5 (Page Patterns)**: Skills 8c, 8d, 8e, 8f - Abstract page pattern generation 🎯 **NEW PRIORITY**
-**Phase 6 (Component Adaptation)**: Skills 8g, 8h - Component adapter framework and Syncfusion implementation 🎯 **CURRENT FOCUS**
-**Phase 7 (Theme Styling)**: Skill 8j - Theme and styling generation 📋 **NEW**
-**Phase 8 (Business Integration)**: Skill 7b - Service implementation based on page operations 🔄 **REDESIGNED**
-**Phase 9 (Change Management)**: Skills 10, 11 - Model change detection and updates
+**Phase 4 (Component Library Architecture)**: Skills 8a, 8a1-8a4 - Component library selection and generation ✅ **Complete (Redesigned)**
+  - `blazor-architecture-generator` ✅ - Intelligent selector and consultation
+  - `mudblazor-generator` ✅ - Material Design Blazor generation
+  - `syncfusion-generator` ✅ - Enterprise Syncfusion consultation 
+  - `bootstrap-generator` ✅ - Bootstrap 5 CSS framework consultation
+  - `minimal-generator` ✅ - Zero-dependency performance consultation
+**Phase 5 (Data Integration)**: Skill 8b - Blazor data integration layer 📋 **NEW PRIORITY**
+**Phase 6 (Page Patterns)**: Skills 8c, 8d, 8e, 8f - Abstract page pattern generation 📋 **PENDING**
+**Phase 7 (Theme Styling)**: Skill 8j - Theme and styling consultation ✅ **Complete (AI-Driven)**
+**Phase 8 (Business Integration)**: Skill 7b - Service implementation based on page operations 📋 **REDESIGNED (AI-Driven)**
+**Phase 9 (Change Management)**: Skills 10, 11 - Model change detection and updates 📋 **PENDING**
 
 ## New Architecture Advantages Comparison
 
@@ -750,9 +885,12 @@ After splitting larger skills into focused components, we achieve:
 ## Notes
 
 - All skills designed for VS Code Copilot integration
-- Uses bun runtime for TypeScript execution
-- No third-party dependencies allowed (Node.js modules only)
+- **Primary Approach**: AI-driven consultation and guidance (preferred for flexibility)
+- **Secondary Approach**: Script-driven automation (for well-defined, repetitive tasks only)
+- Script-driven skills use bun runtime for TypeScript execution
+- No third-party dependencies allowed in scripts (Node.js modules only)
 - Follows single responsibility principle (one skill = one focused task)
+- **Architecture Principle**: AI-first approach for maximum adaptability and learning value
 
 ## Project Utilities Integration ✅ **Completed**
 
