@@ -273,7 +273,7 @@ function generateEnums(metadataFilePath: string, outputDir?: string, namespace?:
 	console.log(`🎉 Enum generation complete! Generated ${generatedCount} enum classes.`);
 
 	// Format generated code using dotnet format
-	formatGeneratedCode(finalOutputDir);
+	formatGeneratedCode();
 }
 
 // Command line interface

@@ -227,7 +227,7 @@ function generateDataContext(metadataFilePath: string, outputDir?: string, names
 	console.log(`🎉 DbContext generation complete!`);
 
 	// Format generated code using unified utility
-	formatGeneratedCode(outputDir);
+	formatGeneratedCode();
 }
 
 // Parse command line arguments

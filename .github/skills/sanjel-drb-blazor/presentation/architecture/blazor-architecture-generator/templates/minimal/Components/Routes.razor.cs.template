@@ -1,0 +1,9 @@
+using Microsoft.AspNetCore.Components;
+
+namespace {{PROJECT_NAMESPACE}}.Blazor.Components;
+
+public partial class Routes : ComponentBase
+{
+	// Routes component handles application routing
+	// No specific logic required for basic routing setup
+}

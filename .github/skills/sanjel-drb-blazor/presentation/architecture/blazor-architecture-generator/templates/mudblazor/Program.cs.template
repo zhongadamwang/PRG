@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
-using {{PROJECT_NAMESPACE}}.Components;
+using {{PROJECT_NAMESPACE}}.Blazor.Components;
 using {{PROJECT_NAMESPACE}}.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,7 +29,7 @@ builder.Services.Scan(scan => scan
 	// Scan multiple assemblies
 	.FromAssemblies(typeof({{PROJECT_NAMESPACE}}.Repositories.Common.IRepository<>).Assembly)
 	.FromAssemblyOf<{{PROJECT_NAMESPACE}}.Core.Services.ICurrentUserService>()
-	.FromAssemblyOf<{{PROJECT_NAMESPACE}}.Components.App>()
+	.FromAssemblyOf<{{PROJECT_NAMESPACE}}.Blazor.Components.App>()
 
 	// Register by naming convention: IService -> Service, IRepository -> Repository
 	.AddClasses(classes => classes
@@ -75,7 +75,7 @@ app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages:
 app.UseAntiforgery();
 
 app.MapStaticAssets();
-app.MapRazorComponents<{{PROJECT_NAMESPACE}}.Components.App>()
+app.MapRazorComponents<{{PROJECT_NAMESPACE}}.Blazor.Components.App>()
 		.AddInteractiveServerRenderMode();
 
 app.Run();

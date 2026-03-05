@@ -1,5 +1,0 @@
-@namespace {{PROJECT_NAMESPACE}}.Components.Layout
-
-<SfTreeView TValue="NavigationItem" DataSource="@navigationItems">
-    <TreeViewFieldsSettings TValue="NavigationItem" Id="Id" Text="Text" NavigateUrl="NavigateUrl" IconCss="IconCss" Child="Items" />
-</SfTreeView>

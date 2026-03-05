@@ -577,7 +577,7 @@ function generateRepositoryImplementations(metadataFile?: string, outputDir?: st
 	console.log(`🎉 Repository implementation generation complete! Generated ${generatedCount} implementation classes.`);
 
 	// Format generated code using dotnet format
-	formatGeneratedCode(finalOutputDir);
+	formatGeneratedCode();
 }
 
 // Command line interface

@@ -1,0 +1,16 @@
+using Microsoft.AspNetCore.Components;
+
+namespace {{PROJECT_NAMESPACE}}.Blazor.Components.Layout;
+
+public partial class MainLayout : LayoutView
+{
+	{{#if DARK_MODE_SUPPORT}}
+	private bool isDarkMode = false;
+	
+	private void ToggleDarkMode()
+	{
+		isDarkMode = !isDarkMode;
+		// Theme switching logic will be implemented by blazor-theme-generator
+	}
+	{{/if}}
+}

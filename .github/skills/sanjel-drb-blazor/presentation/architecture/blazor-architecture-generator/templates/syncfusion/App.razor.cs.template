@@ -1,9 +1,0 @@
-using Microsoft.AspNetCore.Components;
-
-namespace {{PROJECT_NAMESPACE}}.Components;
-
-public partial class App : ComponentBase
-{
-    [Inject]
-    private NavigationManager NavigationManager { get; set; } = null!;
-}

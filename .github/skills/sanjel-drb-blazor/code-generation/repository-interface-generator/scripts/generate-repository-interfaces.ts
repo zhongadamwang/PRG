@@ -563,7 +563,7 @@ function generateRepositoryInterfaces(metadataFilePath?: string, outputDir?: str
 	console.log(`🎉 Repository interface generation complete! Generated ${generatedCount} interface files.`);
 
 	// Format generated code using dotnet format
-	formatGeneratedCode(finalOutputDir);
+	formatGeneratedCode();
 }
 
 // Command line interface

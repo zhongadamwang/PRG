@@ -165,59 +165,17 @@ export function constructDataPath(): { outputDir: string; namespace: string; pro
 }
 
 // Format generated C# code using dotnet format
-export function formatGeneratedCode(outputDir: string): void {
+export function formatGeneratedCode(): void {
 	try {
 		console.log('🎨 Formatting generated code with dotnet format...');
 
-		const projectInfo = detectProjectInfo();
+		const projectRoot = detectProjectRoot();
+		const fix_shell = join(projectRoot, 'fix-stylecop.sh');
 
 		// Run dotnet format on the specific .slnx file and include the output directory
-		const formatCommand = `dotnet format style "${projectInfo.slnxFile}" --include "${outputDir}/**/*.cs" --verbosity minimal`;
-		execSync(formatCommand, { cwd: projectInfo.projectRoot, encoding: 'utf-8' });
+		execSync(fix_shell, { cwd: projectRoot, encoding: 'utf-8' });
 
 		console.log('✅ Code formatting completed successfully!');
-	} catch (error) {
-		console.warn('⚠️  Code formatting failed, but generation was successful:', error);
-		// Don't fail the generation if formatting fails
-	}
-}
-
-// Format generated C# code for a specific project (used during project creation)
-export function formatGeneratedCodeForProject(projectDir: string, slnxFile: string): void {
-	try {
-		console.log('🎨 Formatting generated code with dotnet format...');
-
-		// Check if solution file exists
-		if (!existsSync(slnxFile)) {
-			console.warn('⚠️  Solution file not found, skipping code formatting:', slnxFile);
-			return;
-		}
-
-		// Run dotnet format on the specific .slnx file and include the project directory
-		const formatCommand = `dotnet format "${slnxFile}" --include "${projectDir}/**/*.cs"`;
-		execSync(formatCommand, { cwd: projectDir, encoding: 'utf-8' });
-
-		console.log('✅ Code formatting completed successfully!');
-	} catch (error) {
-		console.warn('⚠️  Code formatting failed, but generation was successful:', error);
-		// Don't fail the generation if formatting fails
-	}
-}
-
-// Format specific files only
-export function formatSpecificFiles(filePaths: string[]): void {
-	try {
-		console.log(`🎨 Formatting ${filePaths.length} specific files with dotnet format...`);
-
-		const projectInfo = detectProjectInfo();
-
-		// Format each file individually using the .slnx file
-		for (const filePath of filePaths) {
-			const formatCommand = `dotnet format "${projectInfo.slnxFile}" --include "${filePath}"`;
-			execSync(formatCommand, { cwd: projectInfo.projectRoot, encoding: 'utf-8' });
-		}
-
-		console.log('✅ Specific files formatting completed successfully!');
 	} catch (error) {
 		console.warn('⚠️  Code formatting failed, but generation was successful:', error);
 		// Don't fail the generation if formatting fails

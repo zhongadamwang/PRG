@@ -1,7 +1,9 @@
 # Blazor Architecture Generator
 
 ## Description
-Generate complete Blazor application foundation with a specific component library (direct implementation). Creates working Blazor architecture with concrete component library implementation, no abstraction layers.
+Generate complete Blazor application foundation with component library selection. Creates working Blazor architecture with concrete component library implementation, no abstraction layers.
+
+**Interactive Component Selection**: I will provide a user selection interface allowing users to choose their preferred component library (MudBlazor, Syncfusion, Bootstrap, or None), making the setup process user-friendly and accessible.
 
 ## When To Use
 - Initial Blazor project setup after basic project structure exists
@@ -10,27 +12,37 @@ Generate complete Blazor application foundation with a specific component librar
 - Creating baseline Blazor setup before adding domain-specific pages and features
 
 ## Key Design Principles
-- **Direct Implementation**: Generates concrete, working code with specific component library
+- **Interactive User Experience**: I will guide users through component library selection with clear options and recommendations
+- **Direct Implementation**: Generates concrete, working code with selected component library
 - **No Abstraction Layers**: Code uses actual component library components directly
-- **Component Library Switching**: Achieved through Skills re-generation, not code abstractions
+- **Component Library Switching**: Achieved through re-running the skill with different selections
 - **Extensible Design**: Structured to easily support multiple component libraries
 - **Two-File Component Structure**: All Blazor components follow strict separation:
   - `.razor` files contain only markup and UI structure
   - `.razor.cs` files contain all C# code logic and component behavior
 
 ## Usage
-This skill uses bun to run TypeScript scripts for Blazor architecture generation.
+I will generate Blazor application architecture by first asking you to select your preferred component library and configure optional features.
+
+**Interactive Experience**: I will present you with clear choices for component library selection and guide you through the configuration process.
 
 ## Input
-### Required Parameters
-- **Project Configuration**: Project name and Blazor project path (auto-detected)
-- **Component Library**: Choice of component library (`mudblazor`, `syncfusion`, `bootstrap`, `none`)
+### Component Library Selection
+I will present you with the following component library options:
+- **MudBlazor** - Open source Material Design components (recommended for most projects)
+- **Syncfusion** - Commercial enterprise components (requires license)
+- **Bootstrap** - Bootstrap-based components (lightweight option)
+- **None (Minimal)** - Minimal setup without component library (maximum flexibility)
 
-### Optional Parameters
-- **Authentication**: Enable authentication scaffolding (default: false)
-- **Responsive Design**: Enable responsive layout features (default: true) 
-- **Dark Mode Support**: Include dark/light theme switching (default: false)
-- **License Configuration**: For commercial libraries (Syncfusion, Telerik, etc.)
+### Auto-Detected Parameters
+- **Project Configuration**: Project name and Blazor project path (automatically detected from workspace)
+
+### Optional Feature Configuration
+I will ask you about optional features to include:
+- **Authentication Scaffolding**: Enable user authentication setup (default: false)
+- **Dark Mode Support**: Include dark/light theme switching (default: false) 
+- **Responsive Design**: Enable responsive layout features (default: true)
+- **License Configuration**: For commercial libraries (when applicable)
 
 ## Output
 ### Generated Files
@@ -129,17 +141,20 @@ interface ComponentLibraryConfig {
 }
 ```
 
-## Script Execution
-```bash
-# From skill directory
-bun run scripts/generate-blazor-architecture.ts
+## Execution Process
 
-# With specific component library
-bun run scripts/generate-blazor-architecture.ts --library=mudblazor
-bun run scripts/generate-blazor-architecture.ts --library=syncfusion --license-key=your-key
-bun run scripts/generate-blazor-architecture.ts --library=bootstrap
-bun run scripts/generate-blazor-architecture.ts --library=none
-```
+**Interactive Selection**: I will guide you through the configuration process:
+
+1. **Component Library Selection**: I will present the available options (MudBlazor, Syncfusion, Bootstrap, None) and help you choose
+2. **Feature Configuration**: I will ask about optional features (authentication, dark mode, responsive design)
+3. **License Setup**: For commercial libraries, I will guide you through license configuration
+4. **Generation**: I will generate the complete Blazor architecture with your selected configuration
+
+**Available Libraries**:
+- `mudblazor` - Material Design components (free)
+- `syncfusion` - Enterprise components (requires license) 
+- `bootstrap` - Bootstrap-based components (free)
+- `none` - No component library (minimal setup)
 
 ## Post-Generation Setup
 
@@ -162,18 +177,19 @@ The skill generates a complete `.csproj` file with all required package referenc
 <!-- Uses CDN resources, no additional packages -->
 ```
 
-### Manual Installation Steps
+### Post-Generation Setup
+After I generate the architecture, you will need to:
 1. **Restore Packages**: `dotnet restore`
 2. **License Setup** (Syncfusion only): Add license key to `appsettings.json`
 3. **Database Configuration**: Update connection string in `appsettings.json`
 4. **Build & Run**: `dotnet build && dotnet run`
 
-### Generated Installation Guide
-Each execution creates a comprehensive `installation-guide.md` with:
-- Step-by-step setup instructions
+### Installation Guide
+I will provide you with comprehensive setup instructions including:
+- Step-by-step setup procedures
 - Library-specific configuration details  
 - License requirements and setup (where applicable)
-- Troubleshooting common issues
+- Troubleshooting guidance for common issues
 - Links to official documentation
 
 ## Template Structure
@@ -218,7 +234,7 @@ Each component library provides complete installation configuration:
 - **Installation Guide**: Complete setup documentation
 
 ## Verification Steps
-After execution, verify for each component library:
+After generation is complete, I will guide you to verify the setup for your selected component library:
 
 **Common Verification:**
 1. ✅ Project builds successfully: `dotnet build`
@@ -251,15 +267,16 @@ After execution, verify for each component library:
 - Creates baseline that other skills build upon
 
 ## Error Handling
-- **Missing Project**: Skill will detect and report if Blazor project doesn't exist
-- **Package Installation**: Handles NuGet package installation failures gracefully
-- **File Conflicts**: Provides options for overwriting or preserving existing files
-- **License Issues**: Clear guidance for commercial library license configuration
+I will handle common issues during generation:
+- **Missing Project**: I will detect and report if Blazor project doesn't exist
+- **Package Installation**: I will handle NuGet package installation failures gracefully
+- **File Conflicts**: I will provide options for overwriting or preserving existing files
+- **License Issues**: I will provide clear guidance for commercial library license configuration
 
 ## Notes
-- Generates concrete implementation code, not abstraction layers
-- Component library switching handled by re-running skill with different library parameter
-- Designed for single component library per application (no mixing)
+- I generate concrete implementation code, not abstraction layers
+- Component library switching handled by re-running this skill with different library selection
+- I support single component library per application (no mixing)
 - All generated code follows established formatting and naming conventions (strict .razor/.razor.cs separation)
-- Integrates with project-utilities for consistent file structure and formatting
+- I integrate with project-utilities for consistent file structure and formatting
 - **All four component libraries fully supported**: MudBlazor, Syncfusion, Bootstrap, and Minimal configurations

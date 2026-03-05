@@ -167,7 +167,7 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 
 ### Layer 1: Architecture Foundation Layer
 
-#### Skill 8a: `blazor-architecture-generator` 🔄 **Redesigned** [Priority 1]
+#### Skill 8a: `blazor-architecture-generator` ✅ **Finished** [Priority 1]
 **Responsibility**: Generate complete Blazor application foundation with a specific component library (direct implementation)
 **Input**: Project configuration + Component library selection (e.g., MudBlazor, Syncfusion, Bootstrap)
 **Output**: Working Blazor application with concrete component library implementation
@@ -494,8 +494,7 @@ Located at: `/.github/skills/sanjel-drb-blazor/utilities/project-utilities/`
 - `constructEntityPath()` - Build standard entity directory paths
 - `constructRepositoryPath()` - Build standard repository directory paths
 - `constructServicePath()` - Build standard service directory paths
-- `formatGeneratedCode(outputDir)` - Format C# code using dotnet format
-- `formatSpecificFiles(filePaths)` - Format specific files only
+- `formatGeneratedCode()` - Format C# code using dotnet format
 - `toPascalCase()` - Convert to PascalCase format
 - `toCamelCase()` - Convert to camelCase format
 - `toKebabCase()` - Convert to kebab-case format
@@ -518,43 +517,9 @@ import {
 
 **All code generation skills MUST include automatic code formatting using `dotnet format`:**
 
-- Each generation script calls `dotnet format` after code generation completes
 - Formatting targets only the generated output directory to optimize performance
 - Formatting failures do not fail the generation process (warning only)
 - Formatting provides consistent code style and reduces merge conflicts
-
-**Implementation Standard:**
-```typescript
-// Format generated C# code using dotnet format
-function formatGeneratedCode(outputDir: string): void {
-	try {
-		console.log('🎨 Formatting generated code with dotnet format...');
-
-		// Get the project root (where .slnx file is located)
-		let projectRoot = outputDir;
-		while (projectRoot && projectRoot !== '/') {
-			const files = execSync(`ls "${projectRoot}"`, { encoding: 'utf-8' }).split('\n');
-			const hasSlnx = files.some(file => file.endsWith('.slnx'));
-			if (hasSlnx) {
-				break;
-			}
-			// Continue searching up
-			const parentDir = join(projectRoot, '..');
-			if (parentDir === projectRoot) break;
-			projectRoot = parentDir;
-		}
-
-		// Run dotnet format on the specific directory
-		const formatCommand = `dotnet format "${projectRoot}" --include "${outputDir}/**/*.cs"`;
-		execSync(formatCommand, { cwd: projectRoot, encoding: 'utf-8' });
-
-		console.log('✅ Code formatting completed successfully!');
-	} catch (error) {
-		console.warn('⚠️  Code formatting failed, but generation was successful:', error);
-		// Don't fail the generation if formatting fails
-	}
-}
-```
 
 **Applied to Skills:**
 - ✅ `enum-generator`: Auto-formats generated enum classes

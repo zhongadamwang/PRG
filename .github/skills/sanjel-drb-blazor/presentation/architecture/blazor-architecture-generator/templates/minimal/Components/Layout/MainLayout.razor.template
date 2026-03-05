@@ -1,0 +1,23 @@
+@inherits LayoutView
+@namespace {{PROJECT_NAMESPACE}}.Blazor.Components.Layout
+
+<div class="page">
+	<div class="sidebar">
+		<NavMenu />
+	</div>
+
+	<main>
+		<div class="top-row">
+			<h1>{{PROJECT_NAME}}</h1>
+			{{#if DARK_MODE_SUPPORT}}
+			<button class="theme-toggle" @onclick="ToggleDarkMode">
+				@(isDarkMode ? "☀️" : "🌙")
+			</button>
+			{{/if}}
+		</div>
+
+		<article class="content">
+			@Body
+		</article>
+	</main>
+</div>

@@ -431,7 +431,7 @@ function generateEntityConfigurations(metadataFilePath: string, outputDir?: stri
 	console.log(`🎉 Configuration generation complete! Generated ${generatedCount} configuration classes.`);
 
 	// Format generated code using dotnet format
-	formatGeneratedCode(finalOutputDir);
+	formatGeneratedCode();
 }
 
 // Command line interface

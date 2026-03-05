@@ -422,9 +422,6 @@ function generateMigrationClass(entities: Entity[], relationships: Relationship[
 	return lines.join('\n');
 }
 
-// Code formatting - USE UTILITY VERSION
-// function formatGeneratedCode() - now imported from utilities
-
 // Main generation function
 function generateMigration(metadataFilePath: string, migrationName?: string, outputDir?: string, namespace?: string): void {
 	console.log('🚀 Starting migration generation...');
@@ -491,7 +488,7 @@ function generateMigration(metadataFilePath: string, migrationName?: string, out
 		console.log(`✅ Generated migration: ${fileName}`);
 
 		// Format generated code using dotnet format
-		formatGeneratedCode(finalOutputDir);
+		formatGeneratedCode();
 
 		console.log(`🎉 Migration generation complete!`);
 		console.log(`📊 Generated migration with ${entityCount} tables and ${relationships.length} relationships`);

@@ -409,7 +409,7 @@ function generateEntities(metadataFilePath: string, outputDir?: string, namespac
 	console.log(`🎉 Entity generation complete! Generated ${generatedCount} entity classes.`);
 
 	// Format generated code using dotnet format
-	formatGeneratedCode(finalOutputDir);
+	formatGeneratedCode();
 }
 
 // Command line interface
