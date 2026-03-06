@@ -22,7 +22,7 @@ This utility skill is imported and used by other skills rather than being run di
 - `constructRepositoryPath()` - Build standard repository classes directory path
 
 ### Code Formatting
-- `formatGeneratedCode()` - Format C# code using dotnet format
+- **DEPRECATED**: Code formatting is now handled by the dedicated `solution-code-formatter` skill
 
 ### String Utilities
 - `toPascalCase(str)` - Convert to PascalCase (EntityName)
