@@ -185,18 +185,35 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - **Formatting handled by `solution-code-formatter` skill**
 
 ### Skill 7a1: `service-generator` **🤖 AI-Driven**
-**Responsibility**: Senior Service Architecture Consultant for comprehensive service implementation guidance
-**Input**: Entity metadata + Repository interfaces + Business logic requirements + Service patterns
-**Output**: Consultative guidance for service implementation and data access strategies
+**Responsibility**: Generate application service architecture shells for Blazor pages/components
+**Input**: Entity metadata + Repository interfaces + Feature/Page context
+**Output**: Minimal service class files with DI setup (no methods)
 
-**Approach**: **AI-Driven Service Architecture Consultation**
-- Acts as Senior Service Architect with expertise in business logic implementation
-- Provides consultative guidance for service layer design and implementation
-- Recommends optimal service patterns following Single Service per Page principle
-- Guides data access strategies and business logic encapsulation
-- Offers performance optimization strategies for service operations
-- Provides step-by-step implementation guidance with code examples
-- **Output**: Expert service architecture guidance + implementation strategies
+**Approach**: **AI-Driven Architecture Shell Generation**
+- Creates minimal service architecture following Single Service per Page principle
+- Generates service class file with proper namespace and naming conventions
+- Sets up constructor with repository dependency injection
+- Provides DI registration guidance for Program.cs
+- **No methods generated** - only the architectural foundation
+- Methods are added by separate, focused skills
+- **Output**: Service architecture shell ready for method extensions
+
+### Skill 7a2: `service-method-generator` **🤖 AI-Driven**
+**Responsibility**: AI-driven service method generator that analyzes Repository interfaces and generates appropriate service methods
+**Input**: Service class file + Repository interface files + Method requirements + Domain model documentation
+**Output**: Service method implementations added to the service class
+
+**Approach**: **AI-Driven Repository-Aware Method Generation**
+- Analyzes actual repository interface files to discover available methods
+- Maps business requirements to available repository capabilities
+- Generates service methods that appropriately call repository methods
+- Implements business logic based on domain model analysis
+- Provides intelligent feedback when repository methods are insufficient
+- Suggests repository interface extensions when capabilities are missing
+- Follows `/sanjel/eServiceCloud/docs/实现模式-008-Service.md` standards
+- All methods are async with CancellationToken support
+- Uses Result<T> pattern for operations that can fail
+- **Output**: Service methods + capability gap feedback (if any)
 
 ## 🆕 Blazor Layered Architecture Design - Supporting Flexible Component Library Selection
 
