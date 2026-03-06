@@ -553,40 +553,18 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 │           └── generate-context.ts
 ├── presentation/
 │   ├── architecture/
-│   │   └── blazor-architecture-generator/
+│   │   ├── blazor-architecture-generator/
+│   │   │   └── SKILL.md
+│   │   ├── bootstrap-generator/
+│   │   │   └── SKILL.md
+│   │   ├── minimal-generator/
+│   │   │   └── SKILL.md
+│   │   ├── mudblazor-generator/
+│   │   │   └── SKILL.md
+│   │   └── syncfusion-generator/
 │   │       └── SKILL.md
-│   ├── mudblazor-generator/
-│   │   ├── SKILL.md
-│   │   └── scripts/
-│   │       └── generate-mudblazor-architecture.ts
-│   ├── syncfusion-generator/
-│   │   └── SKILL.md
-│   ├── bootstrap-generator/
-│   │   └── SKILL.md
-│   ├── minimal-generator/
-│   │   └── SKILL.md
-│   ├── blazor-page-generator/
-│   │   └── SKILL.md
-│   ├── patterns/
-│   │   ├── blazor-page-pattern-generator/
-│   │   │   ├── SKILL.md
-│   │   │   └── scripts/
-│   │   │       └── generate-page-patterns.ts
-│   │   ├── blazor-list-pattern-generator/
-│   │   │   ├── SKILL.md
-│   │   │   └── scripts/
-│   │   │       └── generate-list-patterns.ts
-│   │   ├── blazor-form-pattern-generator/
-│   │   │   ├── SKILL.md
-│   │   │   └── scripts/
-│   │   │       └── generate-form-patterns.ts
-│   │   └── blazor-detail-pattern-generator/
-│   │       ├── SKILL.md
-│   │       └── scripts/
-│   │           └── generate-detail-patterns.ts
-│   └── styling/
-│       └── blazor-theme-generator/
-│           └── SKILL.md
+│   └── blazor-page-generator/
+│       └── SKILL.md
 ├── business-logic/
 │   └── page-driven-service-generator/
 │       ├── SKILL.md
