@@ -1,19 +1,18 @@
 using System.Linq.Expressions;
 
-namespace Sanjel.RequestManagement.Repositories.Common;
+namespace Sanjel.RequestManagement.Entities.Data;
 
 /// <summary>
-/// Generic repository interface that acts as an adapter to Entities.Data layer.
-/// Provides basic CRUD operations for entities.
+/// Base interface for data access operations with CRUD and common queries.
 /// </summary>
-/// <typeparam name="TEntity">Entity type that inherits from a base entity class.</typeparam>
-public interface IRepository<TEntity>
-		where TEntity : class
+/// <typeparam name="TEntity">Entity type.</typeparam>
+public interface IDataAccess<TEntity>
+	where TEntity : class
 {
 	/// <summary>
 	/// Gets a paged list of entities.
 	/// </summary>
-	Task<Sanjel.RequestManagement.Entities.Data.PagedResult<TEntity>> GetPagedListAsync(
+	Task<PagedResult<TEntity>> GetPagedListAsync(
 		int pageNumber,
 		int pageSize,
 		Expression<Func<TEntity, bool>>? filter = null,

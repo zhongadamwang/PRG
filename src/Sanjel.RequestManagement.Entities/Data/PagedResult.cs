@@ -1,4 +1,4 @@
-namespace Sanjel.RequestManagement.Repositories.Common;
+namespace Sanjel.RequestManagement.Entities.Data;
 
 /// <summary>
 /// Represents a paged result set with entities and pagination metadata.
