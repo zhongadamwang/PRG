@@ -184,6 +184,20 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Include async/await patterns with CancellationToken support
 - **Formatting handled by `solution-code-formatter` skill**
 
+### Skill 7a1: `service-generator` **🤖 AI-Driven**
+**Responsibility**: Senior Service Architecture Consultant for comprehensive service implementation guidance
+**Input**: Entity metadata + Repository interfaces + Business logic requirements + Service patterns
+**Output**: Consultative guidance for service implementation and data access strategies
+
+**Approach**: **AI-Driven Service Architecture Consultation**
+- Acts as Senior Service Architect with expertise in business logic implementation
+- Provides consultative guidance for service layer design and implementation
+- Recommends optimal service patterns following Single Service per Page principle
+- Guides data access strategies and business logic encapsulation
+- Offers performance optimization strategies for service operations
+- Provides step-by-step implementation guidance with code examples
+- **Output**: Expert service architecture guidance + implementation strategies
+
 ## 🆕 Blazor Layered Architecture Design - Supporting Flexible Component Library Selection
 
 ### 🎯 Critical Design Principle: Skills Layering vs Code Layering
@@ -522,10 +536,12 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 │   │   ├── SKILL.md
 │   │   └── scripts/
 │   │       └── generate-efcore-repositories.ts
-│   └── service-interface-generator/
-│       ├── SKILL.md
-│       └── scripts/
-│           └── generate-service-interfaces.ts
+│   ├── service-interface-generator/
+│   │   ├── SKILL.md
+│   │   └── scripts/
+│   │       └── generate-service-interfaces.ts
+│   └── service-generator/
+│       └── SKILL.md
 ├── database/
 │   ├── database-migration-generator/
 │   │   ├── SKILL.md
@@ -761,22 +777,23 @@ bun run scripts/[script-name].ts
 9. `repository-interface-generator` → Generate Repository interfaces
 10. `efcore-repository-generator` → Generate EF Core Repository implementations
 11. `service-interface-generator` → Generate service interfaces (contracts only)
-12. `solution-code-formatter` → Format all generated code (service layer)
+12. `service-generator` → **AI-Driven**: Provide consultative guidance for service implementation
+13. `solution-code-formatter` → Format all generated code (service layer)
 **[Layered Architecture UI Development Phase]**
-13. `blazor-architecture-generator` → Intelligent component library selection and architectural guidance
+14. `blazor-architecture-generator` → Intelligent component library selection and architectural guidance
 **[Component Library Generation Phase]**
-14a. **Choose One**: `mudblazor-generator` | `syncfusion-generator` | `bootstrap-generator` | `minimal-generator`
-14b. `blazor-data-integration-generator` → Generate data integration layer and state management
+15a. **Choose One**: `mudblazor-generator` | `syncfusion-generator` | `bootstrap-generator` | `minimal-generator`
+15b. `blazor-data-integration-generator` → Generate data integration layer and state management
 **[Page Pattern Generation Phase]**
-15. `blazor-page-pattern-generator` → Generate abstract page patterns and routing
-16. `blazor-list-pattern-generator` → Generate list page business logic patterns
-17. `blazor-form-pattern-generator` → Generate form page business logic and validation
-18. `blazor-detail-pattern-generator` → Generate detail page logic and related data handling
-19. `solution-code-formatter` → Format all generated code (UI layer)
+16. `blazor-page-pattern-generator` → Generate abstract page patterns and routing
+17. `blazor-list-pattern-generator` → Generate list page business logic patterns
+18. `blazor-form-pattern-generator` → Generate form page business logic and validation
+19. `blazor-detail-pattern-generator` → Generate detail page logic and related data handling
+20. `solution-code-formatter` → Format all generated code (UI layer)
 **[Theming and Business Logic Phase]**
-20. `blazor-theme-generator` → Enterprise theme consultation and styling guidance
-21. `page-driven-service-generator` → Generate service implementations based on page operations
-22. `solution-code-formatter` → Format all generated code (final formatting)
+21. `blazor-theme-generator` → Enterprise theme consultation and styling guidance
+22. `page-driven-service-generator` → Generate service implementations based on page operations
+23. `solution-code-formatter` → Format all generated code (final formatting)
 
 ### Scenario 2: Component Library Migration (MudBlazor → Syncfusion) **🔄 UPDATED**
 1. `workflow-orchestrator` → Detect component library migration intent
@@ -904,7 +921,7 @@ After splitting larger skills into focused components, we achieve:
   - `minimal-generator` ✅ - Zero-dependency performance consultation
 **Phase 5 (Data Integration)**: Skill 8b - Blazor data integration layer 📋 **NEW PRIORITY**
 **Phase 6 (Page Patterns)**: Skills 8c, 8d, 8e, 8f - Abstract page pattern generation 📋 **PENDING**
-**Phase 7 (Theme Styling)**: Skill 8j - Theme and styling consultation ✅ **Complete (AI-Driven)**
+**Phase 7 (Service Implementation Guidance)**: Skill 7a1 - AI-driven service architecture consultation 📋 **NEW (AI-Driven)**
 **Phase 8 (Business Integration)**: Skill 7b - Service implementation based on page operations 📋 **REDESIGNED (AI-Driven)**
 **Phase 9 (Change Management)**: Skills 10, 11 - Model change detection and updates 📋 **PENDING**
 
