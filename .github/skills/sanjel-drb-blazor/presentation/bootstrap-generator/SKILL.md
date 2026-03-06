@@ -27,16 +27,85 @@ This skill provides AI-driven consultation for Bootstrap 5 Blazor architecture a
 - Integration needs with existing CSS frameworks or systems
 
 ## Output
-- Strategic Bootstrap component and utility class recommendations
-- Responsive breakpoint and grid system guidance
-- Custom CSS architecture and organization strategies
-- Performance optimization approaches for CSS delivery
-- Accessibility implementation patterns using Bootstrap classes
-- Theme customization and CSS variable strategies
-- Mobile-first design implementation guidance
-- Cross-browser compatibility and fallback recommendations
-- Team training recommendations for Bootstrap best practices
-- Maintenance and upgrade pathway guidance
+### Generated Files
+```
+src/Sanjel.RequestManagement.Blazor/
+│── App.razor               # HTML host with Bootstrap CSS/JS references
+│── App.razor.cs            # App component code-behind
+│── Routes.razor            # Application routing with Bootstrap layout
+│── Routes.razor.cs         # Routes component code-behind
+│── Layout/
+│       ├── MainLayout.razor    # Bootstrap container and responsive layout
+│       ├── MainLayout.razor.cs # Layout code-behind with responsive utilities
+│       ├── MainLayout.razor.css # Bootstrap-specific custom styles
+│       ├── NavMenu.razor       # Bootstrap navbar with responsive collapse
+│       └── NavMenu.razor.cs    # Navigation code-behind with Bootstrap classes
+├── Components/
+│   └── Pages/
+│       ├── Home.razor             # Default home with Bootstrap components
+│       └── BootstrapHello.razor   # Hello World demonstration page
+│   ├── Home.razor.cs          # Home page code-behind
+│   ├── Counter.razor          # Example with Bootstrap buttons and cards
+│   ├── Counter.razor.cs       # Counter code-behind
+│   ├── Error.razor            # Bootstrap alert error handling
+│   └── Error.razor.cs         # Error handling code-behind
+├── _Imports.razor             # Bootstrap namespace imports
+├── appsettings.json           # Bootstrap theme configuration
+├── Program.cs                 # No additional services required
+└── ProjectName.Blazor.csproj  # No additional package references
+```
+
+### CSS/JS Resources
+```html
+<!-- Bootstrap CSS (CDN or local) -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+```
+
+### Service Configuration
+```csharp
+// Program.cs - No additional services required
+// Bootstrap uses built-in Blazor services only
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
+```
+
+### Generated Configuration
+- **Responsive Layout**: Bootstrap grid system with container-fluid and breakpoints
+- **Utility Classes**: Access to all Bootstrap utility classes project-wide
+- **Component Libraries**: Bootstrap component integration (navbar, cards, buttons, alerts)
+- **Responsive Utilities**: Bootstrap responsive display and spacing utilities
+- **Theme System**: Bootstrap CSS variables and utility-based theming
+
+## Bootstrap Features Included
+
+### Layout Components
+- **Bootstrap Container**: Responsive container with max-width breakpoints
+- **Bootstrap Grid**: 12-column responsive grid system
+- **Bootstrap Navbar**: Responsive navigation with collapse functionality
+- **Bootstrap Cards**: Content containers with consistent spacing
+
+### Utility System
+- **Spacing Utilities**: Margin and padding classes (m-*, p-*)
+- **Display Utilities**: Responsive display controls (d-none, d-md-block)
+- **Flexbox Utilities**: Complete flexbox utility system
+- **Color Utilities**: Text and background color classes
+- **Typography Utilities**: Font sizing, weight, and alignment
+
+### Interactive Components
+- **Bootstrap Buttons**: All button styles and states
+- **Bootstrap Forms**: Input groups, validation, and form controls
+- **Bootstrap Alerts**: Dismissible alert components
+- **Bootstrap Modal**: JavaScript modal dialogs
+- **Bootstrap Dropdown**: Dropdown menu components
+
+### Development Features
+- **Hot Reload Support**: Full support for Blazor hot reload
+- **Utility-First Development**: Rapid styling with Bootstrap classes
+- **No Build Process**: Direct CSS/JS integration without compilation
 
 ## AI Persona & Approach
 

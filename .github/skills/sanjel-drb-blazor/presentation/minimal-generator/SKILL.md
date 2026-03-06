@@ -25,14 +25,91 @@ This skill provides AI-driven architectural consultation and code recommendation
 - Custom interaction patterns and user experience goals
 
 ## Output
-- Consultative architectural guidance and best practices
-- Bespoke code recommendations tailored to your specific needs
-- Semantic HTML structure suggestions with proper ARIA attributes
-- Modern CSS architecture using custom properties and responsive design
-- Progressive JavaScript enhancement patterns
-- Performance optimization strategies
-- Accessibility-first implementation approaches
-- Clean component architecture with separation of concerns
+### Generated Files
+```
+src/Sanjel.RequestManagement.Blazor/
+│── App.razor               # Semantic HTML structure with minimal CSS
+│── App.razor.cs            # App component code-behind
+│── Routes.razor            # Clean routing without external dependencies
+│── Routes.razor.cs         # Routes component code-behind
+│── Layout/
+│       ├── MainLayout.razor    # Semantic layout with custom CSS Grid
+│       ├── MainLayout.razor.cs # Layout code-behind with accessibility focus
+│       ├── MainLayout.razor.css # Custom CSS using modern properties
+│       ├── NavMenu.razor       # Accessible navigation with semantic markup
+│       └── NavMenu.razor.cs    # Navigation code-behind with keyboard support
+├── Components/
+│   └── Pages/
+│       ├── Home.razor             # Clean semantic home page
+│       └── MinimalHello.razor     # Hello World demonstration page
+│   ├── Home.razor.cs          # Home page code-behind
+│   ├── Counter.razor          # Example with custom CSS and vanilla JS
+│   ├── Counter.razor.cs       # Counter code-behind
+│   ├── Error.razor            # Accessible error display
+│   └── Error.razor.cs         # Error handling code-behind
+├── _Imports.razor             # Minimal imports, no external libraries
+├── appsettings.json           # Configuration without external dependencies
+├── Program.cs                 # Clean service registration
+└── ProjectName.Blazor.csproj  # Zero external package dependencies
+```
+
+### CSS Architecture
+```css
+/* Custom CSS using modern properties */
+:root {
+  --color-primary: #007bff;
+  --color-text: #333;
+  --spacing-unit: 1rem;
+  --font-family: system-ui, sans-serif;
+}
+
+/* Mobile-first responsive design */
+@media (min-width: 768px) {
+  .container { max-width: 1200px; }
+}
+```
+
+### Service Configuration
+```csharp
+// Program.cs - Minimal service setup
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
+// No external dependencies
+```
+
+### Generated Configuration
+- **Zero Dependencies**: No external libraries or frameworks
+- **Custom CSS Architecture**: Modern CSS with custom properties and Grid/Flexbox
+- **Semantic HTML**: Proper semantic structure with ARIA attributes
+- **Progressive Enhancement**: Baseline functionality with enhanced experiences
+- **Performance Optimized**: Minimal bundle size and fast loading
+
+## Minimal Architecture Features
+
+### Semantic Structure
+- **HTML5 Elements**: Proper semantic tags (header, nav, main, footer)
+- **ARIA Integration**: Comprehensive accessibility attributes
+- **Progressive Enhancement**: Works without JavaScript, enhanced with it
+- **Clean Markup**: No framework classes or dependencies
+
+### Modern CSS
+- **CSS Custom Properties**: Dynamic theming and consistent design tokens
+- **CSS Grid & Flexbox**: Modern layout without framework overhead
+- **Mobile-First**: Progressive enhancement from small screens
+- **Performance Focused**: Minimal CSS footprint with maximum impact
+
+### Accessibility First
+- **Keyboard Navigation**: Full keyboard accessibility
+- **Screen Reader Support**: Proper ARIA labels and descriptions
+- **Color Contrast**: WCAG AA complaint color combinations
+- **Focus Management**: Visible focus indicators and logical tab order
+
+### Performance Features
+- **Zero External Dependencies**: No CDN requests or third-party libraries
+- **Minimal Bundle Size**: Smallest possible JavaScript and CSS footprint
+- **Progressive Loading**: Critical CSS inlined, non-critical deferred
+- **Browser Standards**: Modern APIs with graceful degradation
 
 ## AI Persona & Approach
 

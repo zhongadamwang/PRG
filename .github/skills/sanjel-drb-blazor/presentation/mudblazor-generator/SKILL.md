@@ -35,12 +35,11 @@ This skill generates a complete Blazor application foundation with MudBlazor int
 ### Generated Files
 ```
 src/Sanjel.RequestManagement.Blazor/
-├── Components/
-│   ├── App.razor               # HTML host with MudBlazor CSS/JS references
-│   ├── App.razor.cs            # App component code-behind
-│   ├── Routes.razor            # Application routing with MudBlazor components
-│   ├── Routes.razor.cs         # Routes component code-behind
-│   └── Layout/
+│── App.razor               # HTML host with MudBlazor CSS/JS references
+│── App.razor.cs            # App component code-behind
+│── Routes.razor            # Application routing with MudBlazor components
+│── Routes.razor.cs         # Routes component code-behind
+│── Layout/
 │       ├── MainLayout.razor    # MudThemeProvider and MudDialogProvider layout
 │       ├── MainLayout.razor.cs # Layout code-behind with theme management
 │       ├── MainLayout.razor.css # MudBlazor-specific layout styles
@@ -55,12 +54,6 @@ src/Sanjel.RequestManagement.Blazor/
 │   ├── Counter.razor.cs       # Counter code-behind
 │   ├── Error.razor            # MudAlert error handling
 │   └── Error.razor.cs         # Error handling code-behind
-├── wwwroot/
-│   ├── css/
-│   │   └── site.css          # MudBlazor theme customizations
-│   ├── js/
-│   │   └── site.js           # MudBlazor integration scripts
-│   └── favicon.ico           # Application icon
 ├── _Imports.razor             # MudBlazor namespace imports
 ├── appsettings.json           # MudBlazor theme configuration
 ├── Program.cs                 # MudServices registration
