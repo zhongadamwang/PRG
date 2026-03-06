@@ -65,7 +65,7 @@ app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages:
 app.UseAntiforgery();
 
 app.MapStaticAssets();
-app.MapRazorComponents<Prg.ProjectName.Blazor.Components.App>()
+app.MapRazorComponents<Prg.ProjectName.Blazor.App>()
 		.AddInteractiveServerRenderMode();
 
 app.Run();

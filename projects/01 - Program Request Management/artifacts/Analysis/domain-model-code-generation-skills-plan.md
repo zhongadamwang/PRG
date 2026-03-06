@@ -3,8 +3,19 @@
 **Document ID**: ANA-02
 **Project**: 01 - Program Request Management
 **Created**: February 28, 2026
-**Last Updated**: March 5, 2026
+**Last Updated**: March 6, 2026
 **Status**: Planning Phase
+
+## ⚠️ **Skills Testing Status (March 6, 2026)**
+
+**Currently in Testing/Experimental Phase:**
+- `enum-generator` - C# enum generation from domain models
+- `entity-class-generator` - Entity class creation from metadata  
+- `entity-configuration-generator` - EF Core configuration generation
+- `database-migration-generator` - Automated migration script creation
+- `data-context-generator` - DbContext class generation
+
+> **Note**: These skills are experimental and may undergo significant changes based on testing feedback and production validation.
 
 ## 🆕 **Critical Architecture Update (March 5, 2026)**
 
@@ -78,10 +89,12 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Analyze entity relationships
 - Generate structured metadata
 
-### Skill 3: `enum-generator` ✅ **Finished** **🔧 Script-Driven**
+### Skill 3: `enum-generator` ⚠️ **Testing Phase** **🔧 Script-Driven**
 **Responsibility**: Generate C# enum definitions from parsed metadata
 **Input**: JSON output from domain-model-parser (enums array)
 **Output**: C# enum class files
+
+> ⚠️ **Note**: This skill is currently in experimental/testing phase. Implementation may change based on testing feedback.
 
 **Script**: `generate-enums.ts` (run with bun)
 - Parse enum definitions from domain model metadata
@@ -91,10 +104,12 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Support custom enum values and descriptions
 - **Formatting handled by `solution-code-formatter` skill**
 
-### Skill 4a: `entity-class-generator` ✅ **Finished** **🔧 Script-Driven**
+### Skill 4a: `entity-class-generator` ⚠️ **Testing Phase** **🔧 Script-Driven**
 **Responsibility**: Generate basic C# entity classes based on parsed metadata
 **Input**: JSON output from domain-model-parser
 **Output**: C# entity class files
+
+> ⚠️ **Note**: This skill is currently in experimental/testing phase. Implementation may change based on testing feedback.
 
 **Script**: `generate-entities.ts` (run with bun)
 - Generate basic entity classes with properties
@@ -103,10 +118,12 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Generate simple navigation properties
 - **Formatting handled by `solution-code-formatter` skill**
 
-### Skill 4b: `entity-configuration-generator` ✅ **Finished** **🔧 Script-Driven**
+### Skill 4b: `entity-configuration-generator` ⚠️ **Testing Phase** **🔧 Script-Driven**
 **Responsibility**: Generate EF Core Fluent API configurations for entities
 **Input**: JSON entity metadata + relationship metadata
 **Output**: Entity configuration classes
+
+> ⚠️ **Note**: This skill is currently in experimental/testing phase. Implementation may change based on testing feedback.
 
 **Script**: `generate-entity-configurations.ts` (run with bun)
 - Generate EntityTypeConfiguration classes
@@ -115,10 +132,12 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Handle advanced EF Core features (owned types, value converters)
 - **Formatting handled by `solution-code-formatter` skill**
 
-### Skill 5: `database-migration-generator` ✅ **Finished** **🔧 Script-Driven**
+### Skill 5: `database-migration-generator` ⚠️ **Testing Phase** **🔧 Script-Driven**
 **Responsibility**: Generate EF Core database migration scripts from domain model metadata
 **Input**: Entity metadata JSON + Optional migration name and output directory
 **Output**: EF Core Migration class files
+
+> ⚠️ **Note**: This skill is currently in experimental/testing phase. Implementation may change based on testing feedback.
 
 **Script**: `generate-migration.ts` (run with bun)
 - Generate Migration classes with proper timestamp naming (M{timestamp}_{name})
@@ -390,10 +409,12 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Add transaction management for multi-step page operations
 - Generate custom business methods based on page-specific workflows
 
-### Skill 9: `data-context-generator` **🔧 Script-Driven**
+### Skill 9: `data-context-generator` ⚠️ **Testing Phase** **🔧 Script-Driven**
 **Responsibility**: Generate EF Core DbContext class
 **Input**: Entity metadata JSON + Connection configuration
 **Output**: DbContext class file
+
+> ⚠️ **Note**: This skill is currently in experimental/testing phase. Implementation may change based on testing feedback.
 
 **Script**: `generate-context.ts` (run with bun)
 - Generate ApplicationDbContext class
@@ -604,9 +625,9 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - **Integration Tasks**: File manipulation, project structure setup
 
 **Examples:**
-- ✅ `enum-generator` - Standardized C# enum class generation
-- ✅ `entity-class-generator` - Consistent entity class structure
-- ✅ `database-migration-generator` - EF Core migration scripts
+- ⚠️ `enum-generator` - Standardized C# enum class generation (Testing Phase)
+- ⚠️ `entity-class-generator` - Consistent entity class structure (Testing Phase)
+- ⚠️ `database-migration-generator` - EF Core migration scripts (Testing Phase)
 - ✅ `repository-interface-generator` - Standardized repository contracts
 
 #### Decision Matrix
@@ -731,11 +752,11 @@ bun run scripts/[script-name].ts
 0. `project-creator` → Create project structure, configure .csproj files, set up development environment
 1. `workflow-orchestrator` → Analyze project state, recommend complete generation process
 2. `domain-model-parser` → Parse domain models
-3. `enum-generator` → Generate enum definitions
-4. `entity-class-generator` → Generate basic entity classes
-5. `entity-configuration-generator` → Generate EF Core configurations
-6. `data-context-generator` → Generate DbContext class
-7. `database-migration-generator` → Generate database scripts
+3. `enum-generator` → Generate enum definitions (⚠️ Testing Phase)
+4. `entity-class-generator` → Generate basic entity classes (⚠️ Testing Phase)
+5. `entity-configuration-generator` → Generate EF Core configurations (⚠️ Testing Phase)
+6. `data-context-generator` → Generate DbContext class (⚠️ Testing Phase)
+7. `database-migration-generator` → Generate database scripts (⚠️ Testing Phase)
 8. `solution-code-formatter` → Format all generated code (data layer)
 9. `repository-interface-generator` → Generate Repository interfaces
 10. `efcore-repository-generator` → Generate EF Core Repository implementations
@@ -773,7 +794,7 @@ bun run scripts/[script-name].ts
 2. `model-change-detector` → Analyze specific changes
 3. `incremental-update-generator` → Generate update scripts based on changes
 4. Selectively call affected generators:
-   - **Entity changes**: `enum-generator` + `entity-class-generator` + `entity-configuration-generator`
+   - **Entity changes**: `enum-generator` (⚠️ Testing) + `entity-class-generator` (⚠️ Testing) + `entity-configuration-generator` (⚠️ Testing)
    - **New entities**: 数据层 + 页面模式层 (only abstract patterns, adapters remain)
    - **Relationship changes**: `entity-configuration-generator` + `data-context-generator` + `blazor-data-integration-generator`
    - **UI changes**: Only regenerate affected page patterns, adapters auto-adapt

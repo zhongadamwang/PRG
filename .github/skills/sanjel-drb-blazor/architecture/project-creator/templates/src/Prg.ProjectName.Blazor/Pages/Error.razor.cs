@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Components;
 
-namespace Prg.ProjectName.Blazor.Components.Pages
+namespace Prg.ProjectName.Blazor.Pages
 {
 	public partial class Error
 	{
