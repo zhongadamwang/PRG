@@ -1,126 +1,288 @@
-# Repository Interface Generator Skill
+---
+name: repository-interface-generator
+description: AI-driven architectural consultant for designing and generating repository interface contracts based on different data provider strategies (EF Core, SanjelData, or custom). Provides intelligent guidance on choosing the optimal data provider and generates repository interfaces adapted to the selected provider.
+license: MIT
+---
 
-## Overview
+# Repository Interface Generator
 
-The `repository-interface-generator` skill generates C# repository interface contracts from domain model metadata. This skill creates a base IRepository<T> interface and entity-specific repository interfaces following the established project patterns.
+## Description
 
-## Functionality
+AI-driven architectural consultant for designing and generating repository interface contracts based on different data provider strategies. This skill provides intelligent guidance on choosing the optimal data provider (EF Core, SanjelData, or custom) and generates repository interfaces adapted to the selected provider.
 
-### Generated Interfaces
+## When To Use
 
-1. **Base Repository Interface**: 
-   - Generic `IRepository<T>` interface with CRUD operations
-   - Async/await patterns with Task return types  
-   - Paging support with PagerResult<T>
-   - Expression-based filtering
-   - Batch operations for performance optimization
-
-2. **Entity-Specific Repository Interfaces**:
-   - Interface per entity (e.g., `IRequestRepository`, `IDataElementRepository`)
-   - Inherits from base `IRepository<T>` interface
-   - Domain-specific method signatures
-   - Performance annotations for Dapper optimization
-
-### Features
-
-- **Auto Project Detection**: Automatically detects project root and repository directory structure
-- **Code Formatting**: Integrates with `dotnet format` for consistent code style
-- **Metadata Parsing**: Reads domain model metadata JSON files
-- **Performance Optimization**: Adds markers for Dapper-optimized implementations
-- **Repository Pattern**: Follows established repository pattern conventions
+- **New Project Setup**: When initializing a new project and need to design repository architecture
+- **Data Provider Decision**: When deciding between different data access technologies (EF Core vs SanjelData vs custom)
+- **Architecture Planning**: When planning the repository layer for specific data access requirements
+- **Technology Migration**: When migrating from one data provider to another
+- **Provider Selection Uncertainty**: When unsure which data provider best fits project requirements
 
 ## Usage
 
-### Auto-Detection Mode (Recommended)
-```bash
-# Auto-detects metadata file and generates all repository interfaces
-cd /path/to/.github/skills/sanjel-drb-blazor/code-generation/repository-interface-generator/scripts
-bun run generate-repository-interfaces.ts
+This skill uses AI-driven consultation to guide you through repository interface design and generation. The AI will ask clarifying questions about your data access needs and recommend the optimal provider strategy.
+
+## Input
+
+**Required:**
+- Domain model metadata (from `domain-model-parser` output or manual description)
+
+**AI-Consulted Questions:**
+- **Data Provider Preference**: 
+  - EF Core (Entity Framework) - Modern OR mapper with LINQ support
+  - SanjelData - Existing legacy service layer with rich query methods
+  - Custom/Other - Other data access technologies (Dapper, ADO.NET, external APIs, etc.)
+- **Custom Provider Details** (if "Custom/Other" selected):
+  - Provider name and version
+  - Async/sync nature
+  - Primary query capabilities
+  - Pagination approach
+- **Repository Layer Goals**:
+  - Standard CRUD operations
+  - Specific entity queries
+  - Business logic requirements
+  - Transaction management needs
+  - Performance optimization requirements
+- **Integration Constraints**:
+  - Existing code compatibility requirements
+  - Team expertise levels
+  - Project timeline constraints
+
+## Output
+
+**Generated Artifacts:**
+- Repository interface files for each entity
+- Base repository interface template (`IRepository<TEntity>`)
+- Data provider configuration documentation
+- Provider-specific implementation guidance
+- DI registration recommendations
+
+**Consultation Deliverables:**
+- Data provider strategy recommendation
+- Architectural pros/cons analysis
+- Migration path (if applicable)
+- Risk assessment and mitigation strategies
+
+## Generated Code Features
+
+### Standard Interface Methods (All Providers)
+
+Every `IRepository<TEntity>` interface includes these 12 standard methods:
+
+- `GetPagedListAsync` - Paginated list retrieval
+- `GetListAsync` - List retrieval with optional filtering
+- `GetByIdAsync` - Single entity by ID
+- `GetByIdWithChildrenAsync` - Single entity with related entities
+- `CreateAsync` - Create new entity
+- `CreateWithChildrenAsync` - Create entity with related entities
+- `UpdateAsync` - Update existing entity
+- `UpdateWithChildrenAsync` - Update entity with related entities
+- `DeleteAsync` - Delete entity
+- `DeleteWithChildrenAsync` - Delete entity with related entities
+- `GetListByIdsAsync` - List of entities by IDs
+- `GetListWithChildrenByIdsAsync` - List with relations by IDs
+
+### Provider-Specific Variations
+
+**EF Core Interfaces:**
+- Standard `IRepository<TEntity>` with LINQ-friendly signatures
+- `Expression<Func<TEntity, bool>>` predicate support
+- Native async/await patterns
+- No additional wrapper interfaces needed
+
+**SanjelData Interfaces:**
+- Same standard `IRepository<TEntity>` interface
+- Optional `IEntityQueryService` for accessing SanjelData's 30+ specific query methods
+- Pagination conversion guidance (0-based to 1-based)
+- Async wrapper recommendations
+
+**Custom Interfaces:**
+- Standard base with provider-specific extensions
+- Adapter pattern guidance for provider quirks
+- Custom query method recommendations
+
+## AI-Driven Consultation Approach
+
+### Phase 1: Needs Assessment
+
+**AI Consultant Role:** Senior Data Access Architect
+
+The AI will ask questions to understand:
+
+```
+Welcome! I'm here to help you design your repository layer architecture.
+
+Let's start with understanding your data access needs:
+
+1. **Data Provider Preference**
+   What data provider do you intend to use?
+   - Option A: EF Core (Entity Framework) - Recommended for new projects
+   - Option B: SanjelData - Leverage existing services
+   - Option C: Custom/Other - Different technology or approach
+   
+   Please describe your preference and any constraints.
 ```
 
-### Manual Mode
-```bash
-# Specify metadata file and optional output directory
-bun run generate-repository-interfaces.ts ./path/to/domain-metadata.json [output-dir] [namespace]
-```
+### Phase 2: Provider Analysis
 
-### Parameters
+Based on your input, the AI analyzes:
 
-- `metadata-file` (optional): Path to domain model metadata JSON file (auto-detected if not provided)
-- `output-directory` (optional): Output directory for repository interfaces (auto-detected if not provided) 
-- `namespace` (optional): C# namespace for generated interfaces (auto-detected if not provided)
+- **For EF Core:**
+  - LINQ query capabilities
+  - Async/await patterns
+  - Change tracking
+  - Migration support
+  - Recommended for: Greenfield projects, modern architectures, flexible querying needs
 
-## Output Structure
+- **For SanjelData:**
+  - Existing service methods (30+ per entity)
+  - Sync/async patterns (may need adaptation)
+  - Proven codebase
+  - Recommended for: Integration with existing SanjelData, rapid development, leveraging proven queries
 
-Generated repository interfaces are placed in the project's Repository directory:
-```
-src/ProjectName.Repositories/
-├── Common/
-│   └── IRepository.cs           # Base repository interface
-├── IRequestRepository.cs        # Entity-specific repository interface
-├── IDataElementRepository.cs    # Entity-specific repository interface  
-└── ...                          # Other entity repository interfaces
-```
+- **For Custom:**
+  - Specific technology requirements
+  - Adapter pattern needs
+  - Integration complexity
+  - Recommended for: External APIs, specialized databases, legacy systems
 
-## Integration
+### Phase 3: Interface Design
 
-This skill integrates with:
+The AI proposes repository interface design based on selected provider.
 
-- **Shared Utilities**: Uses project-utilities for project detection and formatting
-- **Domain Model Metadata**: Reads JSON output from domain-model-parser skill
-- **EF Core/Dapper**: Generated interfaces support both EF Core and Dapper implementations
-- **VS Code**: Automatic code formatting through dotnet format integration
+### Phase 4: Implementation Guidance
+
+**For EF Core:**
+- Use `DbContext` and `DbSet<T>`
+- Implement LINQ-based queries
+- Enable async/await patterns
+- Configure entity relationships in `OnModelCreating`
+
+**For SanjelData:**
+- Inject `IProgramRequestService` (or similar)
+- Wrap sync methods with `Task.Run()` if needed
+- Convert 0-based paging to 1-based
+- Handle enum type conversions if needed
+- Create `ProgramRequestQueryService` for specific queries
+
+**For Custom:**
+- Define adapter interfaces
+- Implement connection pooling
+- Handle async patterns appropriately
+- Create query abstractions
+
+### Phase 5: Code Generation
+
+After consultation agreement, the AI generates:
+
+1. **Base Interface**: `IRepository<TEntity>` with standard methods
+2. **Entity Interfaces**: `IRequestRepository`, `IDataElementRepository`, etc.
+3. **Provider Documentation**: Setup and configuration guides
+4. **DI Configuration**: Service registration patterns
+5. **Implementation Guidance**: Step-by-step implementation steps
+
+## Integration with Other Skills
+
+- **domain-model-parser**: Provides entity type information for interface generation
+- **efcore-repository-generator**: Consumes interfaces for EF Core implementations (if EF Core chosen)
+- **sanjeldata-repository-generator** (NEW): Consumes interfaces for SanjelData adapters (if SanjelData chosen)
+- **custom-repository-generator** (NEW): Consumes interfaces for custom provider implementations (if Custom chosen)
+- **service-generator**: Repository interfaces are injected into generated services
+- **blazor-data-integration-generator**: Uses repository interfaces for data access layer
+
+## What This Skill DOES
+
+- Provide AI-driven consultation on data provider selection
+- Analyze project requirements and recommend optimal provider strategy
+- Generate standard repository interface contracts (`IRepository<TEntity>`)
+- Generate entity-specific repository interfaces (e.g., `IRequestRepository`)
+- Create provider-specific implementation guidance
+- Document provider-specific patterns and considerations
+- Provide DI registration recommendations
+- Explain architectural trade-offs and decision rationale
+
+## What This Skill DOES NOT DO
+
+- Does NOT generate repository implementations
+- Does NOT generate database-specific code (DbContext, migrations, etc.)
+- Does NOT generate query implementations
+- Does NOT generate provider-specific adapter code
+- Does NOT create concrete repository classes
+- These implementation details are handled by separate, provider-specific skills
+
+## Data Provider Strategies Overview
+
+### EF Core Strategy (Recommended for New Projects)
+
+**Best for:** Greenfield projects, modern architectures, flexible querying needs
+
+**Key Benefits:** LINQ expressiveness, native async/await, change tracking, migration support
+
+### SanjelData Strategy (Recommended for Integration)
+
+**Best for:** Integration with existing SanjelData, rapid development, leveraging proven code
+
+**Key Benefits:** 30+ proven query methods per entity, tested codebase, business logic included
+
+### Custom/Other Strategy
+
+**Best for:** External APIs, specialized databases, legacy system integration
+
+**Key Benefits:** Full control, optimized for specific needs, no framework constraints
+
+## Key Principles
+
+1. **Standard Interface Contract**: All providers use the same 12 standard methods
+2. **Provider Abstraction**: Implementation details hidden behind interface
+3. **AI-Driven Decision Making**: Consultation ensures optimal provider choice
+4. **Educational Approach**: Understand the "why" behind recommendations
+5. **Flexibility**: Interfaces remain consistent across provider changes
+
+## Example Scenarios
+
+### Scenario 1: New Project with EF Core
+User selects EF Core → AI generates standard interfaces with LINQ-friendly signatures → `efcore-repository-generator` implements them
+
+### Scenario 2: SanjelData Integration
+User selects SanjelData → AI generates standard interfaces + optional query service → `sanjeldata-repository-generator` implements adapters
+
+### Scenario 3: External API Integration
+User selects Custom provider → AI generates standard interfaces + custom extensions → `custom-repository-generator` implements adapters
 
 ## Dependencies
 
-- **Bun Runtime**: TypeScript execution environment
-- **Domain Model Metadata**: JSON file from domain-model-parser skill  
-- **Project Utilities**: Shared utility functions for project operations
-- **Dotnet SDK**: For code formatting (dotnet format command)
+- Domain model metadata from `domain-model-parser` (optional but recommended)
+- Project namespace conventions
+- Repository project structure
 
-## Generated Interface Pattern
+## Best Practices
 
-### Base Repository Interface
-```csharp
-public interface IRepository<TEntity> 
-    where TEntity : Common, new()
-{
-    Task<PagerResult<TEntity>> GetPagedListAsync(Pager pager, Expression<Func<TEntity, bool>> expression);
-    Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> expression);
-    Task<TEntity> GetByIdAsync(int id);
-    Task<TEntity> GetByIdWithChildrenAsync(int id);
-    Task<bool> CreateAsync(TEntity entity);
-    Task<bool> UpdateAsync(TEntity entity);
-    Task<bool> DeleteAsync(TEntity entity);
-    // ... additional methods
-}
-```
+- Start with AI consultation before any code generation
+- Base provider decision on project context, not just technology preference
+- Keep standard methods consistent across all repository interfaces
+- Add entity-specific methods only when truly needed
+- Document provider-specific patterns in the generated documentation
+- Use the generated DI registration patterns for consistency
 
-### Entity-Specific Repository Interface  
-```csharp
-public interface IRequestRepository : IRepository<Request>
-{
-    // Entity-specific operations can be added here
-    // Performance markers for Dapper optimization
-    [DapperOptimized]
-    Task<List<Request>> GetRequestsByStatusAsync(Status status);
-}
-```
+## Troubleshooting
 
-## Architecture Notes
+**Q: Can I change data providers later?**
+A: Yes! The interfaces remain the same. Just regenerate implementations with the appropriate provider-specific skill.
 
-- **Repository Pattern**: Follows clean architecture repository pattern
-- **Dependency Injection**: Generated interfaces support DI containers  
-- **Performance Markers**: Attributes indicate operations suitable for Dapper optimization
-- **Async Operations**: All methods use async/await patterns for scalability
-- **Expression Trees**: LINQ expressions enable flexible filtering
+**Q: Should I mix providers in one project?**
+A: Generally no. Choose one primary provider for consistency. Use adapters only if absolutely necessary.
 
-## Skill Communication
+**Q: What if I need provider-specific queries?**
+A: Add them to entity-specific interfaces (e.g., `IRequestRepository`) or create separate query service interfaces.
 
-This skill communicates through GitHub Copilot orchestration:
-- No direct exports or imports between skills
-- Input: Domain model metadata JSON files
-- Output: Generated C# repository interface files
-- Integration: VS Code workspace file operations
+**Q: How do I handle async/sync differences?**
+A: The AI consultation will address this. SanjelData adapters may need `Task.Run()` wrappers, which will be documented.
 
-This skill is part of the comprehensive code generation pipeline and works in coordination with other domain-driven code generation skills.
+## Notes
+
+- This is a **pure AI-driven skill** with no scripts or automation
+- Focus is on **consultation and architectural guidance**
+- Code generation happens only after user agreement
+- Educational approach helps you understand the decisions
+- Interfaces are provider-agnostic, implementations are provider-specific
+- Use this skill when starting a project or reconsidering data access strategy
