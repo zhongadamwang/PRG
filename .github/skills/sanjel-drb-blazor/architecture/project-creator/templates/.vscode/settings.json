@@ -1,6 +1,6 @@
 {
-	"dotnet.defaultSolution": "src/Prg.ProjectName.slnx",
-	"omnisharp.defaultLaunchSolution": "src/Prg.ProjectName.slnx",
+	"dotnet.defaultSolution": "src/{Prg}.{ProjectName}.slnx",
+	"omnisharp.defaultLaunchSolution": "src/{Prg}.{ProjectName}.slnx",
 	"files.exclude": {
 		"**/bin": true,
 		"**/obj": true,

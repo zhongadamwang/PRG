@@ -27,7 +27,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Prg.ProjectName.Blazor\Prg.ProjectName.Blazor.csproj" />
+		<ProjectReference Include="..\{Prg}.{ProjectName}.Blazor\{Prg}.{ProjectName}.Blazor.csproj" />
 	</ItemGroup>
 
 </Project>

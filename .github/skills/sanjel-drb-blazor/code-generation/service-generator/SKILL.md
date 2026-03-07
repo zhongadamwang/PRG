@@ -133,11 +133,11 @@ The generated service class is designed to be extended by future skills:
 
 ### Scenario 1: New Feature Page
 User requests: "Create a service for the ProgramRequest feature"
-AI generates: `src/Sanjel.RequestManagement.Blazor/Pages/ProgramRequest/Services/ProgramRequestService.cs` with minimal architecture
+AI generates: `src/{Prg}.{ProjectName}.Blazor/Pages/ProgramRequest/Services/ProgramRequestService.cs` with minimal architecture
 
 ### Scenario 2: Existing Entity Integration
 User requests: "Generate a service for handling Request entities in the Assignment page"
-AI generates: `src/Sanjel.RequestManagement.Blazor/Pages/Assignment/Services/AssignmentService.cs` with IRequestRepository injection
+AI generates: `src/{Prg}.{ProjectName}.Blazor/Pages/Assignment/Services/AssignmentService.cs` with IRequestRepository injection
 
 ## Error Handling
 - Validates that entity metadata is available

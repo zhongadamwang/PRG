@@ -116,7 +116,7 @@ class ProjectCreator {
 	}
 
 	private transformName(name: string, config: ProjectConfig): string {
-		// Replace Prg.ProjectName with actual project name
+		// Replace {Prg}.{ProjectName} with actual project name
 		return name.replace(/Prg\.ProjectName/g, config.fullProjectName);
 	}
 
@@ -146,11 +146,12 @@ class ProjectCreator {
 	}
 
 	private transformContent(content: string, config: ProjectConfig): string {
-		// Replace all instances of Prg.ProjectName with the actual project name
-		let transformed = content.replace(/Prg\.ProjectName/g, config.fullProjectName);
+		// Replace all instances of {Prg}.{ProjectName} with the actual project name
+		const reg = /Prg\.ProjectName|\{Prg\}\.\{ProjectName\}/ig;
+		let transformed = content.replace(reg, config.fullProjectName);
 
 		// Also replace any path separators in project references
-		transformed = transformed.replace(/Prg\.ProjectName/g, config.fullProjectName);
+		transformed = transformed.replace(reg, config.fullProjectName);
 
 		return transformed;
 	}

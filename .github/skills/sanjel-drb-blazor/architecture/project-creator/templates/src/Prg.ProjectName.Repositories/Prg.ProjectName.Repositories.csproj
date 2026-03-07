@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<ItemGroup>
-		<ProjectReference Include="..\Prg.ProjectName.Core\Prg.ProjectName.Core.csproj" />
+		<ProjectReference Include="..\{Prg}.{ProjectName}.Core\{Prg}.{ProjectName}.Core.csproj" />
 		<ProjectReference
-			Include="..\Prg.ProjectName.BusinessProcess\Prg.ProjectName.BusinessProcess.csproj" />
+			Include="..\{Prg}.{ProjectName}.BusinessProcess\{Prg}.{ProjectName}.BusinessProcess.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

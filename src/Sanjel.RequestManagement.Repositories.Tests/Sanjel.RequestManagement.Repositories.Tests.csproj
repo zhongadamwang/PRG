@@ -27,10 +27,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference
-			Include="..\Sanjel.RequestManagement.Core\Sanjel.RequestManagement.Core.csproj" />
-		<ProjectReference
-			Include="..\Sanjel.RequestManagement.Repositories\Sanjel.RequestManagement.Repositories.csproj" />
+		<ProjectReference Include="..\Sanjel.RequestManagement.Core\Sanjel.RequestManagement.Core.csproj" />
+		<ProjectReference Include="..\Sanjel.RequestManagement.Repositories\Sanjel.RequestManagement.Repositories.csproj" />
 	</ItemGroup>
 
 </Project>

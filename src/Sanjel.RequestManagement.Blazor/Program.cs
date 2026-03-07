@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using Sanjel.RequestManagement.Blazor.Services;
 using Syncfusion.Blazor;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,18 +8,9 @@ builder.Services.AddRazorComponents()
 
 // Add Syncfusion Blazor service
 builder.Services.AddSyncfusionBlazor();
-var syncfusionLicenseKey = builder.Configuration["Blazor:SyncfusionLicenseKey"];
-Console.WriteLine($"Syncfusion License Key loaded: {syncfusionLicenseKey}");
-if (!string.IsNullOrEmpty(syncfusionLicenseKey))
-{
-	Console.WriteLine($"Registering Syncfusion license (length: {syncfusionLicenseKey.Length})");
-	Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(syncfusionLicenseKey);
-	Console.WriteLine("Syncfusion license registered successfully");
-}
-else
-{
-	Console.WriteLine("WARNING: Syncfusion license key is empty or null!");
-}
+
+// Register Syncfusion license (if applicable)
+// Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("LICENSE_KEY");
 
 // Register HTTP Context Accessor
 builder.Services.AddHttpContextAccessor();
@@ -29,18 +18,12 @@ builder.Services.AddHttpContextAccessor();
 var connectionString = builder.Configuration.GetConnectionString("SanjelMdm:DbConnectionString")
 	?? builder.Configuration["SanjelMdm:DbConnectionString"];
 
-builder.Services.AddDbContext<Sanjel.RequestManagement.Entities.Data.RequestManagementDbContext>(options =>
-	options.UseSqlServer(connectionString));
-
-// Register Mock Services for demo
-builder.Services.AddScoped<IRequestsMockService, RequestsMockService>();
-
 // Use Scrutor for assembly scanning and auto-registration
 builder.Services.Scan(scan => scan
 	// Scan multiple assemblies
 	.FromAssemblies(typeof(Sanjel.RequestManagement.Repositories.Common.IRepository<>).Assembly)
 	.FromAssemblyOf<Sanjel.RequestManagement.Core.Services.ICurrentUserService>()
-	.FromAssemblyOf<Sanjel.RequestManagement.Blazor.Components.App>()
+	.FromAssemblyOf<Sanjel.RequestManagement.Blazor.App>()
 
 	// Register by naming convention: IService -> Service, IRepository -> Repository
 	.AddClasses(classes => classes
@@ -80,13 +63,12 @@ if (!app.Environment.IsDevelopment())
 	app.UseHsts();
 	app.UseHttpsRedirection();
 }
-
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
 
 app.UseAntiforgery();
 
 app.MapStaticAssets();
-app.MapRazorComponents<Sanjel.RequestManagement.Blazor.Components.App>()
+app.MapRazorComponents<Sanjel.RequestManagement.Blazor.App>()
 		.AddInteractiveServerRenderMode();
 
 app.Run();

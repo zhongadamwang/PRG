@@ -49,7 +49,7 @@ This skill generates a complete Blazor application foundation with MudBlazor int
 ## Output
 ### Generated Files
 ```
-src/Sanjel.RequestManagement.Blazor/
+src/{Prg}.{ProjectName}.Blazor/
 │── App.razor               # HTML host with MudBlazor CSS/JS references
 │── App.razor.cs            # App component code-behind
 │── Routes.razor            # Application routing with MudBlazor components
@@ -60,15 +60,15 @@ src/Sanjel.RequestManagement.Blazor/
 │       ├── MainLayout.razor.css # MudBlazor-specific layout styles
 │       ├── NavMenu.razor       # MudDrawer navigation with MudNavMenu
 │       └── NavMenu.razor.cs    # Navigation code-behind with MudBlazor logic
-├── Components/
-│   └── Pages/
-│       ├── Home.razor             # Default home with MudBlazor components
-│       └── MudBlazorHello.razor   # Hello World demonstration page
-│   ├── Home.razor.cs          # Home page code-behind
-│   ├── Counter.razor          # Example with MudButton and MudPaper
-│   ├── Counter.razor.cs       # Counter code-behind
-│   ├── Error.razor            # MudAlert error handling
-│   └── Error.razor.cs         # Error handling code-behind
+├── Pages/
+│   ├── Home/
+│   │   └── Index.razor         # Default home with MudBlazor components
+│   ├── Hello/
+│   │   └── Index.razor         # Hello World demonstration page
+│   ├── Counter/
+│   │   └── Index.razor         # Example with MudButton and MudPaper
+│   └── Error/
+│       └── Index.razor         # MudAlert error handling
 ├── _Imports.razor             # MudBlazor namespace imports
 ├── appsettings.json           # MudBlazor theme configuration
 ├── Program.cs                 # MudServices registration
@@ -160,12 +160,12 @@ builder.Services.AddMudServices(config =>
 - ❌ **NO BUSINESS LOGIC**: Page should have zero business logic or complex scenarios
 - ✅ **SIMPLE ROUTING**: Only add basic @page directive, no complex routing setup
 - ✅ **REQUIRED: ROUTE COMPONENT**: All pages must include @page directive for routing
-- ✅ **REQUIRED: COMPONENTS/PAGES DIRECTORY**: All pages must be placed in Components/Pages directory
+- ✅ **REQUIRED: PAGES DIRECTORY**: All pages must be placed in Pages/ directory
 
 **MANDATORY PAGE PLACEMENT:**
-- **Directory Path**: `Components/Pages/` (required for all generated pages)
+- **Directory Path**: `Pages/` (required for all generated pages)
 - **Route Components**: All pages must include `@page` directive for proper routing
-- **File Structure**: Follow Blazor convention with pages in Components/Pages directory
+- **File Structure**: Follow Blazor convention with pages in Pages/ directory
 
 **HELLO WORLD PAGE TEMPLATE:**
 ```razor
@@ -178,8 +178,8 @@ builder.Services.AddMudServices(config =>
 ```
 
 **PAGE FILE LOCATION:**
-- **Full Path**: `src/Sanjel.RequestManagement.Blazor/Components/Pages/MudBlazorHello.razor`
-- **Required Directory**: `Components/Pages/` (mandatory placement)
+- **Full Path**: `src/{Prg}.{ProjectName}.Blazor/Pages/Hello/Index.razor`
+- **Required Directory**: `Pages/` (mandatory placement)
 
 **Rule 2 - COMPILATION SUCCESS GUARANTEE (确保编译成功):**
 - ✅ **COMPILATION FIRST**: Every generated file MUST compile without errors

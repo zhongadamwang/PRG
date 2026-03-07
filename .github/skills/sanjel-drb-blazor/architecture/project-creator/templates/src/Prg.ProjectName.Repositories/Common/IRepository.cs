@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-namespace Prg.ProjectName.Repositories.Common;
+namespace {Prg}.{ProjectName}.Repositories.Common;
 
 /// <summary>
 /// Generic repository interface for EF Core-based CRUD operations and querying.

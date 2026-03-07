@@ -27,8 +27,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference
-			Include="..\Sanjel.RequestManagement.Blazor\Sanjel.RequestManagement.Blazor.csproj" />
+		<ProjectReference Include="..\Sanjel.RequestManagement.Blazor\Sanjel.RequestManagement.Blazor.csproj" />
 	</ItemGroup>
 
 </Project>

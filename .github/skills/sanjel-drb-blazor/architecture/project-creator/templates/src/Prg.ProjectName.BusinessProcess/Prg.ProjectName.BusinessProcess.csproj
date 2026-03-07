@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<ItemGroup>
-		<ProjectReference Include="..\Prg.ProjectName.Core\Prg.ProjectName.Core.csproj" />
+		<ProjectReference Include="..\{Prg}.{ProjectName}.Core\{Prg}.{ProjectName}.Core.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

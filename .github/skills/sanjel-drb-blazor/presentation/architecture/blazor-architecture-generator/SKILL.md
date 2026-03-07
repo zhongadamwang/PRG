@@ -21,6 +21,12 @@ description: Friendly AI guide for Blazor architecture and component library sel
 - Component library generators replace/update concrete implementations in existing files
 - No code-level abstraction layers - switching handled by Skills orchestration
 
+**Project Structure Requirements:**
+- Pages must be created in `Pages/` directory (not `Components/Pages/`)
+- All generators will use existing routing foundation: Routes.razor, MainLayout.razor, NavMenu.razor
+- Each generator creates component library-specific layouts and routing integration
+- Skills maintain compatibility with existing Blazor project structure
+
 ## Description
 Friendly AI guide for Blazor architecture and component library selection. This skill helps users choose the right component library and automatically launches the appropriate generator based on their requirements and preferences.
 
@@ -50,6 +56,8 @@ This skill provides conversational guidance to help you select the optimal Blazo
 - Clear explanation of available component library options
 - Friendly guidance and answers to your questions about each choice
 - Automatic launch of your selected specialized generator skill
+- Integration with existing routing foundation (Routes.razor, MainLayout.razor, NavMenu.razor)
+- Component library-specific page generation in Pages/ directory structure
 - Next steps guidance after architecture generation
 
 ## Available Component Library Options

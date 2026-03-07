@@ -873,13 +873,13 @@ bun run scripts/[script-name].ts
 ## Integration Points
 
 ### Target Code Locations
-- `src/Sanjel.RequestManagement.Core/` - Entity classes and services
-- `src/Sanjel.RequestManagement.Repositories/` - Repository classes  
-- `src/Sanjel.RequestManagement.Blazor/Components/` - Layout components (MainLayout.razor, NavMenu.razor)
-- `src/Sanjel.RequestManagement.Blazor/Pages/` - Page files (List, Create, Edit, Detail pages)
-- `src/Sanjel.RequestManagement.Blazor/wwwroot/` - Static assets (CSS, JS, theme files)
-- `src/Sanjel.RequestManagement.Blazor/_Imports.razor` - Component library namespace imports
-- `src/Sanjel.RequestManagement.Blazor/Program.cs` - Service registrations and configuration
+- `src/Prg.ProjectName.Core/` - Entity classes and services
+- `src/Prg.ProjectName.Repositories/` - Repository classes  
+- `src/Prg.ProjectName.Blazor/Components/` - Layout components (MainLayout.razor, NavMenu.razor)
+- `src/Prg.ProjectName.Blazor/Pages/` - Page files (List, Create, Edit, Detail pages)
+- `src/Prg.ProjectName.Blazor/wwwroot/` - Static assets (CSS, JS, theme files)
+- `src/Prg.ProjectName.Blazor/_Imports.razor` - Component library namespace imports
+- `src/Prg.ProjectName.Blazor/Program.cs` - Service registrations and configuration
 
 ### Configuration Integration
 - Update `.csproj` file dependencies

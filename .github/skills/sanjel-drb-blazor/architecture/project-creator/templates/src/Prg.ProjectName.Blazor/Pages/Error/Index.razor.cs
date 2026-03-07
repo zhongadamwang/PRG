@@ -1,17 +1,17 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Components;
 
-namespace Prg.ProjectName.Blazor.Pages
+namespace {Prg}.{ProjectName}.Blazor.Pages.Error
 {
-	public partial class Error
+	public partial class Index
 	{
 		[CascadingParameter]
 		private HttpContext? HttpContext { get; set; }
 
 		private string? RequestId { get; set; }
-		private bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+		private bool ShowRequestId => !string.IsNullOrEmpty(this.RequestId);
 
 		protected override void OnInitialized() =>
-				RequestId = Activity.Current?.Id ?? HttpContext?.TraceIdentifier;
+				this.RequestId = Activity.Current?.Id ?? this.HttpContext?.TraceIdentifier;
 	}
 }

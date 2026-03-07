@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -12,15 +10,12 @@ builder.Services.AddHttpContextAccessor();
 var connectionString = builder.Configuration.GetConnectionString("SanjelMdm:DbConnectionString")
 	?? builder.Configuration["SanjelMdm:DbConnectionString"];
 
-builder.Services.AddDbContext<Prg.ProjectName.Core.Data.ProjectNameDbContext>(options =>
-	options.UseSqlServer(connectionString));
-
 // Use Scrutor for assembly scanning and auto-registration
 builder.Services.Scan(scan => scan
 	// Scan multiple assemblies
-	.FromAssemblies(typeof(Prg.ProjectName.Repositories.Common.IRepository<>).Assembly)
-	.FromAssemblyOf<Prg.ProjectName.Core.Services.ICurrentUserService>()
-	.FromAssemblyOf<Prg.ProjectName.Blazor.Components.App>()
+	.FromAssemblies(typeof({Prg}.{ProjectName}.Repositories.Common.IRepository<>).Assembly)
+	.FromAssemblyOf<{Prg}.{ProjectName}.Core.Services.ICurrentUserService>()
+	.FromAssemblyOf<{Prg}.{ProjectName}.Blazor.App>()
 
 	// Register by naming convention: IService -> Service, IRepository -> Repository
 	.AddClasses(classes => classes
@@ -37,7 +32,7 @@ builder.Services.Scan(scan => scan
 
 	// Register all classes that implement IRepository<T>
 	.AddClasses(classes => classes
-		.AssignableTo(typeof(Prg.ProjectName.Repositories.Common.IRepository<>)))
+		.AssignableTo(typeof({Prg}.{ProjectName}.Repositories.Common.IRepository<>)))
 	.AsImplementedInterfaces()
 	.WithScopedLifetime()
 
@@ -65,7 +60,7 @@ app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages:
 app.UseAntiforgery();
 
 app.MapStaticAssets();
-app.MapRazorComponents<Prg.ProjectName.Blazor.App>()
+app.MapRazorComponents<{Prg}.{ProjectName}.Blazor.App>()
 		.AddInteractiveServerRenderMode();
 
 app.Run();

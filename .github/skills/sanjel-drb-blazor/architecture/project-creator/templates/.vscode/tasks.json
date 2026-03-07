@@ -7,7 +7,7 @@
 			"type": "process",
 			"args": [
 				"build",
-				"${workspaceFolder}/src/Prg.ProjectName.slnx",
+				"${workspaceFolder}/src/{Prg}.{ProjectName}.slnx",
 				"/property:GenerateFullPaths=true",
 				"/consoleloggerparameters:NoSummary"
 			],
@@ -26,7 +26,7 @@
 			"type": "process",
 			"args": [
 				"publish",
-				"${workspaceFolder}/src/app/Prg.ProjectName.Blazor/Prg.ProjectName.Blazor.csproj",
+				"${workspaceFolder}/src/app/{Prg}.{ProjectName}.Blazor/{Prg}.{ProjectName}.Blazor.csproj",
 				"/property:GenerateFullPaths=true",
 				"/consoleloggerparameters:NoSummary"
 			],
@@ -47,7 +47,7 @@
 				"watch",
 				"run",
 				"--project",
-				"${workspaceFolder}/src/app/Prg.ProjectName.Blazor/Prg.ProjectName.Blazor.csproj"
+				"${workspaceFolder}/src/app/{Prg}.{ProjectName}.Blazor/{Prg}.{ProjectName}.Blazor.csproj"
 			],
 			"group": "build",
 			"presentation": {
@@ -68,7 +68,7 @@
 			"type": "process",
 			"args": [
 				"clean",
-				"${workspaceFolder}/src/Prg.ProjectName.slnx"
+				"${workspaceFolder}/src/{Prg}.{ProjectName}.slnx"
 			],
 			"group": "build",
 			"presentation": {
@@ -85,7 +85,7 @@
 			"type": "process",
 			"args": [
 				"restore",
-				"${workspaceFolder}/src/Prg.ProjectName.slnx"
+				"${workspaceFolder}/src/{Prg}.{ProjectName}.slnx"
 			],
 			"group": "build",
 			"presentation": {
@@ -102,7 +102,7 @@
 			"type": "process",
 			"args": [
 				"test",
-				"${workspaceFolder}/src/Prg.ProjectName.slnx",
+				"${workspaceFolder}/src/{Prg}.{ProjectName}.slnx",
 				"--no-build",
 				"--logger:console;verbosity=normal"
 			],

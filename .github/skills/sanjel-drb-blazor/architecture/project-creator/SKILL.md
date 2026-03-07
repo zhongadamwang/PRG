@@ -9,7 +9,7 @@ description: Create and configure complete project architecture with folder stru
 
 🏗️ **Template-Based Project Creator** 🏗️
 
-This skill creates .NET Blazor Server projects by copying all files from the `templates/` directory to a new location, renaming directories/files from `Prg.ProjectName.*` to your specified project name, and replacing all namespace references in the code.
+This skill creates .NET Blazor Server projects by copying all files from the `templates/` directory to a new location, renaming directories/files from `{Prg}.{ProjectName}.*` to your specified project name, and replacing all namespace references in the code.
 
 ## When To Use
 
@@ -44,7 +44,7 @@ bun run create-project.ts <projectName> <projectPrefix> <targetDirectory>
 
 # Example (creates project in specified root directory):
 bun run create-project.ts RequestManagement Sanjel /sanjel/project
-# This creates: /sanjel/project/src/Sanjel.RequestManagement.*
+# This creates: /sanjel/project/src/{Prg}.{ProjectName}.*
 ```
 
 **🚨 AI Requirements:**
@@ -56,9 +56,9 @@ bun run create-project.ts RequestManagement Sanjel /sanjel/project
 ## What the Script Does
 
 1. **Copy Templates** - Copies entire `templates/` directory structure to target location
-2. **Rename Directories** - Changes `Prg.ProjectName.*` folders to `[Prefix].[ProjectName].*`
+2. **Rename Directories** - Changes `{Prg}.{ProjectName}.*` folders to `[Prefix].[ProjectName].*`
 3. **Rename Files** - Updates `.csproj`, `.slnx` and other project files with new names
-4. **Replace Content** - Updates all `Prg.ProjectName` references in code to your project name
+4. **Replace Content** - Updates all `{Prg}.{ProjectName}` references in code to your project name
 5. **Preserve Structure** - Maintains all file relationships and dependencies
 
 ## Template Structure
@@ -70,4 +70,4 @@ The `templates/` directory contains a complete project with:
 - **VS Code Setup** - Debug configuration and recommended extensions
 - **Shell Scripts** - Execution and build automation scripts
 
-⚠️ **IMPORTANT**: All files in the `templates/` directory are template files, including `run.sh` and all other scripts. These templates use `Prg.ProjectName` as placeholder names that get replaced with your actual project name during creation.
+⚠️ **IMPORTANT**: All files in the `templates/` directory are template files, including `run.sh` and all other scripts. These templates use `{Prg}.{ProjectName}` as placeholder names that get replaced with your actual project name during creation.

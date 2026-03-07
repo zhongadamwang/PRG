@@ -52,7 +52,7 @@ This skill provides AI-driven consultation for Syncfusion Blazor architecture an
 ## Output
 ### Generated Files
 ```
-src/Sanjel.RequestManagement.Blazor/
+src/{Prg}.{ProjectName}.Blazor/
 │── App.razor               # HTML host with Syncfusion CSS/JS references
 │── App.razor.cs            # App component code-behind
 │── Routes.razor            # Application routing with Syncfusion layout
@@ -63,15 +63,15 @@ src/Sanjel.RequestManagement.Blazor/
 │       ├── MainLayout.razor.css # Syncfusion theme customizations
 │       ├── NavMenu.razor       # Syncfusion navigation components
 │       └── NavMenu.razor.cs    # Navigation code-behind with Syncfusion logic
-├── Components/
-│   └── Pages/
-│       ├── Home.razor             # Default home with Syncfusion components
-│       └── SyncfusionHello.razor  # Hello World demonstration page
-│   ├── Home.razor.cs          # Home page code-behind
-│   ├── Counter.razor          # Example with SfButton and enterprise components
-│   ├── Counter.razor.cs       # Counter code-behind
-│   ├── Error.razor            # Syncfusion toast and notification error handling
-│   └── Error.razor.cs         # Error handling code-behind
+├── Pages/
+│   ├── Home/
+│   │   └── Index.razor         # Default home with Syncfusion components
+│   ├── Hello/
+│   │   └── Index.razor         # Hello World demonstration page
+│   ├── Counter/
+│   │   └── Index.razor         # Example with SfButton and enterprise components
+│   └── Error/
+│       └── Index.razor         # Syncfusion toast and notification error handling
 ├── _Imports.razor             # Syncfusion namespace imports
 ├── appsettings.json           # Syncfusion theme and license configuration
 ├── Program.cs                 # Syncfusion services registration
@@ -274,12 +274,12 @@ When installing Syncfusion dependencies, only install these two essential packag
 - ❌ **NO BUSINESS LOGIC**: Page should have zero business logic or complex scenarios
 - ✅ **SIMPLE ROUTING**: Only add basic @page directive, no complex routing setup
 - ✅ **REQUIRED: ROUTE COMPONENT**: All pages must include @page directive for routing
-- ✅ **REQUIRED: COMPONENTS/PAGES DIRECTORY**: All pages must be placed in Components/Pages directory
+- ✅ **REQUIRED: PAGES DIRECTORY**: All pages must be placed in Pages/ directory
 
 **MANDATORY PAGE PLACEMENT:**
-- **Directory Path**: `Components/Pages/` (required for all generated pages)
+- **Directory Path**: `Pages/` (required for all generated pages)
 - **Route Components**: All pages must include `@page` directive for proper routing
-- **File Structure**: Follow Blazor convention with pages in Components/Pages directory
+- **File Structure**: Follow Blazor convention with pages in Pages/ directory
 
 **HELLO WORLD PAGE TEMPLATE:**
 ```razor
@@ -292,8 +292,8 @@ When installing Syncfusion dependencies, only install these two essential packag
 ```
 
 **PAGE FILE LOCATION:**
-- **Full Path**: `src/Sanjel.RequestManagement.Blazor/Components/Pages/Hello/Index.razor`
-- **Required Directory**: `Components/Pages/` (mandatory placement)
+- **Full Path**: `src/{Prg}.{ProjectName}.Blazor/Pages/Hello/Index.razor`
+- **Required Directory**: `Pages/` (mandatory placement)
 
 **Rule 2 - COMPILATION SUCCESS GUARANTEE :**
 - ✅ **COMPILATION FIRST**: Every generated file MUST compile without errors

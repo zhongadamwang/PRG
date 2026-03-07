@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace Sanjel.RequestManagement.Core.Services
+namespace {Prg}.{ProjectName}.Core.Services
 {
 	public interface ICurrentUserService
 	{

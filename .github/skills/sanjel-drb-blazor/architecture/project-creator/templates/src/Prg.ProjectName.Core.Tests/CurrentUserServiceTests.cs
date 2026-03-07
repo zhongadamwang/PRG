@@ -1,8 +1,8 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using Prg.ProjectName.Core.Services;
+using {Prg}.{ProjectName}.Core.Services;
 
-namespace Prg.ProjectName.Core.Tests;
+namespace {Prg}.{ProjectName}.Core.Tests;
 
 public class CurrentUserServiceTests
 {

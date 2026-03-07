@@ -1,4 +1,4 @@
-namespace {Prg}.{ProjectName}.Repositories.Common;
+namespace Sanjel.RequestManagement.Repositories.Common;
 
 /// <summary>
 /// Represents a paged result set with entities and pagination metadata.
