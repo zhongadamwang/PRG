@@ -1,23 +1,44 @@
-# Solution Code Formatter
+---
+name: solution-code-formatter
+description: Format all code in the entire solution using dotnet format commands. Provides comprehensive code formatting across all projects in a solution, ensuring consistent code style and formatting standards with error handling and selective formatting capabilities.
+---
+
+# Solution Code Formatter ✅ **🔧 Script-Driven**
+
+**Responsibility**: Format all code in the entire solution using dotnet format commands
+**Input**: Solution file path (.slnx)
+**Output**: Formatted code across entire solution
+
+**Script**: `format-solution.ts` (run with bun)
+- Execute `dotnet format` on the entire solution
+- Execute `dotnet format style` for comprehensive style formatting
+- Provide formatting status and results
+- Handle formatting errors gracefully
+- Support selective formatting by project if needed
 
 ## Description
-Format all code in the entire solution using dotnet format commands. Provides comprehensive code formatting for C# projects using both basic formatting and style formatting to ensure consistent code style across the entire solution.
+Format all code in the entire solution using dotnet format commands. This skill provides comprehensive code formatting across all projects in a solution, ensuring consistent code style and formatting standards.
 
 ## When To Use
-- After code generation skills complete their work
-- When consistent code formatting is needed across entire solution
-- Before committing generated code to version control
-- During continuous integration processes
-- When migrating between different coding standards
-- After bulk code modifications or imports
+- Formatting entire solution codebase
+- Ensuring consistent code style across all projects
+- Preparing code for code review or deployment
+- Standardizing code format after code generation
+- Running as part of CI/CD pipeline for code quality
+
+## Key Features
+- **Comprehensive Formatting**: Formats all code in the solution
+- **Multiple Format Types**: Supports both standard and style formatting
+- **Error Handling**: Graceful handling of formatting errors
+- **Selective Formatting**: Option to format specific projects
+- **Status Reporting**: Detailed formatting results and status
 
 ## Usage
-This skill uses bun to run TypeScript scripts for executing dotnet format commands on the solution.
+This skill formats all code in a solution using dotnet format tools.
 
 ## Input
-- Solution file path (.slnx) - Auto-detected from project root if not provided
-- Optional: Specific project paths for selective formatting
-- Optional: Formatting options and severity levels
+- **Solution File**: Path to .slnx solution file
+- **Format Type**: Optional specification of format type (standard, style, all)
 
 ## Output
 - Formatted code across entire solution

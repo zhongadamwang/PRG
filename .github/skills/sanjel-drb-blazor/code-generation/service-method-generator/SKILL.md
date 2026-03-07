@@ -1,16 +1,12 @@
 ---
 name: service-method-generator
-description: AI-driven service method generator that analyzes Repository interfaces and generates appropriate service methods based on available repository capabilities. Provides intelligent feedback when repository methods are insufficient.
-license: MIT
+description: AI-driven service method generator that analyzes Repository interfaces and generates appropriate service methods. Maps business requirements to repository capabilities, implements business logic, and provides intelligent feedback when repository methods are insufficient.
 ---
 
-# Service Method Generator
-
 ## Description
-AI-driven skill for generating service methods that interact with Repository interfaces. Analyzes available repository methods and generates appropriate service methods based on data operation requirements. Provides intelligent feedback when repository capabilities are insufficient for business logic needs.
+AI-driven service method generator that analyzes repository interfaces and generates appropriate service methods. This skill intelligently maps business requirements to repository capabilities and implements service methods with proper business logic.
 
 ## When To Use
-- After creating service architecture shells with `service-generator`
 - When a Blazor page/component needs specific data operations
 - When implementing CRUD operations for entities
 - When adding custom business logic methods to services

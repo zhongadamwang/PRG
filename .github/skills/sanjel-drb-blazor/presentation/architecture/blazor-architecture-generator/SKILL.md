@@ -1,13 +1,42 @@
+---
+name: blazor-architecture-generator
+description: Friendly AI guide for Blazor architecture and component library selection. Provides conversational guidance for choosing component libraries (MudBlazor, Syncfusion, Bootstrap, Minimal) and automatically launches appropriate generators based on requirements and preferences.
+---
+
 # Blazor Architecture Generator Selector
 
+**Responsibility**: Simple component library selector and friendly architecture guidance
+**Input**: Project preferences + Basic requirements
+**Output**: Component library selection guidance + Automatic generator launch
+
+**Approach**: **AI-Driven Simple Selection**
+- Acts as friendly Blazor architecture guide
+- Presents 4 clear component library options (MudBlazor, Syncfusion, Bootstrap, Minimal)
+- Provides conversational guidance and answers questions
+- Launches selected specialized generator automatically
+- **Output**: User-friendly selection process + automated skill orchestration
+
+**Component Library Switching Strategy:**
+- Switching = Re-run different component library generator (e.g., `syncfusion-generator`)
+- Component library generators replace/update concrete implementations in existing files
+- No code-level abstraction layers - switching handled by Skills orchestration
+
 ## Description
-AI-driven component library selector that helps you choose the best Blazor architecture approach for your project. Provides simple, friendly guidance to select between four specialized generators and launches your chosen option.
+Friendly AI guide for Blazor architecture and component library selection. This skill helps users choose the right component library and automatically launches the appropriate generator based on their requirements and preferences.
 
 ## When To Use
-- Starting a new Blazor project and need to choose a UI/CSS framework
-- Want quick overview of available component library options
-- Need guidance on which Blazor architecture approach fits your project
-- Ready to generate your Blazor foundation with your preferred styling approach
+- Starting new Blazor project and need architecture guidance
+- Unclear which component library fits project requirements
+- Want guided selection process for Blazor setup
+- Need expert advice on component library trade-offs
+- Seeking automated workflow orchestration for Blazor setup
+
+## Key Features
+- **Friendly Guidance**: Conversational AI assistance for architecture decisions
+- **Component Library Options**: Clear presentation of 4 main options
+- **Automated Orchestration**: Automatic launch of selected generators
+- **Switching Support**: Easy component library switching via re-generation
+- **Expert Advice**: Intelligent recommendations based on requirements
 
 ## Usage
 This skill provides conversational guidance to help you select the optimal Blazor component library for your project. I'll present the available options, answer your questions, and launch your chosen generator.

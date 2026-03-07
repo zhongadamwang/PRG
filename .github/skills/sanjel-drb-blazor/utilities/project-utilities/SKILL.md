@@ -1,45 +1,45 @@
+---
+name: project-utilities
+description: Provide intelligent utility functions and helpers for project management and development workflow. Offers customized utility solutions, workflow optimization tools, code analysis helpers, and project structure validation based on specific project needs and development context.
+---
+
 # Project Utilities
 
+**Responsibility**: Provide utility functions and helpers for project management and development workflow
+**Input**: Project configuration and development context
+**Output**: Utility functions, helpers, and development tools
+
+**Approach**: **AI-Driven Utility Assistance**
+- Provides intelligent project management utilities
+- Offers development workflow optimization tools
+- Supplies code analysis and quality assessment helpers
+- Delivers project structure validation and recommendations
+- **Output**: Customized utility solutions based on project needs
+
 ## Description
-Provides common utility functions used across multiple code generation skills. Centralizes project structure detection, code formatting, and common string manipulation functions to avoid code duplication.
+Provide intelligent utility functions and helpers for project management and development workflow. This AI-driven skill offers customized utility solutions based on specific project needs and development context.
 
 ## When To Use
-- When other skills need to detect project root directory and structure
-- When code formatting is required after code generation
-- When common string transformations are needed (PascalCase, camelCase, etc.)
-- When standardized file system operations are required
+- Need project management and workflow utilities
+- Require code analysis and quality assessment tools
+- Want project structure validation and optimization
+- Need custom development workflow helpers
+- Seeking intelligent project automation solutions
+
+## Key Features
+- **AI-Driven Solutions**: Intelligent utility recommendations based on context
+- **Workflow Optimization**: Tools for improving development efficiency
+- **Quality Assessment**: Code analysis and quality measurement utilities
+- **Structure Validation**: Project structure and organization validation
+- **Custom Helpers**: Tailored utility functions for specific project needs
 
 ## Usage
-This utility skill is imported and used by other skills rather than being run directly. Other skills import the utility functions they need.
-
-## Available Functions
-
-### Project Structure Detection
-- `detectProjectRoot()` - Find project root by locating .slnx files
-- `detectProjectInfo()` - Get project name, root path, and solution file info
-- `constructMigrationPath()` - Build standard migration directory path
-- `constructEntityPath()` - Build standard entity classes directory path
-- `constructRepositoryPath()` - Build standard repository classes directory path
-
-### Code Formatting
-- **DEPRECATED**: Code formatting is now handled by the dedicated `solution-code-formatter` skill
-
-### String Utilities
-- `toPascalCase(str)` - Convert to PascalCase (EntityName)
-- `toCamelCase(str)` - Convert to camelCase (entityName)
-- `toKebabCase(str)` - Convert to kebab-case (entity-name)
-- `pluralize(str)` - Convert singular to plural form
-- `singularize(str)` - Convert plural to singular form
-
-### File System Utilities
-- `ensureDirectoryExists(path)` - Create directory if it doesn't exist
-- `findFiles(pattern, dir)` - Find files matching a pattern
-- `readJsonFile(path)` - Read and parse JSON file safely
-- `writeJsonFile(path, data)` - Write JSON file with formatting
+This skill provides intelligent utility assistance based on project requirements and development context.
 
 ## Input
-- Various parameters depending on the utility function being called
-- Most functions work with current working directory context
+- **Project Configuration**: Current project setup and structure
+- **Development Context**: Current development phase and requirements
+- **Specific Needs**: Particular utility requirements or challenges
 
 ## Output
 - Utility functions return specific data types (strings, objects, booleans)

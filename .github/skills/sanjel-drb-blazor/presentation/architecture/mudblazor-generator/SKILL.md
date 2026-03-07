@@ -1,5 +1,20 @@
-````skill
-# MudBlazor Blazor Generator
+---
+name: mudblazor-generator
+description: Generate complete MudBlazor Material Design Blazor architecture. Creates a complete, working Blazor foundation with MudBlazor components, Material Design themes, icons, responsive layout system, and proper service configuration.
+---
+
+# MudBlazor Generator
+
+**Responsibility**: Generate complete MudBlazor Material Design Blazor architecture
+**Input**: Project configuration + Material Design preferences
+**Output**: Complete Blazor foundation with MudBlazor components
+
+- Install and configure MudBlazor NuGet packages
+- Generate MainLayout.razor and NavMenu.razor with Material Design components
+- Configure MudBlazor services in Program.cs
+- Set up Material Design themes and icons
+- Create responsive layout with MudBlazor responsive system
+- **Output**: Complete, runnable Blazor application with MudBlazor
 
 ## Description
 Generate Blazor application foundation specifically configured for MudBlazor Material Design component library. Creates a complete, working Blazor architecture with MudBlazor components, theming, and layout system.

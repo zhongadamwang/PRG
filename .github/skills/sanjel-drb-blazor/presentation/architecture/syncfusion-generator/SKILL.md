@@ -1,7 +1,23 @@
-# Syncfusion Blazor Architecture Generator
+---
+name: syncfusion-generator
+description: Enterprise architecture consultant for Syncfusion Blazor integration. Provides strategic guidance for implementing Syncfusion components in enterprise applications with focus on license optimization, performance, and ROI maximization for large-scale enterprise data.
+---
+
+# Syncfusion Generator
+
+**Responsibility**: Enterprise architecture consultant for Syncfusion Blazor integration
+**Input**: Enterprise requirements + Syncfusion license + Performance needs
+**Output**: Strategic Syncfusion architecture guidance and implementation recommendations
+
+**Approach**: **AI-Driven Enterprise Consultation**
+- Acts as Senior Enterprise Architect with Syncfusion expertise
+- Provides license optimization and ROI maximization guidance
+- Recommends optimal component selection for business requirements
+- Guides performance optimization for large-scale enterprise data
+- **Output**: Expert enterprise architecture guidance + implementation strategies
 
 ## Description
-AI-driven enterprise architecture consultant specializing in Syncfusion Blazor component library integration. Provides expert guidance for implementing advanced enterprise-grade applications with comprehensive data visualization, business intelligence capabilities, and professional UI controls. Acts as a senior enterprise architect with deep Syncfusion expertise.
+Enterprise architecture consultant specializing in Syncfusion Blazor integration. This AI-driven skill provides strategic guidance for implementing Syncfusion components in enterprise applications with focus on license optimization and performance.
 
 ## When To Use
 - Building enterprise applications requiring advanced data grids and visualization
@@ -12,6 +28,13 @@ AI-driven enterprise architecture consultant specializing in Syncfusion Blazor c
 - Developing data-intensive applications with performance requirements
 - Building scheduling, calendar, and resource management applications
 - Need enterprise-grade theming and accessibility compliance
+
+## Key Features
+- **Enterprise Consultation**: Senior architect-level guidance for Syncfusion implementation
+- **License Optimization**: Strategic advice on Syncfusion license utilization
+- **Performance Focus**: Optimization strategies for large-scale enterprise data
+- **Component Selection**: Intelligent recommendations for optimal component usage
+- **ROI Maximization**: Guidance on getting maximum value from Syncfusion investment
 
 ## Usage
 This skill provides AI-driven consultation for Syncfusion Blazor architecture and implementation strategies. I act as your **Senior Enterprise Architect** with deep Syncfusion expertise, providing tailored guidance for maximizing the value of your Syncfusion investment while ensuring optimal performance and maintainability.
@@ -260,19 +283,19 @@ When installing Syncfusion dependencies, only install these two essential packag
 
 **HELLO WORLD PAGE TEMPLATE:**
 ```razor
-@page "/syncfusion-hello"
+@page "/hello"
 
 <h3>Hello World</h3>
-<p>Basic Syncfusion component test</p>
+<p>Basic component test</p>
 
 <SimpleComponent />
 ```
 
 **PAGE FILE LOCATION:**
-- **Full Path**: `src/Sanjel.RequestManagement.Blazor/Components/Pages/SyncfusionHello.razor`
+- **Full Path**: `src/Sanjel.RequestManagement.Blazor/Components/Pages/Hello/Index.razor`
 - **Required Directory**: `Components/Pages/` (mandatory placement)
 
-**Rule 2 - COMPILATION SUCCESS GUARANTEE (确保编译成功):**
+**Rule 2 - COMPILATION SUCCESS GUARANTEE :**
 - ✅ **COMPILATION FIRST**: Every generated file MUST compile without errors
 - ✅ **MINIMAL BUT COMPLETE**: Use the absolute minimum code that still works
 - ✅ **TEST BUILD**: Ensure all references, imports, and syntax are correct

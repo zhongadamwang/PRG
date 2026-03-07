@@ -1,6 +1,6 @@
 ---
-name: eServiceCloud Blazor Project Creator
-description: Creates .NET Blazor Server projects by copying and customizing template files from the templates/ directory with proper naming and namespace replacement.
+name: project-creator
+description: Create and configure complete project architecture with folder structure and basic setup files. Establishes foundational project structure with proper configuration for Blazor, EF Core, development environment setup, StyleCop analyzers, and dependency injection packages.
 ---
 
 # eServiceCloud Blazor Project Creator

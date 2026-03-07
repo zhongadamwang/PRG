@@ -1,18 +1,47 @@
-# Domain Model Parser
+---
+name: domain-model-parser
+description: Parse domain model documents and extract structured metadata for code generation. Analyzes Mermaid class diagrams and domain model documentation to produce structured JSON metadata with entities, relationships, enums, and attributes for downstream processing.
+---
+
+# Domain Model Parser ✅ **Finished** **🔧 Script-Driven**
+
+**Responsibility**: Parse domain model documents and extract structured metadata
+**Input**: Domain model markdown files
+**Output**: JSON format parsing results
+
+**Script**: `parse-domain-model.ts` (run with bun)
+- Parse Mermaid class diagrams
+- Extract entity definitions and attributes
+- Analyze entity relationships
+- Generate structured metadata
+
+```json
+{
+  "entities": [...],
+  "relationships": [...],
+  "enums": [...],
+  "attributes": [...]
+}
+```
 
 ## Description
-Parse domain model documents and extract structured metadata from Mermaid class diagrams, entity definitions, and relationships. Converts markdown-based domain models into structured JSON format for use by code generation skills.
+Parse domain model documents and extract structured metadata for code generation. This skill analyzes Mermaid class diagrams and domain model documentation to produce structured JSON metadata that serves as input for other code generation skills.
 
 ## When To Use
-- When starting a new project and need to extract structured data from domain model documentation
-- When domain model documents are complete and ready for code generation
-- When need to validate domain model structure and relationships
-- Before running any code generation skills that require entity metadata
-- When updating domain models and need to regenerate the structured metadata
-- As the first step in automated workflow orchestration
+- Converting domain model documentation to structured data
+- Extracting entities, relationships, and attributes from domain models
+- Preparing domain model data for code generation workflows
+- Analyzing Mermaid class diagrams for entity extraction
+
+## Key Features
+- **Mermaid Diagram Parsing**: Extract entities and relationships from Mermaid class diagrams
+- **Attribute Analysis**: Detailed attribute extraction with type information
+- **Relationship Mapping**: Complete relationship analysis including cardinalities
+- **Structured Output**: Clean JSON format for downstream processing
+- **Enum Extraction**: Identification and parsing of enumeration types
 
 ## Usage
-This skill uses bun to run TypeScript scripts for parsing domain model documents and extracting structured metadata.
+This skill parses domain model markdown files and produces structured metadata for code generation.
 
 ## Input
 - Domain model markdown file path (typically from orgModel directory)

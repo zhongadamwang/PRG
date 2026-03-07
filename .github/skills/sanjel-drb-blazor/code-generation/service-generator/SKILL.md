@@ -1,29 +1,46 @@
 ---
 name: service-generator
-description: Generate application service classes for Blazor pages/components using AI-driven code generation. Creates service architecture shells following the Single Service per Page/Component principle without adding any methods.
-license: MIT
+description: Generate application service architecture shells for Blazor pages and components following Single Service per Page principle. Creates minimal service class structure with dependency injection setup without generating specific methods, providing foundation for method extension by other skills.
 ---
 
-# Service Generator
+# Service Generator **🤖 AI-Driven**
+
+**Responsibility**: Generate application service architecture shells for Blazor pages/components
+**Input**: Entity metadata + Repository interfaces + Feature/Page context
+**Output**: Minimal service class files with DI setup (no methods)
+
+**Approach**: **AI-Driven Architecture Shell Generation**
+- Creates minimal service architecture following Single Service per Page principle
+- Generates service class file with proper namespace and naming conventions
+- Sets up constructor with repository dependency injection
+- Provides DI registration guidance for Program.cs
+- **No methods generated** - only the architectural foundation
+- Methods are added by separate, focused skills
+- **Output**: Service architecture shell ready for method extensions
 
 ## Description
-Generates application service classes for Blazor pages/components using AI-driven code generation. Creates service classes that act as the single coordinator between the presentation layer and data access layer, following the "Single Service per Page/Component" principle.
+Generate application service architecture shells for Blazor pages and components. This AI-driven skill creates the foundational service class structure with dependency injection setup, following the Single Service per Page principle without generating specific methods.
 
 ## When To Use
-- After generating entity classes and repositories
-- When creating a new Blazor page or component that requires data access
-- When a page needs centralized data access coordination
-- During initial project setup or when adding new features with data requirements
-- Before generating page/component code that will consume these services
+- Creating service layer architecture for Blazor applications
+- Setting up dependency injection structure for services
+- Establishing service foundations before method implementation
+- Following Single Service per Page architectural pattern
+
+## Key Features
+- **AI-Driven Architecture**: Intelligent service architecture design
+- **Single Service per Page**: Follows architectural best practices
+- **DI Setup**: Automatic dependency injection configuration
+- **Clean Architecture**: Separation of concerns and proper layering
+- **Method Extension Ready**: Foundation for focused method generation
 
 ## Usage
-This skill uses AI to generate C# service classes without any scripts. The AI analyzes the domain model and page requirements to create appropriate service architectures.
+This skill generates service architecture shells that are ready for method implementation by other focused skills.
 
 ## Input
-- **Required**: Entity metadata JSON (from `domain-model-parser`)
-- **Required**: Page/component context (feature name, page name)
-- **Optional**: Domain entities that the service will work with
-- **Optional**: Data access patterns needed (query only, CRUD, etc.)
+- **Entity Metadata**: JSON output from domain-model-parser
+- **Repository Interfaces**: Generated repository interface files
+- **Feature/Page Context**: Specific page or component requirements
 
 ## Output
 - C# service class files (.cs) located at `src/[ProjectName].Blazor/Pages/[Feature]/Services/[Feature]Service.cs`

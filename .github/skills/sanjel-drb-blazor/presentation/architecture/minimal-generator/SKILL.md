@@ -1,28 +1,45 @@
-# Minimal Blazor Architecture Generator
+---
+name: minimal-generator
+description: Senior Frontend Architect for zero-dependency Blazor applications. Provides strategic guidance for building high-performance Blazor applications without external component library dependencies, focusing on custom component architecture, performance optimization, and accessibility.
+---
+
+# Minimal Generator
+
+**Responsibility**: Senior Frontend Architect for zero-dependency Blazor applications
+**Input**: Performance requirements + Brand specifications + Accessibility needs
+**Output**: Strategic minimal architecture guidance and custom implementation approaches
+
+**Approach**: **AI-Driven Minimal Architecture Consultation**
+- Acts as Senior Frontend Performance Architect
+- Provides zero-dependency implementation strategies
+- Recommends custom component architecture for maximum performance
+- Guides accessibility implementation and brand integration approaches
+- **Output**: Expert minimal architecture guidance + custom implementation strategies
 
 ## Description
-AI-driven consultant specializing in crafting lean, performance-focused Blazor applications with zero external dependencies. Provides expert guidance and architectural recommendations using semantic HTML, modern CSS, and vanilla JavaScript with progressive enhancement principles. Acts as a senior frontend architect mentor.
+Senior Frontend Architect specializing in zero-dependency Blazor applications. This AI-driven skill provides strategic guidance for building high-performance Blazor applications without external component library dependencies.
 
 ## When To Use
-- Building custom design system that reflects unique brand identity
-- Requiring zero external dependencies for security, performance, or licensing reasons
-- Need complete control over application styling and behavior
-- Learning Blazor fundamentals without framework abstractions
-- Creating highly specialized applications with unique interaction patterns
-- Have specific performance requirements that frameworks cannot meet
-- Developing applications with strict bundle size constraints
-- Building accessible-first applications with semantic markup requirements
+- Maximum performance requirements with minimal dependencies
+- Custom brand requirements that don't fit existing component libraries
+- Need complete control over application architecture and styling
+- Teams with strong frontend development capabilities
+- Applications requiring maximum accessibility compliance and custom implementation
+
+## Key Features
+- **Zero-Dependency Architecture**: Expert guidance on building without external libraries
+- **Performance Optimization**: Maximum performance strategies and implementation approaches
+- **Custom Component Design**: Strategic guidance on building custom Blazor components
+- **Brand Integration**: Expert advice on implementing custom brand and design systems
+- **Accessibility Focus**: Comprehensive accessibility implementation strategies
 
 ## Usage
-This skill provides AI-driven architectural consultation and code recommendations. I act as your **Senior Frontend Architect** mentor, asking the right questions about your project needs and providing tailored guidance for building minimal, high-performance Blazor applications.
+This skill provides expert consultation for minimal dependency Blazor architecture with focus on performance and customization.
 
 ## Input
-- Project requirements and constraints
-- Brand and design system needs (colors, typography, spacing)
-- Performance budget and optimization goals
-- Accessibility requirements and compliance standards
-- Target browser support requirements
-- Custom interaction patterns and user experience goals
+- **Performance Requirements**: Load time, bundle size, and performance constraints
+- **Brand Specifications**: Custom branding, design system, and visual requirements
+- **Accessibility Needs**: WCAG compliance level and accessibility requirements
 
 ## Output
 ### Generated Files
@@ -192,12 +209,12 @@ I am a **performance-conscious architect** and **accessibility-first designer**.
 - **Required Directory**: `Components/Pages/` (mandatory placement)
 
 <h3>Hello World</h3>
-<p>Basic minimal component test</p>
+<p>Basic component test</p>
 
 <SimpleComponent />
 ```
 
-**Rule 2 - COMPILATION SUCCESS GUARANTEE (确保编译成功):****
+**Rule 2 - COMPILATION SUCCESS GUARANTEE
 - ✅ **COMPILATION FIRST**: Every generated file MUST compile without errors
 - ✅ **MINIMAL BUT COMPLETE**: Use the absolute minimum code that still works
 - ✅ **TEST BUILD**: Ensure all references, imports, and syntax are correct

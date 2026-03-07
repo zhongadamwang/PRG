@@ -725,15 +725,51 @@ const process = globalThis.process;
 // Script logic...
 ```
 
-### Skill Documentation Template
+### Skill Documentation Template ✅ **Updated Standard**
 
-Each SKILL.md file must include:
+**Every SKILL.md file must start with the following standardized format:**
 
 ```markdown
-# [Skill Name]
+---
+name: [skill-name]
+description: [Complete skill description, can be multi-line]
+---
 
-## Description
-[Brief description of what the skill does]
+## When To Use
+- [Usage scenarios]
+```
+
+**Requirements:**
+- ✅ **name**: Unique skill identifier in kebab-case format (e.g., `enum-generator`)
+  - Used for referencing and identification in skills planning documents
+  - Used for AI system indexing and lookup
+- ✅ **description**: Complete skill functionality description
+  - Can be a single sentence or multi-line detailed description
+  - Clearly describes the skill's purpose, goals, and core functionality
+- ✅ **location**: Must be at the very top of the document
+- ✅ **format**: Use blockquote (`>`) format for emphasis
+
+**Example:**
+
+```markdown
+---
+name: enum-generator
+description: Generates C# enum class definitions from domain model metadata. Parses enum definitions in domain models and generates C#-compliant enum class files. Supports custom enum values, description attributes, and naming convention conversion (e.g., `notificationtype` → `NotificationType`).
+---
+
+## When To Use
+- When domain model contains enum type definitions
+- When type-safe enum constants need to be generated for applications
+...
+```
+
+**Complete document template:**
+
+```markdown
+---
+name: [skill-name]
+description: [Complete skill description, can be multi-line]
+---
 
 ## When To Use
 - [Specific scenarios when this skill should be used]
@@ -755,7 +791,8 @@ This skill uses bun to run TypeScript scripts for [specific purpose].
 ```bash
 bun run scripts/[script-name].ts
 ```
-```
+
+**All existing skills must be updated to comply with this standard!**
 
 ## Workflow Scenarios
 

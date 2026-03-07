@@ -1,30 +1,45 @@
-# Bootstrap Blazor Architecture Generator
+---
+name: bootstrap-generator
+description: CSS Framework Architecture consultant for Bootstrap 5 Blazor integration. Provides strategic guidance for implementing Bootstrap components with focus on responsive design, utility-first approach, performance optimization, and CSS architecture best practices.
+---
+
+# Bootstrap Generator
+
+**Responsibility**: CSS Framework Architecture consultant for Bootstrap 5 Blazor integration
+**Input**: Responsive design requirements + Bootstrap customization needs + Performance constraints
+**Output**: Strategic Bootstrap architecture guidance and responsive design recommendations
+
+**Approach**: **AI-Driven CSS Framework Consultation**
+- Acts as Senior CSS Framework Architect with Bootstrap expertise
+- Provides utility-first design strategies and responsive implementation guidance
+- Recommends optimal Bootstrap component usage and customization approaches
+- Guides performance optimization and CSS architecture best practices
+- **Output**: Expert CSS framework guidance + responsive design strategies
 
 ## Description
-AI-driven CSS framework consultant specializing in Bootstrap 5 integration with Blazor applications. Provides expert guidance for implementing responsive, utility-first designs using Bootstrap's comprehensive CSS framework. Acts as a senior CSS architect with extensive Bootstrap expertise for lightweight, flexible application development.
+CSS Framework Architecture consultant specializing in Bootstrap 5 Blazor integration. This AI-driven skill provides strategic guidance for implementing Bootstrap components with focus on responsive design and performance optimization.
 
 ## When To Use
-- Building responsive applications with proven CSS framework foundation
-- Need lightweight styling solution without heavy component library overhead
-- Team has existing Bootstrap expertise and wants to leverage familiar patterns  
-- Implementing rapid prototyping with utility-first CSS approach
-- Creating applications requiring high customization flexibility
-- Building mobile-first responsive designs with standard CSS practices
-- Need cross-browser compatibility with minimal JavaScript dependencies
-- Developing applications where CSS control and customization are priorities
+- Projects requiring custom design with Bootstrap foundation
+- Need responsive design with utility-first CSS approach
+- Teams with strong CSS skills wanting framework flexibility
+- Applications requiring minimal external dependencies
+- Custom branding and design system requirements with Bootstrap base
+
+## Key Features
+- **CSS Architecture Consultation**: Expert guidance on Bootstrap CSS architecture
+- **Responsive Design Strategies**: Advanced responsive design implementation approaches
+- **Utility-First Approach**: Strategic guidance on Bootstrap utility classes
+- **Customization Guidance**: Expert advice on Bootstrap theme customization
+- **Performance Optimization**: CSS performance and optimization strategies
 
 ## Usage
-This skill provides AI-driven consultation for Bootstrap 5 Blazor architecture and responsive design implementation. I act as your **Senior CSS Framework Architect** with deep Bootstrap expertise, providing guidance for optimal utility-class usage, responsive design patterns, and maintainable CSS architecture.
+This skill provides expert consultation for Bootstrap 5 Blazor architecture and responsive design implementation.
 
 ## Input
-- Responsive design requirements and target device specifications
-- Brand guidelines and visual design specifications
-- CSS customization needs and theme requirements
-- Performance constraints and bundle size considerations
-- Team skill level and Bootstrap experience
-- Accessibility requirements and compliance standards
-- Browser support requirements and legacy considerations
-- Integration needs with existing CSS frameworks or systems
+- **Responsive Design Requirements**: Target devices, breakpoints, and responsive needs
+- **Bootstrap Customization**: Theming, branding, and customization requirements
+- **Performance Constraints**: CSS size, load time, and performance expectations
 
 ## Output
 ### Generated Files
@@ -175,16 +190,16 @@ I am a **CSS Framework Architecture Specialist** with extensive Bootstrap expert
 
 **HELLO WORLD PAGE TEMPLATE:**
 ```razor
-@page "/bootstrap-hello"
+@page "/hello"
 
 <h3>Hello World</h3>
-<p>Basic Bootstrap component test</p>
+<p>Basic component test</p>
 
 <SimpleComponent />
 ```
 
 **PAGE FILE LOCATION:**
-- **Full Path**: `src/Sanjel.RequestManagement.Blazor/Components/Pages/BootstrapHello.razor`
+- **Full Path**: `src/Sanjel.RequestManagement.Blazor/Components/Pages/Hello/Index.razor`
 - **Required Directory**: `Components/Pages/` (mandatory placement)
 
 **Rule 2 - COMPILATION SUCCESS GUARANTEE (确保编译成功):**
