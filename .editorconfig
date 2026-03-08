@@ -17,12 +17,14 @@ trim_trailing_whitespace = false
 [*.cs]
 dotnet_remove_unnecessary_usings = true
 # SA1121: 禁止使用框架类型的别名（String → string）
+dotnet_diagnostic.BL0005.severity = none
 dotnet_diagnostic.CA1305.severity = none
 dotnet_diagnostic.CS1570.severity = none
 dotnet_diagnostic.CS1591.severity = none
 dotnet_diagnostic.CS8618.severity = none
 dotnet_diagnostic.SA1000.severity = none
 dotnet_diagnostic.SA1009.severity = none
+dotnet_diagnostic.SA1010.severity = none
 dotnet_diagnostic.SA1011.severity = none
 dotnet_diagnostic.SA1027.severity = none
 dotnet_diagnostic.SA1028.severity = error

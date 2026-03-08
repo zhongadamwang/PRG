@@ -15,38 +15,43 @@ public class NotificationConfiguration : IEntityTypeConfiguration<Notification>
 		// Table configuration
 		builder.ToTable("notifications");
 
+		// Composite Primary Key configuration
+		builder.HasKey(e => new { e.NotificationId, e.RequestId });
+
 		// Property configurations
 		builder.Property(e => e.NotificationId)
-	.HasColumnName("notification_id")
-	.HasMaxLength(255)
-	.IsRequired();
+			.HasColumnName("notification_id")
+			.HasMaxLength(255)
+			.IsRequired();
 
 		builder.Property(e => e.RequestId)
-	.HasColumnName("request_id")
-	.HasMaxLength(255)
-	.IsRequired();
+			.HasColumnName("request_id")
+			.HasMaxLength(255)
+			.IsRequired();
 
 		builder.Property(e => e.RecipientType)
-	.HasColumnName("recipient_type");
+			.HasColumnName("recipient_type");
 
 		builder.Property(e => e.NotificationType)
-	.HasColumnName("notification_type");
+			.HasColumnName("notification_type");
 
 		builder.Property(e => e.DeliveryMethod)
-	.HasColumnName("delivery_method");
+			.HasColumnName("delivery_method");
 
 		builder.Property(e => e.SentDate)
-	.HasColumnName("sent_date")
-	.HasColumnType("datetime2");
+			.HasColumnName("sent_date")
+			.HasColumnType("datetime2");
 
 		builder.Property(e => e.Content)
-	.HasColumnName("content")
-	.HasMaxLength(255)
-	.IsRequired();
+			.HasColumnName("content")
+			.HasMaxLength(255)
+			.IsRequired();
 
 		// Relationship configurations
-		// Foreign key reference to Request
-		builder.Property(e => e.RequestId)
-			.HasColumnName("request_id");
+		// One-to-one relationship with Request
+		builder.HasOne(e => e.Request)
+			.WithOne(r => r.Notification)
+			.HasForeignKey<Notification>(e => e.RequestId)
+			.OnDelete(DeleteBehavior.Cascade);
 	}
 }

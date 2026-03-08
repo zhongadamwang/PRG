@@ -9,7 +9,6 @@ public class StateDiagram
 	/// diagram_id property
 	/// </summary>
 	[Column("diagram_id")]
-	[Key]
 	[Required]
 	[MaxLength(255)]
 	public string DiagramId { get; set; }
@@ -54,7 +53,6 @@ public class StateDiagram
 	/// client_id property
 	/// </summary>
 	[Column("client_id")]
-	[Key]
 	[Required]
 	[MaxLength(255)]
 	public string ClientId { get; set; }

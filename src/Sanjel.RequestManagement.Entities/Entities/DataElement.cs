@@ -9,7 +9,6 @@ public class DataElement
 	/// element_id property
 	/// </summary>
 	[Column("element_id")]
-	[Key]
 	[Required]
 	[MaxLength(255)]
 	public string ElementId { get; set; }
@@ -18,7 +17,6 @@ public class DataElement
 	/// request_id property
 	/// </summary>
 	[Column("request_id")]
-	[Key]
 	[Required]
 	[MaxLength(255)]
 	public string RequestId { get; set; }

@@ -15,49 +15,52 @@ public class RequestConfiguration : IEntityTypeConfiguration<Request>
 		// Table configuration
 		builder.ToTable("requests");
 
+		// Primary Key configuration
+		builder.HasKey(e => e.RequestId);
+
 		// Property configurations
 		builder.Property(e => e.RequestId)
-	.HasColumnName("request_id")
-	.HasMaxLength(255)
-	.IsRequired();
+			.HasColumnName("request_id")
+			.HasMaxLength(255)
+			.IsRequired();
 
 		builder.Property(e => e.Status)
-	.HasColumnName("status");
+			.HasColumnName("status");
 
 		builder.Property(e => e.CreatedDate)
-	.HasColumnName("created_date")
-	.HasColumnType("datetime2");
+			.HasColumnName("created_date")
+			.HasColumnType("datetime2");
 
 		builder.Property(e => e.Priority)
-	.HasColumnName("priority");
+			.HasColumnName("priority");
 
 		builder.Property(e => e.ClientId)
-	.HasColumnName("client_id")
-	.HasMaxLength(255)
-	.IsRequired();
+			.HasColumnName("client_id")
+			.HasMaxLength(255)
+			.IsRequired();
 
 		builder.Property(e => e.SourceEmail)
-	.HasColumnName("source_email")
-	.HasMaxLength(255)
-	.IsRequired();
+			.HasColumnName("source_email")
+			.HasMaxLength(255)
+			.IsRequired();
 
 		builder.Property(e => e.AssignedEngineerId)
-	.HasColumnName("assigned_engineer_id")
-	.HasMaxLength(255)
-	.IsRequired();
+			.HasColumnName("assigned_engineer_id")
+			.HasMaxLength(255)
+			.IsRequired();
 
 		builder.Property(e => e.AssignedBy)
-	.HasColumnName("assigned_by")
-	.HasMaxLength(255)
-	.IsRequired();
+			.HasColumnName("assigned_by")
+			.HasMaxLength(255)
+			.IsRequired();
 
 		builder.Property(e => e.AcknowledgmentDate)
-	.HasColumnName("acknowledgment_date")
-	.HasColumnType("datetime2");
+			.HasColumnName("acknowledgment_date")
+			.HasColumnType("datetime2");
 
 		builder.Property(e => e.CompletionDate)
-	.HasColumnName("completion_date")
-	.HasColumnType("datetime2");
+			.HasColumnName("completion_date")
+			.HasColumnType("datetime2");
 
 		// Index configurations
 		// Index on SourceEmail for performance

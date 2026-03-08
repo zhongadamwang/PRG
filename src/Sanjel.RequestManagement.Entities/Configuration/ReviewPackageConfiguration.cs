@@ -11,16 +11,19 @@ public class ReviewPackageConfiguration : IEntityTypeConfiguration<ReviewPackage
 		// Table configuration
 		builder.ToTable("reviewpackages");
 
+		// Primary Key configuration (using PackageId as single primary key)
+		builder.HasKey(e => e.PackageId);
+
 		// Property configurations
 		builder.Property(e => e.PackageId)
-	.HasColumnName("package_id")
-	.HasMaxLength(255)
-	.IsRequired();
+			.HasColumnName("package_id")
+			.HasMaxLength(255)
+			.IsRequired();
 
 		builder.Property(e => e.RequestId)
-	.HasColumnName("request_id")
-	.HasMaxLength(255)
-	.IsRequired();
+			.HasColumnName("request_id")
+			.HasMaxLength(255)
+			.IsRequired();
 
 		builder.Property(e => e.SubmittingEngineerId)
 	.HasColumnName("submitting_engineer_id")
@@ -54,8 +57,10 @@ public class ReviewPackageConfiguration : IEntityTypeConfiguration<ReviewPackage
 	.IsRequired();
 
 		// Relationship configurations
-		// Foreign key reference to Request
-		builder.Property(e => e.RequestId)
-			.HasColumnName("request_id");
+		// One-to-one relationship with Request
+		builder.HasOne(e => e.Request)
+			.WithOne(r => r.ReviewPackage)
+			.HasForeignKey<ReviewPackage>(e => e.RequestId)
+			.OnDelete(DeleteBehavior.Cascade);
 	}
 }

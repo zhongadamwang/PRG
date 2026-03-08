@@ -39,7 +39,6 @@ public class Request
 	/// client_id property
 	/// </summary>
 	[Column("client_id")]
-	[Key]
 	[Required]
 	[MaxLength(255)]
 	public string ClientId { get; set; }
@@ -56,7 +55,6 @@ public class Request
 	/// assigned_engineer_id property
 	/// </summary>
 	[Column("assigned_engineer_id")]
-	[Key]
 	[Required]
 	[MaxLength(255)]
 	public string AssignedEngineerId { get; set; }

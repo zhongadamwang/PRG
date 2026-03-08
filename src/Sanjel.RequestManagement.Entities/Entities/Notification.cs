@@ -12,7 +12,6 @@ public class Notification
 	/// notification_id property
 	/// </summary>
 	[Column("notification_id")]
-	[Key]
 	[Required]
 	[MaxLength(255)]
 	public string NotificationId { get; set; }
@@ -21,7 +20,6 @@ public class Notification
 	/// request_id property
 	/// </summary>
 	[Column("request_id")]
-	[Key]
 	[Required]
 	[MaxLength(255)]
 	public string RequestId { get; set; }

@@ -11,11 +11,14 @@ public class StateDiagramConfiguration : IEntityTypeConfiguration<StateDiagram>
 		// Table configuration
 		builder.ToTable("statediagrams");
 
+		// Primary Key configuration
+		builder.HasKey(e => e.DiagramId);
+
 		// Property configurations
 		builder.Property(e => e.DiagramId)
-	.HasColumnName("diagram_id")
-	.HasMaxLength(255)
-	.IsRequired();
+			.HasColumnName("diagram_id")
+			.HasMaxLength(255)
+			.IsRequired();
 
 		builder.Property(e => e.DiagramName)
 	.HasColumnName("diagram_name")

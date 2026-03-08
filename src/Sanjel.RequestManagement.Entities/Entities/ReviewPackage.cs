@@ -9,7 +9,6 @@ public class ReviewPackage
 	/// package_id property
 	/// </summary>
 	[Column("package_id")]
-	[Key]
 	[Required]
 	[MaxLength(255)]
 	public string PackageId { get; set; }
@@ -18,7 +17,6 @@ public class ReviewPackage
 	/// request_id property
 	/// </summary>
 	[Column("request_id")]
-	[Key]
 	[Required]
 	[MaxLength(255)]
 	public string RequestId { get; set; }
@@ -27,7 +25,6 @@ public class ReviewPackage
 	/// submitting_engineer_id property
 	/// </summary>
 	[Column("submitting_engineer_id")]
-	[Key]
 	[Required]
 	[MaxLength(255)]
 	public string SubmittingEngineerId { get; set; }
@@ -36,7 +33,6 @@ public class ReviewPackage
 	/// assigned_reviewer_id property
 	/// </summary>
 	[Column("assigned_reviewer_id")]
-	[Key]
 	[Required]
 	[MaxLength(255)]
 	public string AssignedReviewerId { get; set; }
