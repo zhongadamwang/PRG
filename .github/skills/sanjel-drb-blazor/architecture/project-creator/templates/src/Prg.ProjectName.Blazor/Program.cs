@@ -7,40 +7,72 @@ builder.Services.AddRazorComponents()
 // Register HTTP Context Accessor
 builder.Services.AddHttpContextAccessor();
 
-var connectionString = builder.Configuration.GetConnectionString("SanjelMdm:DbConnectionString")
-	?? builder.Configuration["SanjelMdm:DbConnectionString"];
+var assemblies = new[]
+{
+	typeof({Prg}.{ProjectName}.Repositories.Common.IRepository<>).Assembly,  // Repositories
+	typeof({Prg}.{ProjectName}.Core.Services.ICurrentUserService).Assembly, // Core
+	typeof({Prg}.{ProjectName}.Blazor.App).Assembly,                          // Blazor
+};
 
 // Use Scrutor for assembly scanning and auto-registration
 builder.Services.Scan(scan => scan
-	// Scan multiple assemblies
-	.FromAssemblies(typeof({Prg}.{ProjectName}.Repositories.Common.IRepository<>).Assembly)
-	.FromAssemblyOf<{Prg}.{ProjectName}.Core.Services.ICurrentUserService>()
-	.FromAssemblyOf<{Prg}.{ProjectName}.Blazor.App>()
+	.FromAssemblies(assemblies)
 
-	// Register by naming convention: IService -> Service, IRepository -> Repository
+	// Register DataAccess layer first (base dependencies)
 	.AddClasses(classes => classes
-		.Where(type => type.Name.EndsWith("Service") &&
-						!type.Name.EndsWith("DataService") &&
-						 type.GetInterfaces().Any(i => i.Name == $"I{type.Name}"))) // Only services WITH interfaces
+		.Where(type =>
+			type.Name.EndsWith("DataAccess") &&
+			type.IsClass &&
+			!type.IsAbstract))
 	.AsMatchingInterface()
 	.WithScopedLifetime()
 
+	// Register DataAccess by all implemented interfaces (including base interfaces)
 	.AddClasses(classes => classes
-		.Where(type => type.Name.EndsWith("Repository")))
-	.AsMatchingInterface()
-	.WithScopedLifetime()
-
-	// Register all classes that implement IRepository<T>
-	.AddClasses(classes => classes
-		.AssignableTo(typeof({Prg}.{ProjectName}.Repositories.Common.IRepository<>)))
+		.Where(type =>
+			type.Name.EndsWith("DataAccess") &&
+			type.IsClass &&
+			!type.IsAbstract))
 	.AsImplementedInterfaces()
 	.WithScopedLifetime()
 
-	// Register concrete Service classes WITHOUT interfaces
+	// Register Repository layer (depends on DataAccess)
 	.AddClasses(classes => classes
-		.Where(type => type.Name.EndsWith("Service") &&
-						!type.Name.EndsWith("DataService") &&
-						 !type.GetInterfaces().Any(i => i.Name == $"I{type.Name}"))) // Only services WITHOUT interfaces
+		.Where(type =>
+			type.Name.EndsWith("Repository") &&
+			type.IsClass &&
+			!type.IsAbstract))
+	.AsMatchingInterface()
+	.WithScopedLifetime()
+
+	// Register Repository by all implemented interfaces (including IRepository<T>)
+	.AddClasses(classes => classes
+		.Where(type =>
+			type.Name.EndsWith("Repository") &&
+			type.IsClass &&
+			!type.IsAbstract))
+	.AsImplementedInterfaces()
+	.WithScopedLifetime()
+
+	// Register Service layer with matching interfaces
+	.AddClasses(classes => classes
+		.Where(type =>
+			type.Name.EndsWith("Service") &&
+			!type.Name.EndsWith("DataService") &&
+			type.IsClass &&
+			!type.IsAbstract &&
+			type.GetInterfaces().Any(i => i.Name == $"I{type.Name}")))
+	.AsMatchingInterface()
+	.WithScopedLifetime()
+
+	// Register Service classes without matching interfaces (as self)
+	.AddClasses(classes => classes
+		.Where(type =>
+			type.Name.EndsWith("Service") &&
+			!type.Name.EndsWith("DataService") &&
+			type.IsClass &&
+			!type.IsAbstract &&
+			!type.GetInterfaces().Any(i => i.Name == $"I{type.Name}")))
 	.AsSelf()
 	.WithScopedLifetime()
 );

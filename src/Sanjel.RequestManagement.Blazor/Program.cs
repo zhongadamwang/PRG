@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Syncfusion.Blazor;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,37 +19,79 @@ builder.Services.AddHttpContextAccessor();
 var connectionString = builder.Configuration.GetConnectionString("SanjelMdm:DbConnectionString")
 	?? builder.Configuration["SanjelMdm:DbConnectionString"];
 
-// Use Scrutor for assembly scanning and auto-registration
+// Register RequestManagementDbContext
+builder.Services.AddDbContext<Sanjel.RequestManagement.Entities.Data.RequestManagementDbContext>(options =>
+{
+	options.UseSqlServer(connectionString);
+});
+
+// Auto-register project dependencies using convention-based scanning
+var assemblies = new[]
+{
+	typeof(Sanjel.RequestManagement.Repositories.Common.IRepository<>).Assembly,  // Repositories
+	typeof(Sanjel.RequestManagement.Entities.Data.IDataAccess<>).Assembly,        // Entities/Data
+	typeof(Sanjel.RequestManagement.Core.Services.ICurrentUserService).Assembly, // Core
+	typeof(Sanjel.RequestManagement.Blazor.App).Assembly,                          // Blazor
+};
+
 builder.Services.Scan(scan => scan
-	// Scan multiple assemblies
-	.FromAssemblies(typeof(Sanjel.RequestManagement.Repositories.Common.IRepository<>).Assembly)
-	.FromAssemblyOf<Sanjel.RequestManagement.Core.Services.ICurrentUserService>()
-	.FromAssemblyOf<Sanjel.RequestManagement.Blazor.App>()
+	.FromAssemblies(assemblies)
 
-	// Register by naming convention: IService -> Service, IRepository -> Repository
+	// Register DataAccess layer first (base dependencies)
 	.AddClasses(classes => classes
-		.Where(type => type.Name.EndsWith("Service") &&
-						!type.Name.EndsWith("DataService") &&
-						 type.GetInterfaces().Any(i => i.Name == $"I{type.Name}"))) // Only services WITH interfaces
+		.Where(type =>
+			type.Name.EndsWith("DataAccess") &&
+			type.IsClass &&
+			!type.IsAbstract))
 	.AsMatchingInterface()
 	.WithScopedLifetime()
 
+	// Register DataAccess by all implemented interfaces (including base interfaces)
 	.AddClasses(classes => classes
-		.Where(type => type.Name.EndsWith("Repository")))
-	.AsMatchingInterface()
-	.WithScopedLifetime()
-
-	// Register all classes that implement IRepository<T>
-	.AddClasses(classes => classes
-		.AssignableTo(typeof(Sanjel.RequestManagement.Repositories.Common.IRepository<>)))
+		.Where(type =>
+			type.Name.EndsWith("DataAccess") &&
+			type.IsClass &&
+			!type.IsAbstract))
 	.AsImplementedInterfaces()
 	.WithScopedLifetime()
 
-	// Register concrete Service classes WITHOUT interfaces
+	// Register Repository layer (depends on DataAccess)
 	.AddClasses(classes => classes
-		.Where(type => type.Name.EndsWith("Service") &&
-						!type.Name.EndsWith("DataService") &&
-						 !type.GetInterfaces().Any(i => i.Name == $"I{type.Name}"))) // Only services WITHOUT interfaces
+		.Where(type =>
+			type.Name.EndsWith("Repository") &&
+			type.IsClass &&
+			!type.IsAbstract))
+	.AsMatchingInterface()
+	.WithScopedLifetime()
+
+	// Register Repository by all implemented interfaces (including IRepository<T>)
+	.AddClasses(classes => classes
+		.Where(type =>
+			type.Name.EndsWith("Repository") &&
+			type.IsClass &&
+			!type.IsAbstract))
+	.AsImplementedInterfaces()
+	.WithScopedLifetime()
+
+	// Register Service layer with matching interfaces
+	.AddClasses(classes => classes
+		.Where(type =>
+			type.Name.EndsWith("Service") &&
+			!type.Name.EndsWith("DataService") &&
+			type.IsClass &&
+			!type.IsAbstract &&
+			type.GetInterfaces().Any(i => i.Name == $"I{type.Name}")))
+	.AsMatchingInterface()
+	.WithScopedLifetime()
+
+	// Register Service classes without matching interfaces (as self)
+	.AddClasses(classes => classes
+		.Where(type =>
+			type.Name.EndsWith("Service") &&
+			!type.Name.EndsWith("DataService") &&
+			type.IsClass &&
+			!type.IsAbstract &&
+			!type.GetInterfaces().Any(i => i.Name == $"I{type.Name}")))
 	.AsSelf()
 	.WithScopedLifetime()
 );
