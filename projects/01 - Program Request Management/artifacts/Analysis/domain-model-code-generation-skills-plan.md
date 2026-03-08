@@ -32,7 +32,6 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Configure development environment settings (.editorconfig, .vscode/settings.json)
 - Set up StyleCop analyzers and code formatting rules
 - Configure XML documentation generation for all projects
-- Add dependency injection and EF Core package references
 
 ### Skill 0.5: `solution-code-formatter` ✅ **Finished** **🔧 Script-Driven**
 **Responsibility**: Format all code in the entire solution using dotnet format commands
@@ -78,30 +77,15 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Analyze entity relationships
 - Generate structured metadata
 
-### Skill 6a: `repository-interface-generator` ✅ **Finished + Modern EF Core** **🔧 Script-Driven**
-**Responsibility**: Generate Repository interface contracts using modern EF Core patterns
+### Skill 6a: `repository-interface-generator` ✅ **Finished** **🔧 Script-Driven**
+**Responsibility**: Generate Repository interface contracts
 **Input**: Entity metadata JSON
-**Output**: EF Core-based IRepository interface files
 
 **Script**: `generate-repository-interfaces.ts` (run with bun)
-- Generate modern IRepository<T> base interface with EF Core patterns
 - Generate entity-specific repository interfaces with CancellationToken support
 - Define modern CRUD method signatures (Query, GetByIdAsync, GetAllAsync, etc.)
-- Add performance markers for EF Core query optimization
 - Include PagedResult<T> class for pagination support
-- **Completely modernized EF Core approach - no legacy dependencies**
 - **Formatting handled by `solution-code-formatter` skill**
-
-### Skill 6b: `efcore-repository-generator` ✅ **Finished** **🔧 Script-Driven**
-**Responsibility**: Generate EF Core Repository implementations
-**Input**: Entity metadata JSON + Repository interfaces
-**Output**: EF Core Repository implementation classes
-
-**Script**: `generate-efcore-repositories.ts` (run with bun)
-- Generate EF Core-based repository implementations
-- Implement LINQ-based query methods
-- Add transaction management
-- Include change tracking and lazy loading features
 
 ### Skill 7a: `service-interface-generator` **🔧 Script-Driven**
 **Responsibility**: Generate business service interface contracts
@@ -356,16 +340,19 @@ This layer provides a simplified, modern approach to CRUD operations using a sin
 - Implement navigation and parameter passing using concrete components
 - **Output**: Working page files with direct component implementations
 
-#### Skill 8d: `blazor-list-pattern-generator` [Priority 4]
-**Responsibility**: Generate business logic patterns for list pages
-**Input**: Entity metadata JSON + Sorting, filtering, pagination requirements
-**Output**: List page business logic and interaction patterns
+#### Skill 8d: `blazor-list-pattern-generator` [Priority 4] **🤖 AI-Driven**
+**Responsibility**: AI-driven list pattern generator for Blazor pages with comprehensive data table design, search, sort, filter, pagination, and batch operations support
+**Input**: Entity metadata + ViewModel definitions + UI/UX requirements + Performance constraints
+**Output**: Complete list page implementation with data table, search, sort, filter, pagination, and batch operations
 
-**Script**: `generate-list-patterns.ts` (run with bun)
-- Generate list data management logic (search, sort, filter)
-- Add pagination and virtual scrolling support
-- Create batch operation functionality (batch delete, export, etc.)
-- Generate list item interaction event handling
+**Approach**: **AI-Driven List Pattern Architecture**
+- Analyzes entity structure and ViewModel properties for optimal data table design
+- Recommends appropriate component library components (MudBlazor, Syncfusion, etc.)
+- Implements comprehensive search, sort, and filter functionality
+- Designs efficient pagination and virtual scrolling for large datasets
+- Provides batch operation patterns (batch delete, export, etc.)
+- Ensures responsive design and accessibility compliance
+- **Output**: Strategic list pattern guidance + complete implementation code
 
 #### Skill 8e: `blazor-form-pattern-generator` [Priority 5]
 **Responsibility**: Generate form page business logic and validation patterns
@@ -528,10 +515,6 @@ This layer provides a simplified, modern approach to CRUD operations using a sin
 │   │   ├── SKILL.md
 │   │   └── scripts/
 │   │       └── generate-repository-interfaces.ts
-│   ├── efcore-repository-generator/
-│   │   ├── SKILL.md
-│   │   └── scripts/
-│   │       └── generate-efcore-repositories.ts
 │   ├── service-interface-generator/
 │   │   ├── SKILL.md
 │   │   └── scripts/
@@ -623,7 +606,6 @@ This layer provides a simplified, modern approach to CRUD operations using a sin
 - Optimal for repetitive, well-defined tasks
 
 **When To Use Script-Driven Approach:**
-- **Database Operations**: Contexts (standardized EF Core patterns)
 - **Repository Pattern**: CRUD operations with consistent interfaces
 - **Boilerplate Code**: Repetitive code that follows strict conventions
 - **Integration Tasks**: File manipulation, project structure setup
@@ -710,7 +692,6 @@ const process = globalThis.process;
 2. `domain-model-parser` → Parse domain models
 3. `repository-interface-generator` → Generate Repository interfaces
 9. `repository-interface-generator` → Generate Repository interfaces
-10. `efcore-repository-generator` → Generate EF Core Repository implementations
 11. `service-interface-generator` → Generate service interfaces (contracts only)
 12. `service-generator` → **AI-Driven**: Provide consultative guidance for service implementation
 13. `solution-code-formatter` → Format all generated code (service layer)
@@ -721,7 +702,7 @@ const process = globalThis.process;
 9b. `blazor-data-integration-generator` → Generate data integration layer and state management
 **[Page Pattern Generation Phase]**
 10. `blazor-page-pattern-generator` → Generate abstract page patterns and routing
-11. `blazor-list-pattern-generator` → Generate list page business logic patterns
+11. `blazor-list-pattern-generator` → **AI-Driven**: Comprehensive list pattern architecture consultation and implementation
 12. `blazor-form-pattern-generator` → Generate form page business logic and validation
 13. `blazor-detail-pattern-generator` → Generate detail page logic and related data handling
 14. `solution-code-formatter` → Format all generated code (UI layer)
@@ -762,7 +743,7 @@ const process = globalThis.process;
 ### Scenario 5: Update Specific Layer Only
 1. `workflow-orchestrator` → Based on user intent, recommend specific skill combinations
 2. Call relevant specific generators:
-   **Data Layer**: `repository-interface-generator` + `efcore-repository-generator` + `blazor-data-integration-generator`
+   **Data Layer**: `repository-interface-generator` + `blazor-data-integration-generator`
    **Business Layer**: `service-interface-generator` + `page-driven-service-generator`
    **UI Architecture Layer**: `blazor-architecture-generator` + `blazor-data-integration-generator`
    **UI Pattern Layer**: `blazor-page-pattern-generator` + `blazor-list-pattern-generator` + `blazor-form-pattern-generator` + `blazor-detail-pattern-generator`
@@ -776,7 +757,6 @@ const process = globalThis.process;
 1. `workflow-orchestrator` → Analyze requirements, recommend single-page CRUD approach
 2. `domain-model-parser` → Parse domain models and extract entity metadata
 3. `repository-interface-generator` → Generate Repository interfaces for data access
-4. `efcore-repository-generator` → Generate EF Core Repository implementations
 
 **Phase 2: ViewModel Architecture**
 5. `blazor-viewmodel-generator` → **AI-Driven**: Consultative guidance for ViewModel design
@@ -857,7 +837,6 @@ const process = globalThis.process;
 7. **Quality**: Enforces best practices and design patterns
 8. **Traceability**: Maintains clear connection between domain models and implementation
 9. **Modularity**: Fine-grained skills allow selective updates and easier debugging
-10. **Flexibility**: Uses modern EF Core implementation with performance optimization
 11. **Scalability**: Individual skills can be enhanced without affecting others
 12. **Enterprise Scalability**: Supports parallel use of multiple component libraries and dynamic switching
 13. **Development Efficiency**: Complete separation of business logic and UI, enabling parallel development
@@ -881,7 +860,6 @@ After splitting larger skills into focused components, we achieve:
 4. Develop core skills in this order:
    - `domain-model-parser` (foundation for all others)
    - `repository-interface-generator` (contracts)
-   - `efcore-repository-generator` (primary implementation)
 5. Add service layer skills: `service-interface-generator` + `service-implementation-generator`
 6. Implement UI generation skills: Blazor list, form, and detail generators
 7. Implement change management: `model-change-detector` + `incremental-update-generator`
@@ -913,7 +891,8 @@ After splitting larger skills into focused components, we achieve:
   - `blazor-detail-dialog-generator` 📋 - Detail view dialog design consultation (Priority 1.9)
   - `blazor-delete-confirm-dialog-generator` 📋 - Safe deletion confirmation consultation (Priority 1.10)
 **Phase 5 (Data Integration)**: Skill 8b - Blazor data integration layer 📋 **PRIORITY UPDATED**
-**Phase 6 (Page Patterns)**: Skills 8c, 8d, 8e, 8f - Abstract page pattern generation 📋 **PENDING**
+**Phase 6 (Page Patterns)**: Skills 8c, 8d, 8e, 8f - Abstract page pattern generation 📋 **PARTIALLY READY**
+  - `blazor-list-pattern-generator` ✅ **DESIGN COMPLETE (AI-Driven)** - AI-driven list pattern architecture consultation
 **Phase 7 (Service Implementation Guidance)**: Skill 7a1 - AI-driven service architecture consultation 📋 **NEW (AI-Driven)**
 **Phase 8 (Business Integration)**: Skill 7b - Service implementation based on page operations 📋 **REDESIGNED (AI-Driven)**
 **Phase 9 (Change Management)**: Skills 10, 11 - Model change detection and updates 📋 **PENDING**
@@ -958,19 +937,14 @@ Successfully extracted common functionality into a centralized `project-utilitie
 
 
 **Phase 2 Skills:**
-- ✅ `repository-interface-generator` - Generated modern EF Core repository interfaces with 16 methods, CancellationToken support, and PagedResult<T> pagination
-
-**Modern EF Core Architecture:** ✅ **Implemented**
-Successfully migrated from legacy data access patterns to modern EF Core:
+- ✅ `repository-interface-generator` - Generated repository
 
 **Architecture Changes:**
 - ✅ Created `RequestManagementDbContext` with DbSet<T> properties
 - ✅ Modern `IRepository<TEntity>` interface with 16 standardized methods
-- ✅ `BaseRepository<TEntity>` implementation using EF Core DbContext
 - ✅ `PagedResult<T>` class for advanced pagination with metadata
 - ✅ CancellationToken support throughout all async operations
 - ✅ IQueryable<T> exposure for advanced LINQ queries
-- ✅ Performance markers changed from "Dapper" to "EF Core Query" annotations
 
 **Generated Interface Features:**
 - Query() method for direct IQueryable<T> access
