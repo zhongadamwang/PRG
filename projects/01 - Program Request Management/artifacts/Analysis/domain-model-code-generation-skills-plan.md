@@ -3,7 +3,7 @@
 **Document ID**: ANA-02
 **Project**: 01 - Program Request Management
 **Created**: February 28, 2026
-**Last Updated**: March 6, 2026
+**Last Updated**: March 8, 2026
 **Status**: Planning Phase
 
 ## 🆕 **Critical Architecture Update (March 5, 2026)**
@@ -252,6 +252,82 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Provides step-by-step implementation guidance with code examples
 - **Output**: Expert architectural guidance + adaptive implementation recommendations
 
+### Layer 1.7: Single-Page Popup CRUD Layer 🆕 **New Architecture (March 8, 2026)**
+
+**Design Philosophy: Simplified Single-Page CRUD with Popup Dialogs**
+
+This layer provides a simplified, modern approach to CRUD operations using a single page with popup dialogs for interactions. All operations (Create, Read, Update, Delete) are handled through modal dialogs, providing a clean user experience without complex navigation.
+
+#### Skill 8a6: `blazor-viewmodel-generator` ✅ **New** [Priority 1.6] **🤖 AI-Driven**
+**Responsibility**: Senior Data Model Architect for ViewModel classes and data validation
+**Input**: Entity metadata + Validation requirements + Data binding needs + Business rules
+**Output**: Strategic guidance for ViewModel architecture and validation implementation
+
+**Approach**: **AI-Driven ViewModel Architecture Consultation**
+- Acts as Senior Data Model Architect specializing in MVVM patterns
+- Provides consultative guidance for ViewModel design and structure
+- Recommends optimal Data Annotations validation strategies
+- Guides property mapping and data binding implementation
+- Offers validation rule composition and error handling strategies
+- Provides guidance for complex validation scenarios and business rules
+- **Output**: Expert ViewModel design guidance + validation architecture recommendations
+
+#### Skill 8a7: `blazor-crud-page-generator` ✅ **New** [Priority 1.7] **🤖 AI-Driven**
+**Responsibility**: Senior UI/UX Architect for single-page CRUD interface design
+**Input**: Entity metadata + ViewModel design + UI layout requirements + User experience goals
+**Output**: Strategic guidance for single-page CRUD architecture and responsive design
+
+**Approach**: **AI-Driven Single-Page CRUD Consultation**
+- Acts as Senior UI/UX Architect specializing in modern CRUD patterns
+- Provides consultative guidance for data table design and interaction patterns
+- Recommends optimal MudBlazor components (MudDataGrid, MudTable) selection
+- Guides responsive layout implementation and mobile-first design
+- Offers performance optimization strategies for large datasets
+- Provides accessibility compliance and usability best practices
+- **Output**: Expert CRUD interface design guidance + responsive architecture recommendations
+
+#### Skill 8a8: `blazor-form-dialog-generator` ✅ **New** [Priority 1.8] **🤖 AI-Driven**
+**Responsibility**: Senior Form Design Architect for modal dialog form interfaces
+**Input**: ViewModel structure + Validation rules + Form layout preferences + User workflow requirements
+**Output**: Strategic guidance for form dialog architecture and user interaction design
+
+**Approach**: **AI-Driven Form Dialog Architecture Consultation**
+- Acts as Senior Form Design Architect specializing in modal interfaces
+- Provides consultative guidance for form layout and field organization
+- Recommends optimal MudBlazor form components (MudForm, MudTextField, MudSelect)
+- Guides validation feedback design and error handling patterns
+- Offers user experience optimization for data entry workflows
+- Provides accessibility compliance for form interactions
+- **Output**: Expert form dialog design guidance + validation architecture recommendations
+
+#### Skill 8a9: `blazor-detail-dialog-generator` ✅ **New** [Priority 1.9] **🤖 AI-Driven**
+**Responsibility**: Senior Information Architecture Consultant for detail view design
+**Input**: Entity structure + Related data requirements + Display preferences + User information needs
+**Output**: Strategic guidance for detail dialog architecture and information presentation
+
+**Approach**: **AI-Driven Detail Dialog Architecture Consultation**
+- Acts as Senior Information Architect specializing in data presentation
+- Provides consultative guidance for information hierarchy and layout
+- Recommends optimal MudBlazor display components (MudCard, MudList, MudChip)
+- Guides related data presentation and navigation patterns
+- Offers performance strategies for loading detailed information
+- Provides responsive design for various screen sizes
+- **Output**: Expert detail view design guidance + information architecture recommendations
+
+#### Skill 8a10: `blazor-delete-confirm-dialog-generator` ✅ **New** [Priority 1.10] **🤖 AI-Driven**
+**Responsibility**: Senior UX Safety Architect for destructive action confirmation
+**Input**: Entity context + Cascade deletion rules + Safety requirements + User confirmation patterns
+**Output**: Strategic guidance for safe deletion confirmation interfaces and user protection
+
+**Approach**: **AI-Driven Delete Confirmation Safety Consultation**
+- Acts as Senior UX Safety Architect specializing in destructive action patterns
+- Provides consultative guidance for confirmation dialog design and safety measures
+- Recommends optimal confirmation patterns and user protection strategies
+- Guides cascade deletion impact communication and warning systems
+- Offers accessibility compliance for critical action confirmations
+- Provides user experience optimization for deletion workflows
+- **Output**: Expert deletion safety guidance + confirmation pattern recommendations
+
 ### Layer 1.6: Data Integration Layer
 
 #### Skill 8b: `blazor-data-integration-generator` [Priority 2] **🔧 Script-Driven**
@@ -474,7 +550,17 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 │   │   │   └── SKILL.md
 │   │   └── syncfusion-generator/
 │   │       └── SKILL.md
-│   └── blazor-page-generator/
+│   ├── blazor-page-generator/
+│   │   └── SKILL.md
+│   ├── blazor-viewmodel-generator/
+│   │   └── SKILL.md
+│   ├── blazor-crud-page-generator/
+│   │   └── SKILL.md
+│   ├── blazor-form-dialog-generator/
+│   │   └── SKILL.md
+│   ├── blazor-detail-dialog-generator/
+│   │   └── SKILL.md
+│   └── blazor-delete-confirm-dialog-generator/
 │       └── SKILL.md
 ├── business-logic/
 │   └── page-driven-service-generator/
@@ -683,6 +769,63 @@ const process = globalThis.process;
    **UI Adapter Layer**: Any specific component library adapter (Syncfusion/Material/etc.)
    **Styling Layer**: `blazor-theme-generator`
 
+### Scenario 6: Single-Page Popup CRUD Development 🆕 **New Workflow (March 8, 2026)**
+**Use Case**: Generate simplified CRUD interface with popup dialogs for modern user experience
+
+**Phase 1: Data Architecture**
+1. `workflow-orchestrator` → Analyze requirements, recommend single-page CRUD approach
+2. `domain-model-parser` → Parse domain models and extract entity metadata
+3. `repository-interface-generator` → Generate Repository interfaces for data access
+4. `efcore-repository-generator` → Generate EF Core Repository implementations
+
+**Phase 2: ViewModel Architecture**
+5. `blazor-viewmodel-generator` → **AI-Driven**: Consultative guidance for ViewModel design
+   - Analyze entity structure and validation requirements
+   - Recommend Data Annotations validation strategies
+   - Design property mapping and data binding patterns
+   - Provide validation architecture recommendations
+
+**Phase 3: Single-Page CRUD Architecture**
+6. `blazor-architecture-generator` → Select component library (typically MudBlazor for modern design)
+7. `mudblazor-generator` → Set up Complete MudBlazor Material Design architecture
+8. `blazor-crud-page-generator` → **AI-Driven**: Consultative guidance for single-page CRUD design
+   - Recommend data table layout and responsive design
+   - Design action button placement and user interaction patterns
+   - Optimize for performance with large datasets
+   - Ensure accessibility and usability compliance
+
+**Phase 4: Dialog Component Architecture**
+9. `blazor-form-dialog-generator` → **AI-Driven**: Consultative guidance for form dialog design
+   - Design create/edit form layout and field organization
+   - Recommend validation feedback patterns and error handling
+   - Optimize user workflow for data entry
+   - Ensure responsive form design for various devices
+
+10. `blazor-detail-dialog-generator` → **AI-Driven**: Consultative guidance for detail view design
+    - Design information hierarchy and presentation layout
+    - Recommend related data display patterns
+    - Optimize performance for detailed information loading
+    - Ensure responsive design for different screen sizes
+
+11. `blazor-delete-confirm-dialog-generator` → **AI-Driven**: Consultative guidance for safe deletion
+    - Design confirmation dialog and safety measures
+    - Recommend cascade deletion impact communication
+    - Ensure user protection against accidental deletions
+    - Optimize accessibility for critical actions
+
+**Phase 5: Integration and Optimization**
+12. `page-driven-service-generator` → Generate service implementations based on page operations
+13. `solution-code-formatter` → Format all generated code for consistency
+14. **Result**: Complete single-page CRUD interface with popup dialogs, optimized for modern user experience
+
+**Workflow Benefits:**
+- ✅ **Simplified Navigation**: All operations on single page, no complex routing
+- ✅ **Modern UX**: Popup dialogs provide clean, focused user interactions
+- ✅ **Performance**: Optimized data loading and responsive design
+- ✅ **Consistency**: All dialogs follow same design patterns and behaviors
+- ✅ **Accessibility**: Compliant with accessibility standards and keyboard navigation
+- ✅ **Maintainability**: Clear separation between data operations and UI interactions
+
 ## Integration Points
 
 ### Target Code Locations
@@ -756,13 +899,20 @@ After splitting larger skills into focused components, we achieve:
 **Phase 1 (Foundation)**: Skills 1, 2, 3, 4a, 4b - Basic entity and database generation ✅ **Complete**
 **Phase 2 (Data Access)**: Skills 6a, 6b - Repository pattern implementation ✅ **Complete (6a Complete, 6b Implemented)**
 **Phase 3 (Service Contracts)**: Skill 7a - Service interface generation ✅ **Complete**
-**Phase 4 (Component Library Architecture)**: Skills 8a, 8a1-8a4 - Component library selection and generation ✅ **Complete (Redesigned)**
+**Phase 4 (Component Library Architecture)**: Skills 8a, 8a1-8a5 - Component library selection and generation ✅ **Complete (Redesigned)**
   - `blazor-architecture-generator` ✅ - Intelligent selector and consultation
   - `mudblazor-generator` ✅ - Material Design Blazor generation
   - `syncfusion-generator` ✅ - Enterprise Syncfusion consultation 
   - `bootstrap-generator` ✅ - Bootstrap 5 CSS framework consultation
   - `minimal-generator` ✅ - Zero-dependency performance consultation
-**Phase 5 (Data Integration)**: Skill 8b - Blazor data integration layer 📋 **NEW PRIORITY**
+  - `blazor-page-generator` ✅ - Comprehensive CRUD page development consultation
+**Phase 4.5 (Single-Page Popup CRUD)**: Skills 8a6-8a10 - Single-page CRUD with popup dialogs 🆕 **NEW (March 8, 2026)** 📋 **PENDING**
+  - `blazor-viewmodel-generator` 📋 - ViewModel architecture consultation (Priority 1.6)
+  - `blazor-crud-page-generator` 📋 - Single-page CRUD interface design consultation (Priority 1.7)
+  - `blazor-form-dialog-generator` 📋 - Form dialog architecture consultation (Priority 1.8)
+  - `blazor-detail-dialog-generator` 📋 - Detail view dialog design consultation (Priority 1.9)
+  - `blazor-delete-confirm-dialog-generator` 📋 - Safe deletion confirmation consultation (Priority 1.10)
+**Phase 5 (Data Integration)**: Skill 8b - Blazor data integration layer 📋 **PRIORITY UPDATED**
 **Phase 6 (Page Patterns)**: Skills 8c, 8d, 8e, 8f - Abstract page pattern generation 📋 **PENDING**
 **Phase 7 (Service Implementation Guidance)**: Skill 7a1 - AI-driven service architecture consultation 📋 **NEW (AI-Driven)**
 **Phase 8 (Business Integration)**: Skill 7b - Service implementation based on page operations 📋 **REDESIGNED (AI-Driven)**
