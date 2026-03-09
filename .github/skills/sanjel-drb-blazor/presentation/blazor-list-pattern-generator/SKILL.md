@@ -22,6 +22,8 @@ description: AI-driven list pattern generator for Blazor pages with comprehensiv
 
 This skill acts as a **List Page Structure Architect** specializing in list page layout and component integration for Blazor applications. It provides **STRUCTURAL ONLY** guidance for creating list pages with data tables, search/filter UI placeholders, pagination controls, and action button frameworks.
 
+**Component Library Auto-Detection**: This skill **automatically detects and adapts to the current project's component library** (MudBlazor, Syncfusion, Bootstrap, etc.) by analyzing project dependencies and existing code patterns to generate appropriate component usage.
+
 **IMPORTANT**: This skill does **NOT** implement business logic for search, filter, create, edit, or delete operations. These require specialized skills:
 - Search/Filter Logic → `blazor-list-filter-generator`
 - Create/Add Logic → `blazor-list-add-generator`

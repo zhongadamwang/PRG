@@ -20,9 +20,10 @@ description: Generate edit/modify operation handlers with inline editing, bulk u
 ## Description
 
 This skill acts as an **Edit Operations Specialist** for Blazor list pages. It implements the complete edit/modify functionality by:
+- **Automatically detecting and adapting to the current project's component library** (MudBlazor, Syncfusion, Bootstrap, etc.)
 - Taking the structural framework from `blazor-list-pattern-generator`
 - Implementing the TODO-marked edit operation placeholders
-- Adding inline editing capabilities directly in the data table
+- Adding inline editing capabilities directly in the data table using library-specific components
 - Supporting navigation to dedicated edit forms or modal dialogs
 - Handling validation, concurrency conflicts, and error recovery
 - Managing bulk edit operations for multiple records

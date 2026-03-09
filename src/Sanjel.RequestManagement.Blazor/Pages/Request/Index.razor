@@ -25,47 +25,12 @@
 	</div>
 
 	<div class="search-bar">
-		<SfTextBox Placeholder="Search requests..." FloatLabelType="FloatLabelType.Never"
-							 @bind-Value="ViewModel.SearchTerm"></SfTextBox>
+		<SfTextBox Placeholder="Search requests..." FloatLabelType="FloatLabelType.Never" @bind-Value="ViewModel.SearchTerm"
+							 @oninput="OnSearchChangedAsync"></SfTextBox>
 	</div>
 
 	<div class="filter-panel">
-		<div class="filter-row">
-			<div class="filter-group">
-				<label>Status</label>
-				<SfDropDownList TValue="StatusEnum?" TItem="StatusEnum" Placeholder="All Statuses" DataSource="@statusOptions"
-												@bind-Value="ViewModel.StatusFilter">
-				</SfDropDownList>
-			</div>
 
-			<div class="filter-group">
-				<label>Priority</label>
-				<SfDropDownList TValue="PriorityEnum?" TItem="PriorityEnum" Placeholder="All Priorities"
-												DataSource="@priorityOptions" @bind-Value="ViewModel.PriorityFilter">
-				</SfDropDownList>
-			</div>
-
-			<div class="filter-group">
-				<label>Client ID</label>
-				<SfTextBox Placeholder="Filter by Client ID" @bind-Value="ViewModel.ClientIdFilter"></SfTextBox>
-			</div>
-
-			<div class="filter-group">
-				<label>Engineer</label>
-				<SfTextBox Placeholder="Filter by Engineer" @bind-Value="ViewModel.AssignedEngineerIdFilter"></SfTextBox>
-			</div>
-		</div>
-
-		<div class="filter-actions">
-			<SfButton CssClass="e-outline" OnClick="this.ApplyFiltersAsync">
-				<span class="e-btn-icon e-icons e-search"></span>
-				Apply Filters
-			</SfButton>
-			<SfButton CssClass="e-outline" OnClick="this.ClearFiltersAsync">
-				<span class="e-btn-icon e-icons e-refresh"></span>
-				Clear
-			</SfButton>
-		</div>
 	</div>
 
 	<div class="data-grid-container">
@@ -96,7 +61,7 @@
 		{
 			<SfGrid DataSource="@this.pagedResult?.Items" TValue="Request" AllowSorting="true" AllowPaging="true"
 							Toolbar="@(new List<string>() { "Search" })" AllowFiltering="true" FilterSettings="@filterSettings"
-							AllowSelection="true" RowSelected="OnRowSelected" RowDeselected="OnRowDeselected">
+							AllowSelection="true">
 				<GridEvents OnActionBegin="this.OnActionBeginAsync" TValue="Request"></GridEvents>
 				<GridSortSettings Columns="@this.initialSortColumns" AllowUnsort="true"></GridSortSettings>
 				<GridSelectionSettings Type="@Syncfusion.Blazor.Grids.SelectionType.Multiple"></GridSelectionSettings>

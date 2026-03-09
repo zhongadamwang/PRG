@@ -20,10 +20,11 @@ description: Generate comprehensive search, sort, and filter functionality for B
 ## Description
 
 This skill acts as a **Search & Filter Operations Specialist** for Blazor list pages. It implements the complete search and filter functionality by:
+- **Automatically detecting and adapting to the current project's component library** (MudBlazor, Syncfusion, Bootstrap, etc.)
 - Taking the structural framework from `blazor-list-pattern-generator`
 - Implementing the TODO-marked search and filter operation placeholders
-- Adding real-time search with debouncing and performance optimization
-- Creating dynamic filter UI based on entity property types
+- Adding real-time search with debouncing and performance optimization using library-specific components
+- Creating dynamic filter UI based on entity property types with appropriate component library patterns
 - Building efficient query logic for backend data filtering
 - Supporting advanced search patterns and saved search functionality
 

@@ -20,9 +20,10 @@ description: Generate delete operation handlers with confirmation dialogs, batch
 ## Description
 
 This skill acts as a **Delete Operations Specialist** for Blazor list pages. It implements the complete delete functionality by:
+- **Automatically detecting and adapting to the current project's component library** (MudBlazor, Syncfusion, Bootstrap, etc.)
 - Taking the structural framework from `blazor-list-pattern-generator`
 - Implementing the TODO-marked delete operation placeholders
-- Adding confirmation dialogs and safety mechanisms
+- Adding confirmation dialogs and safety mechanisms using appropriate component library patterns
 - Supporting batch delete operations with progress tracking
 - Handling delete validation and constraint checking
 - Managing list refresh and optimistic updates

@@ -20,11 +20,12 @@ description: Generate create/add operation handlers and navigation logic for Bla
 ## Description
 
 This skill acts as a **Create Operations Specialist** for Blazor list pages. It implements the complete create/add functionality by:
+- **Automatically detecting and adapting to the current project's component library** (MudBlazor, Syncfusion, Bootstrap, etc.)
 - Taking the structural framework from `blazor-list-pattern-generator`
-- Implementing the TODO-marked create operation placeholders
-- Adding navigation to create forms or modal dialogs
+- Implementing the TODO-marked create operation placeholders  
+- Adding navigation to create forms or modal dialogs using appropriate component library patterns
 - Handling success/error states and list refresh logic
-- Integrating proper validation and user feedback
+- Integrating proper validation and user feedback with library-specific components
 
 **DEPENDENCY**: This skill **REQUIRES** output from `blazor-list-pattern-generator` as input. It cannot work in isolation.
 

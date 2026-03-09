@@ -14,14 +14,17 @@ namespace Sanjel.RequestManagement.Blazor.Pages.Request.Services;
 public class RequestService
 {
 	private readonly IRequestRepository _repository;
+	private readonly ILogger<RequestService> _logger;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="RequestService"/> class.
 	/// </summary>
 	/// <param name="repository">The repository for data access operations.</param>
-	public RequestService(IRequestRepository repository)
+	/// <param name="logger">The logger instance.</param>
+	public RequestService(IRequestRepository repository, ILogger<RequestService> logger)
 	{
 		this._repository = repository ?? throw new ArgumentNullException(nameof(repository));
+		this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
 	}
 
 	/// <summary>
@@ -32,18 +35,42 @@ public class RequestService
 	/// <returns>Paged result of requests.</returns>
 	public async Task<PagedResult<RequestEntity>> GetPagedListAsync(RequestListViewModel viewModel, CancellationToken cancellationToken = default)
 	{
+		this._logger.LogInformation(
+			"Getting paged list of requests - Page: {CurrentPage}, PageSize: {PageSize}, SearchTerm: '{SearchTerm}'",
+			viewModel.CurrentPage,
+			viewModel.PageSize,
+			viewModel.SearchTerm);
+
 		var predicate = this.BuildFilterPredicate(viewModel);
 
 		var skip = (viewModel.CurrentPage - 1) * viewModel.PageSize;
 		var take = viewModel.PageSize;
 
+		this._logger.LogDebug("Query parameters - Skip: {Skip}, Take: {Take}", skip, take);
+
 		Func<IQueryable<RequestEntity>, IOrderedQueryable<RequestEntity>>? orderBy = null;
 		if (!string.IsNullOrWhiteSpace(viewModel.SortColumn))
 		{
 			orderBy = this.BuildSortOrder(viewModel.SortColumn, viewModel.SortDirection);
+			this._logger.LogDebug(
+				"Sorting by column: {SortColumn}, Direction: {SortDirection}",
+				viewModel.SortColumn, viewModel.SortDirection);
 		}
 
-		return await this._repository.GetPagedAsync(skip, take, predicate, orderBy, cancellationToken);
+		try
+		{
+			var result = await this._repository.GetPagedAsync(skip, take, predicate, orderBy, cancellationToken);
+			this._logger.LogInformation(
+				"Successfully retrieved {ItemCount} requests out of {TotalCount} total. Page {CurrentPage} of {TotalPages}",
+				result.Items.Count, result.TotalCount, viewModel.CurrentPage,
+				(int)Math.Ceiling((double)result.TotalCount / viewModel.PageSize));
+			return result;
+		}
+		catch (Exception ex)
+		{
+			this._logger.LogError(ex, "Error retrieving paged list of requests");
+			throw;
+		}
 	}
 
 	/// <summary>
