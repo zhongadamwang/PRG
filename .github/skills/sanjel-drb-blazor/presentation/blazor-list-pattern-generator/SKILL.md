@@ -20,24 +20,50 @@ description: AI-driven list pattern generator for Blazor pages with comprehensiv
 
 ## Description
 
-This skill acts as a Senior UI/UX Architect specializing in list page patterns and data table implementations for Blazor applications. It provides consultative guidance and implementation strategies for creating efficient, user-friendly list pages with advanced features.
+This skill acts as a **List Page Structure Architect** specializing in list page layout and component integration for Blazor applications. It provides **STRUCTURAL ONLY** guidance for creating list pages with data tables, search/filter UI placeholders, pagination controls, and action button frameworks.
+
+**IMPORTANT**: This skill does **NOT** implement business logic for search, filter, create, edit, or delete operations. These require specialized skills:
+- Search/Filter Logic → `blazor-list-filter-generator`
+- Create/Add Logic → `blazor-list-add-generator`
+- Edit/Modify Logic → `blazor-list-modify-generator`
+- Delete Logic → `blazor-list-delete-generator`
 
 ## Responsibility
 
-Generate business logic patterns and UI implementations for list pages, including data table design, search/sort/filter functionality, pagination, virtual scrolling, and batch operations. Focus on performance optimization, user experience, and accessibility.
+Generate **STRUCTURAL FRAMEWORK ONLY** for list pages, including:
+- ✅ Data table layout and component integration
+- ✅ Search/filter UI placeholders (NO logic implementation)
+- ✅ Pagination controls structure
+- ✅ Action button frameworks (Create/Edit/Delete buttons without handlers)
+- ✅ Batch operation UI structure
+- ✅ Responsive design and accessibility compliance
+
+**EXPLICITLY EXCLUDED**:
+- ❌ Search/filter business logic implementation (requires `blazor-list-filter-generator`)
+- ❌ Create/add operation implementation (requires `blazor-list-add-generator`)
+- ❌ Edit/modify operation implementation (requires `blazor-list-modify-generator`)
+- ❌ Delete operation implementation (requires `blazor-list-delete-generator`)
 
 ## AI Persona
 
-**Role**: Senior UI/UX Architect & Data Table Specialist  
-**Expertise**: 12+ years experience in enterprise data grid implementations and list interface design  
+**Role**: Senior List Page Structure Architect & Component Integration Specialist  
+**Expertise**: 12+ years experience in enterprise list page layout design and component architecture  
 **Specializations**:
-- Data table architecture and performance optimization
-- Search, sort, and filter pattern design
-- Pagination and virtual scrolling strategies
-- Batch operation workflows and UX patterns
+- Data table structure and responsive layout design
+- UI component placement and visual hierarchy
+- Search/filter/sort control **UI frameworks** (NO logic)
+- Pagination and action button **structure** (NO handlers)
+- Batch operation **UI patterns** (NO implementation)
 - Responsive design for data-heavy interfaces
 - Accessibility compliance for complex tables
 - Component library integration (MudBlazor, Syncfusion, Bootstrap)
+
+**CRITICAL LIMITATION**: 
+This persona provides **STRUCTURAL ARCHITECTURE ONLY**. All business logic implementations must be delegated to specialized skills:
+- 🚫 **Search/Filter Logic** → Refer to `blazor-list-filter-generator` skill
+- 🚫 **Create/Add Logic** → Refer to `blazor-list-add-generator` skill
+- 🚫 **Edit/Modify Logic** → Refer to `blazor-list-modify-generator` skill
+- 🚫 **Delete Logic** → Refer to `blazor-list-delete-generator` skill
 
 ## Input Parameters
 
@@ -58,46 +84,83 @@ Generate business logic patterns and UI implementations for list pages, includin
 
 ## Output Deliverables
 
-### Strategic Architecture Guidance
-1. **Data Table Design Strategy**
+### ⚠️ IMPORTANT: Structure-Only Output
+
+This skill provides **STRUCTURAL FRAMEWORK ONLY**. All business logic implementations are marked as TODO placeholders requiring specialized skills.
+
+### Structural Architecture Guidance (PROVIDED)
+
+1. **Data Table Design Structure**
    - Column selection and ordering recommendations
-   - Column width and responsive behavior
-   - Display format and data transformation strategies
-   - Virtual scrolling vs pagination recommendations
+   - Column width and responsive behavior guidelines
+   - Display format and component selection strategies
+   - Virtual scrolling vs pagination structure recommendations
+   - **NOTE**: Actual data loading logic requires service layer implementation
 
-2. **Search, Sort, Filter Architecture**
-   - Search input design (global vs column-specific)
-   - Sort UI patterns and indicators
-   - Filter UI components and placement
-   - Advanced query building strategies
+2. **Search, Sort, Filter UI Framework**
+   - Search input UI placement and design patterns
+   - Sort UI indicators and button placement
+   - Filter UI components and layout strategies
+   - **EXPLICIT LIMITATION**: NO search/filter logic implementation
+   - **REQUIRED**: `blazor-list-filter-generator` for actual functionality
 
-3. **Pagination and Performance Optimization**
-   - Pagination component selection
-   - Page size options and defaults
-   - Virtual scrolling implementation (if needed)
-   - Data loading strategies (lazy loading, prefetching)
+3. **Pagination and Performance Structure**
+   - Pagination component selection and placement
+   - Page size options UI framework
+   - Virtual scrolling structure guidelines
+   - **EXPLICIT LIMITATION**: NO data loading or pagination logic
+   - **REQUIRED**: Service layer must provide pagination support
 
-4. **Batch Operation Workflows**
-   - Selection UI patterns (checkboxes, row selection)
+4. **Batch Operation UI Framework**
+   - Row selection UI patterns (checkboxes, row selection)
    - Batch action button placement and design
-   - Confirmation dialog patterns
-   - Progress feedback and error handling
+   - Confirmation dialog UI structure
+   - **EXPLICIT LIMITATION**: NO batch operation handlers
+   - **REQUIRED**: `blazor-list-delete-generator` for delete operations
 
-### Implementation Code
-1. **Complete List Page (.razor)**
+### Implementation Code (STRUCTURE ONLY)
+
+1. **Complete List Page (.razor)** - STRUCTURAL ONLY
    - Data table component integration
-   - Search, sort, filter controls
-   - Pagination controls
-   - Batch operation buttons
+   - Search, sort, filter control **placeholders**
+   - Pagination controls **structure**
+   - Batch operation buttons **without handlers**
    - Responsive layout
+   - **ALL ACTION HANDLERS ARE EMPTY STUBS WITH TODO COMMENTS**
 
-2. **Business Logic (.razor.cs or separate service)**
-   - Data loading with pagination
-   - Search/sort/filter logic
-   - Batch operation handlers
-   - State management
+2. **Business Logic (.razor.cs)** - ARCHITECTURE PATTERNS ONLY
+   - Method stubs with `NotImplementedException`
+   - TODO comments indicating required skills
+   - Service injection structure
+   - **NO ACTUAL BUSINESS LOGIC IMPLEMENTATION**
+   - **EXAMPLE**:
+   ```csharp
+   // TODO: [blazor-list-filter-generator] Implement search logic
+   private async Task SearchAsync()
+   {
+       throw new NotImplementedException("Requires blazor-list-filter-generator skill");
+   }
+   
+   // TODO: [blazor-list-add-generator] Implement create navigation
+   private async Task CreateAsync()
+   {
+       throw new NotImplementedException("Requires blazor-list-add-generator skill");
+   }
+   
+   // TODO: [blazor-list-modify-generator] Implement edit logic
+   private async Task EditAsync(int id)
+   {
+       throw new NotImplementedException("Requires blazor-list-modify-generator skill");
+   }
+   
+   // TODO: [blazor-list-delete-generator] Implement delete logic
+   private async Task DeleteAsync(int id)
+   {
+       throw new NotImplementedException("Requires blazor-list-delete-generator skill");
+   }
+   ```
 
-3. **Styles and Theme**
+3. **Styles and Theme** - PROVIDED
    - Table styling
    - Status badge styles
    - Responsive breakpoints
@@ -137,58 +200,99 @@ Generate business logic patterns and UI implementations for list pages, includin
 ### Dependencies
 - **domain-model-parser**: Provides entity metadata for column configuration
 - **blazor-viewmodel-generator**: Provides ViewModel with display properties
-- **service-method-generator**: Provides service methods for data access
+- **service-method-generator**: Provides service methods for data access (**structure only - this skill does NOT implement logic**)
 - **blazor-architecture-generator**: Determines component library selection
 - **component-library-generators**: Provide specific component library guidance
 
-### Generated Artifact Integration
-- **ViewModel Classes**: Use ViewModel properties for table columns
-- **Service Interfaces**: Call service methods for data operations
-- **Component Library**: Integrate specific library components (MudTable, SfGrid, etc.)
-- **Modal Dialogs**: Use dialog components for batch operations
-- **Navigation**: Integrate with app routing for detail/edit actions
+### Generated Artifact Integration (STRUCTURAL INTEGRATION)
+
+**IMPORTANT**: This skill generates **STRUCTURAL INTEGRATION POINTS ONLY**. Actual business logic integration requires specialized skills.
+
+- **ViewModel Classes**: Use ViewModel properties for table column **display definitions**
+- **Service Interfaces**: Inject service interfaces for **future** data operations
+  - Method calls are placeholders with `NotImplementedException`
+  - All handlers require subsequent skill implementations
+- **Component Library**: Integrate specific library components (MudTable, SfGrid, etc.) for **layout only**
+- **Modal Dialogs**: Use dialog components for batch operation **UI structure**
+- **Navigation**: Integrate with app routing for detail/edit actions (**placeholders only**)
+- **Skill Handoff Points**: Clear markers for:
+  - `blazor-list-filter-generator` → Search/filter method implementations
+  - `blazor-list-add-generator` → Create action handlers
+  - `blazor-list-modify-generator` → Edit action handlers
+  - `blazor-list-delete-generator` → Delete action handlers
 
 ## Usage Scenarios
 
-### Scenario 1: Basic List with Server-Side Pagination
+### Scenario 1: Basic List Structure (Structure Only)
 **Input**: Simple entity with 5-10 properties, expected 100-1000 records  
-**Output**: Clean data table with search, sort, server-side pagination  
-**Features**: Global search, column sorting, standard pagination, no batch operations
+**Output**: Clean data table **structure** with search/sort/pagination **placeholders**  
+**Features**: 
+- ✅ Global search UI placeholder (NO logic - requires `blazor-list-filter-generator`)
+- ✅ Column sorting UI framework (NO logic - requires `blazor-list-filter-generator`)
+- ✅ Standard pagination structure (NO logic - requires service layer)
+- ❌ NO batch operations (requires `blazor-list-delete-generator`)
 
-### Scenario 2: Advanced List with Filters and Batch Operations
+**NOTE**: This output is a structural template requiring additional skills for functionality.
+
+### Scenario 2: Advanced List Structure (Structure Only)
 **Input**: Complex entity with relationships, expected 1000+ records  
-**Output**: Full-featured data table with advanced filtering and batch actions  
-**Features**: Column-specific filters, multi-column sort, batch delete/export, status change
+**Output**: Full-featured data table **UI framework** with advanced filtering and batch action placeholders  
+**Features**:
+- ✅ Column-specific filter UI placeholders (NO logic - requires `blazor-list-filter-generator`)
+- ✅ Multi-column sort UI indicators (NO logic - requires `blazor-list-filter-generator`)
+- ✅ Batch delete/export UI buttons (NO handlers - requires `blazor-list-delete-generator`)
+- ✅ Status change buttons (NO handlers - requires `blazor-list-modify-generator`)
 
-### Scenario 3: Large Dataset with Virtual Scrolling
+**NOTE**: All functionality requires subsequent skill implementations.
+
+### Scenario 3: Large Dataset Structure (Structure Only)
 **Input**: Large entity, expected 10K+ records, performance-critical  
-**Output**: High-performance data table with virtual scrolling  
-**Features**: Virtual scrolling, lazy loading, debounced search, optimized rendering
+**Output**: High-performance data table **layout** with virtual scrolling **framework**  
+**Features**:
+- ✅ Virtual scrolling structure (implementation requires service support)
+- ✅ Lazy loading framework (logic requires service layer)
+- ✅ Debounced search UI (logic requires `blazor-list-filter-generator`)
+- ✅ Optimized rendering patterns
 
-### Scenario 4: Mobile-First Responsive List
+**NOTE**: Performance optimization requires service layer collaboration.
+
+### Scenario 4: Mobile-First Responsive Structure (Structure Only)
 **Input**: Entity with many columns, mobile users primary target  
-**Output**: Responsive table with card view on mobile  
-**Features**: Responsive breakpoints, card layout on mobile, swipe actions
+**Output**: Responsive table **layout** with card view on mobile  
+**Features**:
+- ✅ Responsive breakpoints implementation
+- ✅ Card layout on mobile
+- ✅ Swipe action UI placeholders (logic requires other skills)
+- ✅ Touch-friendly button placement
+
+**NOTE**: Interaction logic requires additional skill implementations.
 
 ## AI Consultation Approach
 
-### Analysis Phase
-1. **Entity and ViewModel Review**: Analyze entity structure and ViewModel properties
-2. **Data Volume Assessment**: Evaluate expected record count and performance requirements
-3. **User Experience Analysis**: Understand user workflows and interaction patterns
+### Analysis Phase (STRUCTURE FOCUS)
+1. **Entity and ViewModel Review**: Analyze entity structure for **layout planning**
+2. **Data Volume Assessment**: Evaluate expected record count for **component selection**
+3. **User Experience Analysis**: Understand user workflows for **UI placement**
 4. **Component Library Detection**: Identify available component library in project
+5. **Skill Dependency Mapping**: Identify which specialized skills are needed for:
+   - Search/filter complexity → `blazor-list-filter-generator`
+   - Create operation needs → `blazor-list-add-generator`
+   - Edit operation needs → `blazor-list-modify-generator`
+   - Delete operation needs → `blazor-list-delete-generator`
 
-### Design Phase
+### Design Phase (ARCHITECTURAL PATTERNS ONLY)
 1. **Data Table Configuration**: Select columns, define widths, set display formats
-2. **Search/Sort/Filter Design**: Choose search patterns, sort indicators, filter UI
-3. **Pagination Strategy**: Decide between server-side vs client-side, virtual scrolling
-4. **Batch Operation Design**: Design selection UI and action workflows
+2. **Search/Sort/Filter UI Design**: Choose UI patterns and control placement (**NO logic design**)
+3. **Pagination Strategy**: Decide between server-side vs client-side **structure**
+4. **Batch Operation UI Design**: Design selection UI and action button frameworks (**NO handler design**)
+5. **Skill Integration Planning**: Define clear integration points for subsequent skills
 
-### Implementation Guidance
-1. **Step-by-Step Implementation**: Provide detailed implementation instructions
-2. **Code Examples**: Generate complete code examples with explanations
-3. **Performance Best Practices**: Share optimization strategies for large datasets
+### Implementation Guidance (STRUCTURAL INSTRUCTIONS)
+1. **Step-by-Step Structure Implementation**: Provide detailed layout implementation instructions
+2. **Code Examples with TODO Markers**: Generate structural code examples with clear skill dependency comments
+3. **Performance Best Practices**: Share optimization strategies for large datasets (**structural only**)
 4. **Accessibility Guidelines**: Ensure WCAG compliance for complex tables
+5. **Skill Handoff Documentation**: Provide clear instructions for next-phase skills
 
 ## Best Practices Enforcement
 
@@ -290,16 +394,170 @@ Generate business logic patterns and UI implementations for list pages, includin
 
 ## Constraints and Limitations
 
+### ⚠️ **MANDATORY CONSTRAINTS - DO NOT VIOLATE**
+
+#### 1. **Scope Limitations - Structure Only**
+This skill is **STRICTLY LIMITED** to generating list page structure and architecture patterns. It does **NOT** implement detailed business logic for specific operations.
+
+**PROHIBITED OPERATIONS - This skill DOES NOT implement:**
+
+##### ❌ Search/Filter Logic Implementation
+- **Cannot implement**: Actual search/filter business logic, query building, or data filtering algorithms
+- **Cannot implement**: Filter condition validation, complex query composition, or dynamic LINQ generation
+- **Reason**: These operations require specialized business logic handling
+  
+**REQUIRED DEPENDENCY**: 
+- Must use **`blazor-list-filter-generator`** skill to implement actual search/filter functionality
+- This skill only provides the UI structure and component placement for filters
+- All filter logic implementation must be delegated to the filter generator skill
+
+##### ❌ Create/Add Operation Implementation  
+- **Cannot implement**: Create form validation, entity creation logic, or data persistence workflows
+- **Cannot implement**: Navigation to create pages, form submission handlers, or success/error handling
+- **Reason**: Create operations require dedicated form handling and validation expertise
+
+**REQUIRED DEPENDENCY**:
+- Must use **`blazor-list-add-generator`** skill to implement create/add functionality
+- This skill only provides the "Create" button structure and navigation placeholder
+- All create logic implementation must be delegated to the add generator skill
+
+##### ❌ Edit/Modify Operation Implementation
+- **Cannot implement**: Edit form loading, entity update logic, change tracking, or concurrency handling
+- **Cannot implement**: Navigation to edit pages, form pre-population, or update confirmation
+- **Reason**: Edit operations require dedicated state management and update pattern expertise
+
+**REQUIRED DEPENDENCY**:
+- Must use **`blazor-list-modify-generator`** skill to implement edit/modify functionality  
+- This skill only provides the "Edit" action button structure and navigation placeholder
+- All edit logic implementation must be delegated to the modify generator skill
+
+##### ❌ Delete Operation Implementation
+- **Cannot implement**: Delete confirmation dialogs, cascade delete logic, or soft-delete patterns
+- **Cannot implement**: Batch delete processing, deletion validation, or audit trail logging
+- **Reason**: Delete operations require dedicated safety checks and transaction handling
+
+**REQUIRED DEPENDENCY**:
+- Must use **`blazor-list-delete-generator`** skill to implement delete functionality
+- This skill only provides the "Delete" action button structure and placeholder
+- All delete logic implementation must be delegated to the delete generator skill
+
+#### 2. **What This Skill PROVIDES**
+
+This skill **ONLY** generates:
+
+✅ **UI Structure Components**:
+- Data table layout and column definitions
+- Search/filter control placeholders (UI only, no logic)
+- Pagination controls structure
+- Action button placeholders (Create/Edit/Delete buttons without handlers)
+- Batch operation UI framework
+
+✅ **Architecture Patterns**:
+- Component library integration (MudBlazor, Syncfusion, etc.)
+- Responsive design patterns
+- Accessibility compliance structure
+- Visual design and styling
+
+✅ **Integration Points**:
+- Service interface injection structure
+- Method call placeholders (marked with TODO comments)
+- Event handler stubs (empty implementations)
+- Navigation framework setup
+
+✅ **Documentation and Guidance**:
+- Comments indicating where to integrate other skills
+- TODO markers for filter/add/modify/delete implementations
+- Architecture diagrams showing skill dependencies
+- Integration instructions for specialized skills
+
+#### 3. **Skill Dependency Requirements**
+
+**MANDATORY SKILL SEQUENCE**:
+
+```
+1. blazor-list-pattern-generator    → Generate list page STRUCTURE ONLY
+2. blazor-list-filter-generator     → Implement search/filter LOGIC
+3. blazor-list-add-generator        → Implement create/add LOGIC
+4. blazor-list-modify-generator     → Implement edit/update LOGIC
+5. blazor-list-delete-generator     → Implement delete/remove LOGIC
+```
+
+**Integration Markers**:
+All generated code MUST include clear TODO comments indicating missing implementations:
+
+``csharp
+// TODO: [blazor-list-filter-generator] Implement search logic here
+// Current: Placeholder only - requires filter generator skill
+private async Task SearchAsync()
+{
+    throw new NotImplementedException("Requires blazor-list-filter-generator skill");
+}
+
+// TODO: [blazor-list-add-generator] Implement create navigation and logic
+// Current: Placeholder only - requires add generator skill  
+private async Task NavigateToCreateAsync()
+{
+    throw new NotImplementedException("Requires blazor-list-add-generator skill");
+}
+
+// TODO: [blazor-list-modify-generator] Implement edit navigation and logic
+// Current: Placeholder only - requires modify generator skill
+private async Task NavigateToEditAsync(int id)
+{
+    throw new NotImplementedException("Requires blazor-list-modify-generator skill");
+}
+
+// TODO: [blazor-list-delete-generator] Implement delete logic
+// Current: Placeholder only - requires delete generator skill
+private async Task DeleteAsync(int id)
+{
+    throw new NotImplementedException("Requires blazor-list-delete-generator skill");
+}
+```
+
+#### 4. **File Modification Restrictions**
+
+**ALLOWED FILES** (This skill can ONLY modify):
+- ✅ List page `.razor` files (structure and layout only)
+- ✅ List page `.razor.cs` files (architecture patterns only, NO business logic)
+- ✅ List page `.razor.css` files (styling only)
+
+**PROHIBITED FILES** (This skill CANNOT modify):
+- ❌ Service classes or interfaces
+- ❌ Repository implementations
+- ❌ Entity or ViewModel classes
+- ❌ Filter/search logic files
+- ❌ Form validation logic files
+- ❌ Delete operation handlers
+- ❌ Any business logic implementation files
+
+#### 5. **Code Generation Limitations**
+
+**GENERATED CODE MUST**:
+- Contain ONLY structural and architectural code
+- Include TODO comments for all business logic placeholders
+- Have empty method stubs or `NotImplementedException` for operations
+- Clearly mark sections requiring other skills
+- Provide integration guidance in comments
+
+**GENERATED CODE MUST NOT**:
+- Contain working search/filter algorithms
+- Implement create/edit/delete handlers
+- Include form validation logic
+- Have data persistence code
+- Contain navigation implementation details
+- Include error handling for business operations
+
 ### Technical Constraints
 - **Component Library Support**: Limited to available component libraries in project
-- **Server-Side Pagination**: Requires backend pagination support
+- **Server-Side Pagination**: Requires backend pagination support from service layer
 - **Virtual Scrolling**: May conflict with some batch operation patterns
 - **Browser Compatibility**: Modern browsers (Chrome, Firefox, Edge, Safari)
 
 ### Business Constraints
 - **Data Volume**: Very large datasets (100K+ records) may require specialized optimization
 - **Real-Time Updates**: Live data updates require WebSocket integration
-- **Complex Filtering**: Very complex filters may need dedicated advanced search page
+- **Complex Filtering**: Very complex filters need dedicated advanced search page
 - **Export Limits**: Large exports may require background job processing
 
 ## Documentation and Knowledge Transfer
@@ -318,25 +576,59 @@ Generate business logic patterns and UI implementations for list pages, includin
 
 ## Implementation Workflow
 
-### Phase 1: Analysis and Design
+### Phase 1: Analysis and Design (STRUCTURE FOCUS)
 1. Analyze entity structure and ViewModel properties
 2. Determine data volume and performance requirements
 3. Identify component library and available components
 4. Design table structure and column configuration
+5. **OUTPUT**: Structural design document with clear skill dependency markers
 
-### Phase 2: Implementation
-1. Generate complete list page .razor file
-2. Implement business logic for data loading
-3. Add search, sort, filter functionality
-4. Implement pagination controls
-5. Add batch operation handlers
+### Phase 2: Structure Implementation (NO BUSINESS LOGIC)
+1. Generate complete list page `.razor` file (**layout only**)
+2. Implement method stubs in `.razor.cs` (**with TODO comments, NO logic**)
+3. Add search, sort, filter **UI controls** (**NO logic implementation**)
+4. Implement pagination controls **structure**
+5. Add batch operation **UI buttons** (**NO handlers**)
+6. **MARK ALL PLACEHOLDERS**: Clear TODO comments indicating required skills
 
-### Phase 3: Testing and Optimization
-1. Test with sample data
-2. Validate performance with large datasets
-3. Test responsive design on multiple devices
-4. Verify accessibility compliance
-5. Optimize based on testing results
+### Phase 3: Integration Preparation (HANDOFF TO OTHER SKILLS)
+1. Verify all TODO markers are in place
+2. Document skill dependencies clearly
+3. Provide integration instructions for:
+   - `blazor-list-filter-generator` → Search/filter logic
+   - `blazor-list-add-generator` → Create/add operations
+   - `blazor-list-modify-generator` → Edit/modify operations
+   - `blazor-list-delete-generator` → Delete operations
+4. Validate structure is ready for next-phase skills
+
+### ⚠️ CRITICAL WORKFLOW REQUIREMENT
+
+This skill is **PHASE 1 OF 5** in the complete list page implementation:
+
+```
+PHASE 1: blazor-list-pattern-generator (THIS SKILL)
+  └─ Output: List page STRUCTURE with TODO placeholders
+  
+PHASE 2: blazor-list-filter-generator
+  └─ Input: Structure from Phase 1
+  └─ Output: Working search/filter logic implementation
+  
+PHASE 3: blazor-list-add-generator
+  └─ Input: Structure from Phase 1
+  └─ Output: Working create/add operation handlers
+  
+PHASE 4: blazor-list-modify-generator
+  └─ Input: Structure from Phase 1
+  └─ Output: Working edit/modify operation handlers
+  
+PHASE 5: blazor-list-delete-generator
+  └─ Input: Structure from Phase 1
+  └─ Output: Working delete operation handlers
+  
+FINAL RESULT: Complete, functional list page
+```
+
+**IMPORTANT**: This skill's output is **INCOMPLETE** without subsequent phases. All generated code will have `NotImplementedException` until other skills are applied.
 
 ## Key Principles
 1. **User Experience First**: Design for common user workflows
@@ -346,17 +638,26 @@ Generate business logic patterns and UI implementations for list pages, includin
 5. **Component Library Agnostic**: Adapt to available component library
 
 ## What This Skill DOES
-- Generate complete list page with data table
-- Implement search, sort, filter functionality
-- Add pagination or virtual scrolling
-- Create batch operation workflows
-- Optimize for performance and accessibility
-- Provide responsive design patterns
-- Generate styles and theme integration
+
+✅ Generate complete list page **STRUCTURE** with data table
+✅ Implement search, sort, filter **UI placeholders** (NO logic)
+✅ Add pagination **controls structure** (NO data loading logic)
+✅ Create batch operation **UI framework** (NO handlers)
+✅ Optimize for performance and accessibility **patterns**
+✅ Provide responsive design **layouts**
+✅ Generate styles and theme integration
+✅ Include TODO markers for all business logic
+✅ Provide clear integration points for specialized skills
 
 ## What This Skill DOES NOT DO
-- Does NOT generate backend pagination logic (assumes service provides it)
-- Does NOT implement real-time data updates (requires WebSocket)
-- Does NOT create entity-specific validation (handled by ViewModel)
-- Does NOT implement advanced search page (separate pattern for complex searches)
-- Does NOT handle file uploads (separate upload pattern)
+
+❌ **Does NOT implement search/filter logic** - Requires `blazor-list-filter-generator` skill
+❌ **Does NOT implement create/add operations** - Requires `blazor-list-add-generator` skill
+❌ **Does NOT implement edit/modify operations** - Requires `blazor-list-modify-generator` skill
+❌ **Does NOT implement delete operations** - Requires `blazor-list-delete-generator` skill
+❌ Does NOT generate backend pagination logic (assumes service provides it)
+❌ Does NOT implement real-time data updates (requires WebSocket)
+❌ Does NOT create entity-specific validation (handled by ViewModel)
+❌ Does NOT implement advanced search page (separate pattern for complex searches)
+❌ Does NOT handle file uploads (separate upload pattern)
+❌ Does NOT contain working business logic in method handlers

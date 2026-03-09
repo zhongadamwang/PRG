@@ -372,18 +372,38 @@ This layer provides a simplified, modern approach to CRUD operations using a sin
 - **Output**: Working page files with direct component implementations
 
 #### Skill 8d: `blazor-list-pattern-generator` [Priority 4] **🤖 AI-Driven**
-**Responsibility**: AI-driven list pattern generator for Blazor pages with comprehensive data table design, search, sort, filter, pagination, and batch operations support
+**Responsibility**: AI-driven list pattern generator for Blazor pages with structural framework and architectural guidance
 **Input**: Entity metadata + ViewModel definitions + UI/UX requirements + Performance constraints
-**Output**: Complete list page implementation with data table, search, sort, filter, pagination, and batch operations
+**Output**: Complete list page structure with TODO placeholders for specialized operations
 
 **Approach**: **AI-Driven List Pattern Architecture**
 - Analyzes entity structure and ViewModel properties for optimal data table design
 - Recommends appropriate component library components (MudBlazor, Syncfusion, etc.)
-- Implements comprehensive search, sort, and filter functionality
-- Designs efficient pagination and virtual scrolling for large datasets
-- Provides batch operation patterns (batch delete, export, etc.)
-- Ensures responsive design and accessibility compliance
-- **Output**: Strategic list pattern guidance + complete implementation code
+- Creates structural framework with placeholders for search, sort, filter, and operations
+- Designs efficient pagination and virtual scrolling architecture for large datasets
+- Provides architectural guidance for batch operation patterns
+- Ensures responsive design and accessibility compliance framework
+- **Output**: Strategic list pattern guidance + structural implementation with integration points
+
+#### Skill 8d1: `blazor-list-filter-generator` [Priority 4.1] **🤖 AI-Driven**
+**Responsibility**: Generate comprehensive search, sort, and filter functionality for list pages
+**Input**: List page structure from blazor-list-pattern-generator + Entity metadata + Search/filter requirements
+**Output**: Complete search/filter implementation with query building and real-time filtering
+
+#### Skill 8d2: `blazor-list-add-generator` [Priority 4.2] **🤖 AI-Driven**
+**Responsibility**: Generate create/add operation handlers and navigation logic for list pages  
+**Input**: List page structure + Entity metadata + ViewModel validation rules
+**Output**: Complete create/add implementation with form integration and validation
+
+#### Skill 8d3: `blazor-list-modify-generator` [Priority 4.3] **🤖 AI-Driven**
+**Responsibility**: Generate edit/modify operation handlers with inline editing and validation
+**Input**: List page structure + Entity metadata + Edit operation requirements
+**Output**: Complete edit/modify implementation with inline editing, bulk updates, and validation
+
+#### Skill 8d4: `blazor-list-delete-generator` [Priority 4.4] **🤖 AI-Driven**
+**Responsibility**: Generate delete operation handlers with confirmation dialogs and safety mechanisms
+**Input**: List page structure + Entity metadata + Delete operation requirements  
+**Output**: Complete delete implementation with confirmation dialogs, batch operations, and safety measures
 
 #### Skill 8e: `blazor-form-pattern-generator` [Priority 5]
 **Responsibility**: Generate form page business logic and validation patterns
@@ -578,7 +598,17 @@ This layer provides a simplified, modern approach to CRUD operations using a sin
 │   │   └── SKILL.md
 │   ├── blazor-detail-dialog-generator/
 │   │   └── SKILL.md
-│   └── blazor-delete-confirm-dialog-generator/
+│   ├── blazor-delete-confirm-dialog-generator/
+│   │   └── SKILL.md
+│   ├── blazor-list-pattern-generator/
+│   │   └── SKILL.md
+│   ├── blazor-list-add-generator/
+│   │   └── SKILL.md
+│   ├── blazor-list-delete-generator/
+│   │   └── SKILL.md
+│   ├── blazor-list-filter-generator/
+│   │   └── SKILL.md
+│   └── blazor-list-modify-generator/
 │       └── SKILL.md
 ├── business-logic/
 │   └── page-driven-service-generator/
@@ -740,9 +770,14 @@ const process = globalThis.process;
 9b. `blazor-data-integration-generator` → Generate data integration layer and state management
 **[Page Pattern Generation Phase]**
 10. `blazor-page-pattern-generator` → Generate abstract page patterns and routing
-11. `blazor-list-pattern-generator` → **AI-Driven**: Comprehensive list pattern architecture consultation and implementation
-12. `blazor-form-pattern-generator` → Generate form page business logic and validation
-13. `blazor-detail-pattern-generator` → Generate detail page logic and related data handling
+11. **List Pattern Skills** → **AI-Driven**: Comprehensive list functionality implementation
+    - `blazor-list-pattern-generator` (8d) → List page structure and architectural guidance
+    - `blazor-list-filter-generator` (8d1) → Search, sort, and filter functionality  
+    - `blazor-list-add-generator` (8d2) → Create/add operation handlers
+    - `blazor-list-modify-generator` (8d3) → Edit/modify operation handlers
+    - `blazor-list-delete-generator` (8d4) → Delete operation handlers with confirmations
+12. `blazor-form-pattern-generator` (8e) → Generate form page business logic and validation
+13. `blazor-detail-pattern-generator` (8f) → Generate detail page logic and related data handling
 14. `solution-code-formatter` → Format all generated code (UI layer)
 **[Theming and Business Logic Phase]**
 15. `blazor-theme-generator` → Enterprise theme consultation and styling guidance
@@ -933,8 +968,12 @@ After splitting larger skills into focused components, we achieve:
   - `blazor-detail-dialog-generator` 📋 - Detail view dialog design consultation (Priority 1.9)
   - `blazor-delete-confirm-dialog-generator` 📋 - Safe deletion confirmation consultation (Priority 1.10)
 **Phase 5 (Data Integration)**: Skill 8b - Blazor data integration layer 📋 **PRIORITY UPDATED**
-**Phase 6 (Page Patterns)**: Skills 8c, 8d, 8e, 8f - Abstract page pattern generation 📋 **PARTIALLY READY**
+**Phase 6 (Page Patterns)**: Skills 8c, 8d, 8d1-8d4, 8e, 8f - Abstract page pattern generation + List operation specialization 📋 **PARTIALLY READY**
   - `blazor-list-pattern-generator` ✅ **DESIGN COMPLETE (AI-Driven)** - AI-driven list pattern architecture consultation
+  - `blazor-list-filter-generator` ✅ **IMPLEMENTED** - Search, sort, and filter functionality
+  - `blazor-list-add-generator` ✅ **IMPLEMENTED** - Create/add operation handlers for list pages
+  - `blazor-list-modify-generator` ✅ **IMPLEMENTED** - Edit/modify operation handlers with validation
+  - `blazor-list-delete-generator` ✅ **IMPLEMENTED** - Delete operation handlers with confirmation dialogs
 **Phase 7 (Service Implementation Guidance)**: Skill 7a1 - AI-driven service architecture consultation 📋 **NEW (AI-Driven)**
 **Phase 8 (Business Integration)**: Skill 7b - Service implementation based on page operations 📋 **REDESIGNED (AI-Driven)**
 **Phase 9 (Change Management)**: Skills 10, 11 - Model change detection and updates 📋 **PENDING**
