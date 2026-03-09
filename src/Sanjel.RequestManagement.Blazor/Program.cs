@@ -60,7 +60,8 @@ builder.Services.Scan(scan => scan
 		.Where(type =>
 			type.Name.EndsWith("Repository") &&
 			type.IsClass &&
-			!type.IsAbstract))
+			!type.IsAbstract &&
+			!type.Name.StartsWith("Mock"))) // Exclude Mock repositories from auto-registration
 	.AsMatchingInterface()
 	.WithScopedLifetime()
 
@@ -69,7 +70,8 @@ builder.Services.Scan(scan => scan
 		.Where(type =>
 			type.Name.EndsWith("Repository") &&
 			type.IsClass &&
-			!type.IsAbstract))
+			!type.IsAbstract &&
+			!type.Name.StartsWith("Mock"))) // Exclude Mock repositories from auto-registration
 	.AsImplementedInterfaces()
 	.WithScopedLifetime()
 
@@ -95,6 +97,15 @@ builder.Services.Scan(scan => scan
 	.AsSelf()
 	.WithScopedLifetime()
 );
+
+// Configure Mock Repository based on appsettings
+var useMockData = builder.Configuration.GetValue<bool>("UseMockData");
+if (useMockData)
+{
+	// Override IRepository<Request> registration with Mock implementation
+	builder.Services.AddScoped<Sanjel.RequestManagement.Repositories.Data.IRequestRepository, Sanjel.RequestManagement.Repositories.Data.MockRequestRepository>();
+	Console.WriteLine(">>> Mock Repository enabled for development/testing");
+}
 
 var app = builder.Build();
 

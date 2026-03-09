@@ -87,6 +87,37 @@ This document outlines the planning for a comprehensive GitHub Skills suite that
 - Include PagedResult<T> class for pagination support
 - **Formatting handled by `solution-code-formatter` skill**
 
+### Skill 6b: `repository-mock-data-generator` ✅ **New** **🔧 Script-Driven**
+**Responsibility**: Generate mock data and mock repository implementations for testing and development
+**Input**: Entity metadata JSON + Mock data configuration options
+**Output**: Mock data generator class + Mock repository implementation with sample data
+
+**Script**: `generate-repository-mock-data.ts` (run with bun)
+- Generate MockDataGenerator class with realistic sample data creation
+- Generate Mock repository implementation (e.g., MockRequestRepository)
+- Create diverse, realistic mock data with proper relationships
+- Support random data generation for fields (names, dates, IDs, enums, etc.)
+- Implement all IRepository<TEntity> interface methods with in-memory data
+- Handle complex relationships and foreign key references in mock data
+- Include data seeding for development and testing scenarios
+- Support configurable data volume (small, medium, large datasets)
+- **Formatting handled by `solution-code-formatter` skill**
+
+**Mock Data Features:**
+- Realistic business values (not just "Test1", "Test2")
+- Proper date ranges and status distributions
+- Enum value randomization based on business probabilities
+- Relationship consistency (referenced entities exist)
+- Unique constraint enforcement
+- Optional data validation rules
+
+**Use Cases:**
+- Development environment data seeding
+- Unit testing with realistic test data
+- Integration testing without database dependency
+- UI/UX prototyping with sample data
+- Performance testing with configurable dataset sizes
+
 ### Skill 7a: `service-interface-generator` **🔧 Script-Driven**
 **Responsibility**: Generate business service interface contracts
 **Input**: Entity metadata JSON + Business rules
@@ -515,6 +546,10 @@ This layer provides a simplified, modern approach to CRUD operations using a sin
 │   │   ├── SKILL.md
 │   │   └── scripts/
 │   │       └── generate-repository-interfaces.ts
+│   ├── repository-mock-data-generator/
+│   │   ├── SKILL.md
+│   │   └── scripts/
+│   │       └── generate-repository-mock-data.ts
 │   ├── service-interface-generator/
 │   │   ├── SKILL.md
 │   │   └── scripts/
@@ -691,7 +726,10 @@ const process = globalThis.process;
 1. `workflow-orchestrator` → Analyze project state, recommend complete generation process
 2. `domain-model-parser` → Parse domain models
 3. `repository-interface-generator` → Generate Repository interfaces
-9. `repository-interface-generator` → Generate Repository interfaces
+4. `repository-mock-data-generator` → Generate mock data and mock repositories for development/testing
+5. `service-interface-generator` → Generate service interfaces (contracts only)
+6. `service-generator` → **AI-Driven**: Provide consultative guidance for service implementation
+7. `solution-code-formatter` → Format all generated code (service layer)
 11. `service-interface-generator` → Generate service interfaces (contracts only)
 12. `service-generator` → **AI-Driven**: Provide consultative guidance for service implementation
 13. `solution-code-formatter` → Format all generated code (service layer)
@@ -757,6 +795,7 @@ const process = globalThis.process;
 1. `workflow-orchestrator` → Analyze requirements, recommend single-page CRUD approach
 2. `domain-model-parser` → Parse domain models and extract entity metadata
 3. `repository-interface-generator` → Generate Repository interfaces for data access
+4. `repository-mock-data-generator` → Generate mock data and mock repositories for development
 
 **Phase 2: ViewModel Architecture**
 5. `blazor-viewmodel-generator` → **AI-Driven**: Consultative guidance for ViewModel design
@@ -854,12 +893,13 @@ After splitting larger skills into focused components, we achieve:
 
 ## Next Steps
 
-1. Create the skill directory structure with all 16+ individual skills
+1. Create the skill directory structure with all 17+ individual skills
 2. **Priority: Implement missing `project-creator` skill first** - Essential for project scaffolding
 3. Implement the workflow-orchestrator skill to coordinate other skills
 4. Develop core skills in this order:
    - `domain-model-parser` (foundation for all others)
    - `repository-interface-generator` (contracts)
+   - `repository-mock-data-generator` (mock data for development/testing)
 5. Add service layer skills: `service-interface-generator` + `service-implementation-generator`
 6. Implement UI generation skills: Blazor list, form, and detail generators
 7. Implement change management: `model-change-detector` + `incremental-update-generator`
@@ -875,7 +915,9 @@ After splitting larger skills into focused components, we achieve:
 - `project-creator` ❌ **Missing** - Project structure and configuration setup
 
 **Phase 1 (Foundation)**: Skills 1, 2, 3, 4a, 4b - Basic entity and database generation ✅ **Complete**
-**Phase 2 (Data Access)**: Skills 6a, 6b - Repository pattern implementation ✅ **Complete (6a Complete, 6b Implemented)**
+**Phase 2 (Data Access)**: Skills 6a, 6b - Repository pattern implementation ✅ **Complete (6a Complete, 6b New)**
+  - `repository-interface-generator` ✅ - Repository contracts with modern async patterns
+  - `repository-mock-data-generator` 📋 - Mock data generator and mock repository implementation
 **Phase 3 (Service Contracts)**: Skill 7a - Service interface generation ✅ **Complete**
 **Phase 4 (Component Library Architecture)**: Skills 8a, 8a1-8a5 - Component library selection and generation ✅ **Complete (Redesigned)**
   - `blazor-architecture-generator` ✅ - Intelligent selector and consultation
