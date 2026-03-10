@@ -19,8 +19,23 @@ description: Generate delete operation handlers with confirmation dialogs, batch
 
 ## Description
 
-**Testing Requirement:**
-After implementing any delete functionality, add corresponding unit tests and Playwright UI tests (C#) to validate the delete operations. Playwright tests should cover delete button interactions, confirmation dialogs, batch delete operations, error handling, and list refresh functionality for Blazor pages.
+**Testing Requirement — MANDATORY:**
+After implementing any delete functionality, you **MUST** also generate corresponding **Playwright UI tests (C#, NUnit)** in the project's existing Blazor test project (e.g. `src/Sanjel.RequestManagement.Blazor.Tests/`). These tests are a required output deliverable — the skill implementation is NOT complete until the tests are generated.
+
+**What to test (Playwright):**
+- Delete button is visible and clickable on each list row
+- Clicking delete opens the confirmation dialog
+- Clicking "Cancel" in the dialog does NOT remove the item
+- Clicking "Confirm/Delete" removes the item from the list and shows a success toast
+- Batch delete: selecting multiple items and deleting removes all selected
+- Error handling: network failure shows error notification without removing item
+
+**Test file conventions:**
+- Add tests to the existing Playwright test file or create a new test class following the naming pattern `{Entity}DeletePlaywrightTests.cs`
+- Use the same setup/teardown pattern as existing Playwright tests (see `RequestPagePlaywrightTests.cs` for reference)
+- Use NUnit `[TestFixture]` / `[Test]` attributes
+- Use `Microsoft.Playwright` for browser automation
+- Tests must be headless-compatible
 
 This skill acts as a **Delete Operations Specialist** for Blazor list pages. It implements the complete delete functionality by:
 - **Automatically detecting and adapting to the current project's component library** (MudBlazor, Syncfusion, Bootstrap, etc.)
@@ -141,6 +156,90 @@ private async Task DeleteAsync(int id)
 - **Loading States**: Show loading indicators during delete operations
 - **Error Recovery**: Handle errors gracefully with clear user feedback
 - **List Refresh**: Update list state after successful deletions
+
+### 6. **Playwright UI Tests (MANDATORY)**
+
+Generate Playwright tests that validate the delete workflow end-to-end in a real browser. Tests are placed in the Blazor test project alongside existing Playwright tests.
+
+```csharp
+using Microsoft.Playwright;
+using NUnit.Framework;
+
+namespace Sanjel.RequestManagement.Blazor.Tests
+{
+    [TestFixture]
+    public class RequestDeletePlaywrightTests
+    {
+        private IBrowser _browser;
+        private IPage _page;
+        private IPlaywright _playwright;
+
+        [OneTimeSetUp]
+        public async Task SetupAsync()
+        {
+            this._playwright = await Playwright.CreateAsync();
+            this._browser = await this._playwright.Chromium.LaunchAsync(
+                new BrowserTypeLaunchOptions { Headless = true });
+            this._page = await this._browser.NewPageAsync();
+        }
+
+        [OneTimeTearDown]
+        public async Task TeardownAsync()
+        {
+            await this._browser.CloseAsync();
+            this._playwright.Dispose();
+        }
+
+        [Test]
+        public async Task DeleteButton_ShouldOpenConfirmationDialogAsync()
+        {
+            await this._page.GotoAsync("http://localhost:5000/request");
+            await this._page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+            await this._page.WaitForTimeoutAsync(2000);
+
+            var deleteBtn = await this._page.QuerySelectorAsync(
+                ".action-buttons button[title='Delete'], .danger-btn");
+            Assert.IsNotNull(deleteBtn, "Delete button should exist on list rows");
+
+            await deleteBtn.ClickAsync();
+            await this._page.WaitForTimeoutAsync(500);
+
+            var dialog = await this._page.QuerySelectorAsync(
+                ".e-dialog, [role='dialog']");
+            Assert.IsNotNull(dialog, "Confirmation dialog should appear after delete click");
+        }
+
+        [Test]
+        public async Task DeleteCancel_ShouldNotRemoveItemAsync()
+        {
+            await this._page.GotoAsync("http://localhost:5000/request");
+            await this._page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+            await this._page.WaitForTimeoutAsync(2000);
+
+            var rowsBefore = await this._page.QuerySelectorAllAsync(
+                ".e-gridcontent tr.e-row, tbody tr");
+            var countBefore = rowsBefore.Count;
+
+            var deleteBtn = await this._page.QuerySelectorAsync(".danger-btn");
+            await deleteBtn.ClickAsync();
+            await this._page.WaitForTimeoutAsync(500);
+
+            var cancelBtn = await this._page.QuerySelectorAsync(
+                "button:has-text('Cancel')");
+            Assert.IsNotNull(cancelBtn, "Cancel button should exist in dialog");
+            await cancelBtn.ClickAsync();
+            await this._page.WaitForTimeoutAsync(500);
+
+            var rowsAfter = await this._page.QuerySelectorAllAsync(
+                ".e-gridcontent tr.e-row, tbody tr");
+            Assert.That(rowsAfter.Count, Is.EqualTo(countBefore),
+                "Row count should be unchanged after cancel");
+        }
+    }
+}
+```
+
+**Key**: The test file **MUST** be generated as part of the skill output. Adapt selectors, URLs, and assertions to match the actual page being implemented.
 
 ## Functional Capabilities
 
@@ -451,45 +550,91 @@ private async Task OptimisticDeleteAsync(RequestEntity entity)
 
 ## Testing Strategies
 
-### Unit Testing
-```csharp
-[Test]
-public async Task DeleteAsync_WithValidId_RemovesItemFromList()
-{
-    // Arrange
-    var entity = CreateTestEntity();
-    _service.Setup(s => s.DeleteAsync(entity.Id)).Returns(Task.CompletedTask);
-    
-    // Act
-    await _component.DeleteAsync(entity.Id);
-    
-    // Assert
-    Assert.That(_component.Items.Contains(entity), Is.False);
-    _service.Verify(s => s.DeleteAsync(entity.Id), Times.Once);
-}
+### Playwright UI Tests (Primary — MANDATORY)
 
-[Test]
-public async Task DeleteAsync_WithConstraintViolation_ShowsErrorAndRestoresItem()
+All delete functionality **MUST** be validated with Playwright browser-based tests. These tests run against the real Blazor application in headless Chromium.
+
+**Required test coverage:**
+
+| Test Case | Description |
+|---|---|
+| Delete button renders | Verify delete button is present on each list row |
+| Confirmation dialog appears | Click delete button and verify dialog opens |
+| Cancel preserves item | Click cancel in dialog and verify item remains in list |
+| Confirm removes item | Click confirm and verify item is removed from list |
+| Success toast shows | Verify success notification appears after delete |
+| Batch delete works | Select multiple items, delete all, verify all removed |
+
+**Test structure:**
+```csharp
+[TestFixture]
+public class {Entity}DeletePlaywrightTests
 {
-    // Arrange
-    var entity = CreateTestEntity();
-    _service.Setup(s => s.DeleteAsync(entity.Id))
-           .ThrowsAsync(new DeleteConstraintException("Referenced by other entities"));
-    
-    // Act
-    await _component.DeleteAsync(entity.Id);
-    
-    // Assert
-    Assert.That(_component.Items.Contains(entity), Is.True);
-    Assert.That(_component.LastErrorMessage, Contains.Substring("Referenced by"));
+    private IBrowser _browser;
+    private IPage _page;
+    private IPlaywright _playwright;
+
+    [OneTimeSetUp]
+    public async Task SetupAsync()
+    {
+        this._playwright = await Playwright.CreateAsync();
+        this._browser = await this._playwright.Chromium.LaunchAsync(
+            new BrowserTypeLaunchOptions { Headless = true });
+        this._page = await this._browser.NewPageAsync();
+    }
+
+    [OneTimeTearDown]
+    public async Task TeardownAsync()
+    {
+        await this._browser.CloseAsync();
+        this._playwright.Dispose();
+    }
+
+    [Test]
+    public async Task DeleteButton_ShouldOpenConfirmationDialogAsync()
+    {
+        await this._page.GotoAsync("http://localhost:5000/{entity}");
+        await this._page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+        await this._page.WaitForTimeoutAsync(2000);
+
+        var deleteBtn = await this._page.QuerySelectorAsync(
+            ".action-buttons button[title='Delete'], .danger-btn");
+        Assert.IsNotNull(deleteBtn);
+        await deleteBtn.ClickAsync();
+        await this._page.WaitForTimeoutAsync(500);
+
+        var dialog = await this._page.QuerySelectorAsync(".e-dialog, [role='dialog']");
+        Assert.IsNotNull(dialog, "Confirmation dialog should open");
+    }
+
+    [Test]
+    public async Task DeleteCancel_ShouldNotRemoveItemAsync()
+    {
+        await this._page.GotoAsync("http://localhost:5000/{entity}");
+        await this._page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+        await this._page.WaitForTimeoutAsync(2000);
+
+        var rowsBefore = await this._page.QuerySelectorAllAsync(".e-gridcontent tr.e-row");
+        var countBefore = rowsBefore.Count;
+
+        var deleteBtn = await this._page.QuerySelectorAsync(".danger-btn");
+        await deleteBtn.ClickAsync();
+        await this._page.WaitForTimeoutAsync(300);
+
+        var cancelBtn = await this._page.QuerySelectorAsync("button:has-text('Cancel')");
+        await cancelBtn.ClickAsync();
+        await this._page.WaitForTimeoutAsync(300);
+
+        var rowsAfter = await this._page.QuerySelectorAllAsync(".e-gridcontent tr.e-row");
+        Assert.That(rowsAfter.Count, Is.EqualTo(countBefore));
+    }
 }
 ```
 
 ### Integration Testing
-- **Full Delete Workflow**: Test complete delete workflow including confirmations
-- **Batch Operations**: Test batch delete with various selection scenarios
-- **Error Scenarios**: Test constraint violations, network errors, permissions
-- **UI State Management**: Test optimistic updates and rollback scenarios
+- **Full Delete Workflow**: Test complete delete workflow via Playwright including confirmation and list refresh
+- **Batch Operations**: Test batch delete selection and confirmation via Playwright
+- **Error Scenarios**: Test network failure error handling and notification visibility via Playwright
 
 ## Best Practices
 

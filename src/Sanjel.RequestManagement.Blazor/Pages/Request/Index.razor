@@ -4,6 +4,7 @@
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Notifications
 @using Sanjel.RequestManagement.Entities.Entities
 @using Sanjel.RequestManagement.Repositories.Common
 @using Sanjel.RequestManagement.Blazor.Pages.Request.ViewModels
@@ -166,3 +167,40 @@
 		</div>
 	</div>
 </div>
+
+@* Single Delete Confirmation Dialog *@
+<SfDialog @ref="deleteConfirmDialog" Width="420px" IsModal="true" ShowCloseIcon="true" Visible="false">
+	<DialogEvents Closed="OnDeleteDialogClosed"></DialogEvents>
+	<DialogTemplates>
+		<Header>Delete Request</Header>
+		<Content>
+			<p>Are you sure you want to delete request <strong>@deleteTargetRequestId</strong>?</p>
+			<p class="delete-warning">This action cannot be undone.</p>
+		</Content>
+	</DialogTemplates>
+	<DialogButtons>
+		<DialogButton Content="Cancel" OnClick="@OnDeleteCancelledAsync" CssClass="e-outline" />
+		<DialogButton Content="Delete" OnClick="@OnDeleteConfirmedAsync" CssClass="e-danger" IsPrimary="true" />
+	</DialogButtons>
+</SfDialog>
+
+@* Batch Delete Confirmation Dialog *@
+<SfDialog @ref="batchDeleteConfirmDialog" Width="420px" IsModal="true" ShowCloseIcon="true" Visible="false">
+	<DialogEvents Closed="OnBatchDeleteDialogClosed"></DialogEvents>
+	<DialogTemplates>
+		<Header>Delete Selected Requests</Header>
+		<Content>
+			<p>Are you sure you want to delete <strong>@selectedRequests.Count</strong> selected request(s)?</p>
+			<p class="delete-warning">This action cannot be undone.</p>
+		</Content>
+	</DialogTemplates>
+	<DialogButtons>
+		<DialogButton Content="Cancel" OnClick="@OnBatchDeleteCancelledAsync" CssClass="e-outline" />
+		<DialogButton Content="Delete All" OnClick="@OnBatchDeleteConfirmedAsync" CssClass="e-danger" IsPrimary="true" />
+	</DialogButtons>
+</SfDialog>
+
+@* Toast Notifications *@
+<SfToast @ref="toastRef" Width="350px">
+	<ToastPosition X="Right" Y="Bottom"></ToastPosition>
+</SfToast>

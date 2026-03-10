@@ -20,8 +20,23 @@ description: AI-driven list pattern generator for Blazor pages with comprehensiv
 
 ## Description
 
-**Testing Requirement:**
-After generating any list page structure, add corresponding unit tests and Playwright UI tests (C#) to validate the generated components. Playwright tests should cover UI structure validation, component rendering, pagination functionality, and data table interactions for Blazor list pages.
+**Testing Requirement — MANDATORY:**
+After generating any list page structure, you **MUST** also generate corresponding **Playwright UI tests (C#, NUnit)** in the project's existing Blazor test project (e.g. `src/Sanjel.RequestManagement.Blazor.Tests/`). These tests are a required output deliverable — the skill implementation is NOT complete until the tests are generated.
+
+**What to test (Playwright):**
+- List page loads and renders without errors
+- Data table columns are visible with correct headers
+- Pagination controls (page numbers, page size selector) are present
+- Filter panel and its input fields render on the page
+- Action buttons (New, Edit, Delete) are visible in the correct locations
+- Loading state is shown while data is being fetched
+
+**Test file conventions:**
+- Add tests to the existing Playwright test file or create a new test class following the naming pattern `{Entity}ListPlaywrightTests.cs`
+- Use the same setup/teardown pattern as existing Playwright tests (see `RequestPagePlaywrightTests.cs` for reference)
+- Use NUnit `[TestFixture]` / `[Test]` attributes
+- Use `Microsoft.Playwright` for browser automation
+- Tests must be headless-compatible
 
 This skill acts as a **List Page Structure Architect** specializing in list page layout and component integration for Blazor applications. It provides **STRUCTURAL ONLY** guidance for creating list pages with data tables, search/filter UI placeholders, pagination controls, and action button frameworks.
 
@@ -385,11 +400,81 @@ This skill provides **STRUCTURAL FRAMEWORK ONLY**. All business logic implementa
 
 ## Testing and Quality Assurance
 
-### List Page Testing Strategies
-- **Unit Testing**: Test search/sort/filter logic in isolation
-- **Integration Testing**: Test service integration and data loading
-- **Performance Testing**: Validate performance with large datasets (10K+ records)
-- **Accessibility Testing**: Ensure keyboard navigation and screen reader compatibility
+### List Page Testing Strategies (Playwright — MANDATORY)
+
+All generated list page structure **MUST** be validated with Playwright browser-based tests. These tests run against the real Blazor application in headless Chromium.
+
+**Required test coverage:**
+
+| Test Case | Description |
+|---|---|
+| Page loads | Verify list page navigates and renders without errors |
+| Table columns visible | Verify all expected column headers are present |
+| Filter panel renders | Verify filter inputs and Apply/Clear buttons exist |
+| Action buttons present | Verify New/Create button is visible |
+| Pagination controls present | Verify page controls are rendered |
+
+**Test structure:**
+```csharp
+[TestFixture]
+public class {Entity}ListPlaywrightTests
+{
+    private IBrowser _browser;
+    private IPage _page;
+    private IPlaywright _playwright;
+
+    [OneTimeSetUp]
+    public async Task SetupAsync()
+    {
+        this._playwright = await Playwright.CreateAsync();
+        this._browser = await this._playwright.Chromium.LaunchAsync(
+            new BrowserTypeLaunchOptions { Headless = true });
+        this._page = await this._browser.NewPageAsync();
+    }
+
+    [OneTimeTearDown]
+    public async Task TeardownAsync()
+    {
+        await this._browser.CloseAsync();
+        this._playwright.Dispose();
+    }
+
+    [Test]
+    public async Task ListPage_ShouldLoadWithDataGridAsync()
+    {
+        await this._page.GotoAsync("http://localhost:5000/{entity}");
+        await this._page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+        await this._page.WaitForTimeoutAsync(2000);
+
+        var grid = await this._page.QuerySelectorAsync(
+            ".e-grid, table, [role='grid']");
+        Assert.IsNotNull(grid, "Data grid should be visible on the list page");
+    }
+
+    [Test]
+    public async Task ListPage_ShouldRenderFilterPanelAsync()
+    {
+        await this._page.GotoAsync("http://localhost:5000/{entity}");
+        await this._page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+        await this._page.WaitForTimeoutAsync(2000);
+
+        var filterPanel = await this._page.QuerySelectorAsync(".filter-panel");
+        Assert.IsNotNull(filterPanel, "Filter panel should be visible");
+    }
+
+    [Test]
+    public async Task ListPage_ShouldHaveCreateButtonAsync()
+    {
+        await this._page.GotoAsync("http://localhost:5000/{entity}");
+        await this._page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+        await this._page.WaitForTimeoutAsync(2000);
+
+        var createBtn = await this._page.QuerySelectorAsync(
+            ".e-primary, button:has-text('New'), button:has-text('Create')");
+        Assert.IsNotNull(createBtn, "Create/New button should be visible");
+    }
+}
+```
 
 ### Responsive Design Testing
 - **Mobile Testing**: Test on actual mobile devices (320px - 414px)

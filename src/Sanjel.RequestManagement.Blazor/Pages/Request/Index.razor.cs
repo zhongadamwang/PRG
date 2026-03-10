@@ -4,6 +4,8 @@ using Sanjel.RequestManagement.Blazor.Pages.Request.ViewModels;
 using Sanjel.RequestManagement.Entities.Entities;
 using Sanjel.RequestManagement.Repositories.Common;
 using Syncfusion.Blazor.Grids;
+using Syncfusion.Blazor.Notifications;
+using Syncfusion.Blazor.Popups;
 using RequestEntity = Sanjel.RequestManagement.Entities.Entities.Request;
 
 namespace Sanjel.RequestManagement.Blazor.Pages.Request;
@@ -41,6 +43,13 @@ public partial class Index
 	{
 		new GridSortColumn { Field = "CreatedDate", Direction = SortDirection.Descending },
 	};
+
+	private SfDialog deleteConfirmDialog = null!;
+	private SfDialog batchDeleteConfirmDialog = null!;
+	private SfToast toastRef = null!;
+	private string deleteTargetRequestId = string.Empty;
+	private TaskCompletionSource<bool>? _deleteConfirmTcs;
+	private TaskCompletionSource<bool>? _batchDeleteConfirmTcs;
 
 	private List<StatusEnumItem> statusOptionItems = Enum.GetValues<StatusEnum>()
 		.Select(status => new StatusEnumItem
@@ -202,11 +211,17 @@ public partial class Index
 			{
 				this.selectedRequests.Remove(request);
 				await this.LoadDataAsync();
+				await this.ShowSuccessToastAsync($"Request '{request.RequestId}' deleted successfully.");
+			}
+			else
+			{
+				await this.ShowErrorToastAsync("Failed to delete request. Please try again.");
 			}
 		}
 		catch (Exception ex)
 		{
 			Console.WriteLine($"Error deleting request: {ex.Message}");
+			await this.ShowErrorToastAsync("An error occurred while deleting the request.");
 		}
 		finally
 		{
@@ -237,11 +252,17 @@ public partial class Index
 			{
 				this.selectedRequests.Clear();
 				await this.LoadDataAsync();
+				await this.ShowSuccessToastAsync($"Successfully deleted {deletedCount} request(s).");
+			}
+			else
+			{
+				await this.ShowErrorToastAsync("No requests were deleted. Please try again.");
 			}
 		}
 		catch (Exception ex)
 		{
 			Console.WriteLine($"Error batch deleting requests: {ex.Message}");
+			await this.ShowErrorToastAsync("An error occurred while deleting the selected requests.");
 		}
 		finally
 		{
@@ -249,18 +270,77 @@ public partial class Index
 		}
 	}
 
-	private Task<bool> ConfirmDeleteAsync(RequestEntity request)
+	private async Task<bool> ConfirmDeleteAsync(RequestEntity request)
 	{
-		// TODO: Implement proper confirmation dialog
-		Console.WriteLine($"Confirm delete request: {request.RequestId}");
-		return Task.FromResult(true);
+		this.deleteTargetRequestId = request.RequestId;
+		this._deleteConfirmTcs = new TaskCompletionSource<bool>();
+		await this.deleteConfirmDialog.ShowAsync();
+		return await this._deleteConfirmTcs.Task;
 	}
 
-	private Task<bool> ConfirmBatchDeleteAsync()
+	private async Task<bool> ConfirmBatchDeleteAsync()
 	{
-		// TODO: Implement proper confirmation dialog
-		Console.WriteLine($"Confirm delete {this.selectedRequests.Count} requests");
-		return Task.FromResult(true);
+		this._batchDeleteConfirmTcs = new TaskCompletionSource<bool>();
+		await this.batchDeleteConfirmDialog.ShowAsync();
+		return await this._batchDeleteConfirmTcs.Task;
+	}
+
+	private async Task OnDeleteConfirmedAsync()
+	{
+		this._deleteConfirmTcs?.TrySetResult(true);
+		await this.deleteConfirmDialog.HideAsync();
+	}
+
+	private async Task OnDeleteCancelledAsync()
+	{
+		this._deleteConfirmTcs?.TrySetResult(false);
+		await this.deleteConfirmDialog.HideAsync();
+	}
+
+	private void OnDeleteDialogClosed()
+	{
+		this._deleteConfirmTcs?.TrySetResult(false);
+	}
+
+	private async Task OnBatchDeleteConfirmedAsync()
+	{
+		this._batchDeleteConfirmTcs?.TrySetResult(true);
+		await this.batchDeleteConfirmDialog.HideAsync();
+	}
+
+	private async Task OnBatchDeleteCancelledAsync()
+	{
+		this._batchDeleteConfirmTcs?.TrySetResult(false);
+		await this.batchDeleteConfirmDialog.HideAsync();
+	}
+
+	private void OnBatchDeleteDialogClosed()
+	{
+		this._batchDeleteConfirmTcs?.TrySetResult(false);
+	}
+
+	private async Task ShowSuccessToastAsync(string message)
+	{
+		await this.toastRef.ShowAsync(new ToastModel
+		{
+			Title = "Success",
+			Content = message,
+			CssClass = "e-toast-success",
+			ShowCloseButton = true,
+			Timeout = 4000,
+		});
+	}
+
+	private async Task ShowErrorToastAsync(string message)
+	{
+		await this.toastRef.ShowAsync(new ToastModel
+		{
+			Title = "Error",
+			Content = message,
+			CssClass = "e-toast-danger",
+			ShowCloseButton = true,
+			Timeout = 5000,
+		});
 	}
 
 	private string GetDetailUrl(string? requestId)

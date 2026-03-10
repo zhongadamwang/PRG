@@ -30,8 +30,23 @@ description: Generate comprehensive search, sort, and filter functionality for B
 
 ## Description
 
-**Testing Requirement:**
-After implementing any search, filter, or sort functionality, add corresponding unit tests and Playwright UI tests (C#) to validate the feature. Playwright tests should cover UI interactions for Blazor list pages, ensuring search, filter, and sort operations work as expected.
+**Testing Requirement — MANDATORY:**
+After implementing any search, filter, or sort functionality, you **MUST** also generate corresponding **Playwright UI tests (C#, NUnit)** in the project's existing Blazor test project (e.g. `src/Sanjel.RequestManagement.Blazor.Tests/`). These tests are a required output deliverable — the skill implementation is NOT complete until the tests are generated.
+
+**What to test (Playwright):**
+- Filter fields (text inputs, dropdowns) render on the page
+- Entering a search term and clicking Apply filters the list results
+- Selecting a dropdown filter value and applying it returns filtered results
+- Clearing filters restores the unfiltered list
+- Column sort headers are clickable and change the sort order
+- Empty state message appears when no results match the filter
+
+**Test file conventions:**
+- Add tests to the existing Playwright test file or create a new test class following the naming pattern `{Entity}FilterPlaywrightTests.cs`
+- Use the same setup/teardown pattern as existing Playwright tests (see `RequestPagePlaywrightTests.cs` for reference)
+- Use NUnit `[TestFixture]` / `[Test]` attributes
+- Use `Microsoft.Playwright` for browser automation
+- Tests must be headless-compatible
 
 This skill acts as a **Search & Filter Operations Specialist** for Blazor list pages. It implements the complete search and filter functionality through an **interactive discovery and configuration process**:
 
@@ -275,6 +290,101 @@ private async Task SearchAsync()
 - **Sort State Persistence**: Remember sort preferences across sessions
 - **Custom Sort Logic**: Support custom sort operations for complex data types
 - **Sort Performance**: Optimize sorting for large datasets
+
+### 6. **Playwright UI Tests (MANDATORY)**
+
+Generate Playwright tests that validate the filter/search workflow end-to-end in a real browser. Tests are placed in the Blazor test project alongside existing Playwright tests.
+
+```csharp
+using Microsoft.Playwright;
+using NUnit.Framework;
+
+namespace Sanjel.RequestManagement.Blazor.Tests
+{
+    [TestFixture]
+    public class RequestFilterPlaywrightTests
+    {
+        private IBrowser _browser;
+        private IPage _page;
+        private IPlaywright _playwright;
+
+        [OneTimeSetUp]
+        public async Task SetupAsync()
+        {
+            this._playwright = await Playwright.CreateAsync();
+            this._browser = await this._playwright.Chromium.LaunchAsync(
+                new BrowserTypeLaunchOptions { Headless = true });
+            this._page = await this._browser.NewPageAsync();
+        }
+
+        [OneTimeTearDown]
+        public async Task TeardownAsync()
+        {
+            await this._browser.CloseAsync();
+            this._playwright.Dispose();
+        }
+
+        [Test]
+        public async Task FilterPanel_ShouldRenderFilterFieldsAsync()
+        {
+            await this._page.GotoAsync("http://localhost:5000/request");
+            await this._page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+            await this._page.WaitForTimeoutAsync(2000);
+
+            var filterPanel = await this._page.QuerySelectorAsync(".filter-panel");
+            Assert.IsNotNull(filterPanel, "Filter panel should be visible");
+
+            var applyBtn = await this._page.QuerySelectorAsync("button:has-text('Apply')");
+            Assert.IsNotNull(applyBtn, "Apply filter button should exist");
+
+            var clearBtn = await this._page.QuerySelectorAsync("button:has-text('Clear')");
+            Assert.IsNotNull(clearBtn, "Clear filter button should exist");
+        }
+
+        [Test]
+        public async Task ApplyFilter_ShouldFilterListResultsAsync()
+        {
+            await this._page.GotoAsync("http://localhost:5000/request");
+            await this._page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+            await this._page.WaitForTimeoutAsync(2000);
+
+            // Enter a search/filter value that is unlikely to match all items
+            var searchInput = await this._page.QuerySelectorAsync(
+                "input[placeholder*='Search'], input[placeholder*='ID']");
+            Assert.IsNotNull(searchInput, "Search input should exist");
+            await searchInput.FillAsync("NONEXISTENT_VALUE_12345");
+
+            var applyBtn = await this._page.QuerySelectorAsync("button:has-text('Apply')");
+            await applyBtn.ClickAsync();
+            await this._page.WaitForTimeoutAsync(1000);
+
+            // Expect no results or empty state
+            var emptyState = await this._page.QuerySelectorAsync(".empty-state");
+            var rows = await this._page.QuerySelectorAllAsync(".e-gridcontent tr.e-row");
+            Assert.That(
+                emptyState != null || rows.Count == 0,
+                "Filter should reduce results to zero for a non-matching term");
+        }
+
+        [Test]
+        public async Task ClearFilter_ShouldRestoreAllResultsAsync()
+        {
+            await this._page.GotoAsync("http://localhost:5000/request");
+            await this._page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+            await this._page.WaitForTimeoutAsync(2000);
+
+            var clearBtn = await this._page.QuerySelectorAsync("button:has-text('Clear')");
+            await clearBtn.ClickAsync();
+            await this._page.WaitForTimeoutAsync(1000);
+
+            var pageTitle = await this._page.TitleAsync();
+            Assert.IsNotNull(pageTitle, "Page should remain functional after clearing filters");
+        }
+    }
+}
+```
+
+**Key**: The test file **MUST** be generated as part of the skill output. Adapt selectors, URLs, and assertions to match the actual page being implemented.
 
 ## Functional Capabilities
 
@@ -1204,53 +1314,93 @@ private async Task LoadMoreSearchResultsAsync()
 
 ## Testing Strategies
 
-### Search functionality Testing
-```csharp
-[Test]
-public async Task SearchAsync_WithValidTerm_ReturnsFilteredResults()
-{
-    // Arrange
-    var searchTerm = "test";
-    var expectedResults = CreateTestSearchResults();
-    _service.Setup(s => s.SearchAsync(It.IsAny<SearchRequest>()))
-           .ReturnsAsync(expectedResults);
-    
-    // Act
-    _component.SearchTerm = searchTerm;
-    await _component.ExecuteSearchAsync();
-    
-    // Assert
-    Assert.That(_component.Items.Count, Is.EqualTo(expectedResults.Items.Count));
-    _service.Verify(s => s.SearchAsync(It.Is<SearchRequest>(r => 
-        r.Term == searchTerm)), Times.Once);
-}
+### Playwright UI Tests (Primary — MANDATORY)
 
-[Test]
-public async Task SearchAsync_WithDebouncing_DelaysSearchExecution()
+All search/filter/sort functionality **MUST** be validated with Playwright browser-based tests. These tests run against the real Blazor application in headless Chromium.
+
+**Required test coverage:**
+
+| Test Case | Description |
+|---|---|
+| Filter panel renders | Verify filter fields and Apply/Clear buttons are present |
+| Text search filters list | Enter a search term, apply, verify results change |
+| Dropdown filter works | Select a dropdown filter value, apply, verify filtered results |
+| Clear restores results | Click Clear and verify full unfiltered list returns |
+| No-match shows empty state | Enter non-matching filter and verify empty state message |
+| Sort changes order | Click a column header and verify row order changes |
+
+**Test structure:**
+```csharp
+[TestFixture]
+public class {Entity}FilterPlaywrightTests
 {
-    // Arrange
-    var component = CreateComponentWithDebouncing(300); // 300ms delay
-    
-    // Act
-    component.SearchTerm = "a";
-    await Task.Delay(100);
-    component.SearchTerm = "ab";
-    await Task.Delay(100);  
-    component.SearchTerm = "abc";
-    await Task.Delay(400); // Wait for debounce
-    
-    // Assert
-    _service.Verify(s => s.SearchAsync(It.IsAny<SearchRequest>()), Times.Once);
-    _service.Verify(s => s.SearchAsync(It.Is<SearchRequest>(r => 
-        r.Term == "abc")), Times.Once);
+    private IBrowser _browser;
+    private IPage _page;
+    private IPlaywright _playwright;
+
+    [OneTimeSetUp]
+    public async Task SetupAsync()
+    {
+        this._playwright = await Playwright.CreateAsync();
+        this._browser = await this._playwright.Chromium.LaunchAsync(
+            new BrowserTypeLaunchOptions { Headless = true });
+        this._page = await this._browser.NewPageAsync();
+    }
+
+    [OneTimeTearDown]
+    public async Task TeardownAsync()
+    {
+        await this._browser.CloseAsync();
+        this._playwright.Dispose();
+    }
+
+    [Test]
+    public async Task FilterPanel_ApplyButton_ShouldWorkAsync()
+    {
+        await this._page.GotoAsync("http://localhost:5000/{entity}");
+        await this._page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+        await this._page.WaitForTimeoutAsync(2000);
+
+        var applyBtn = await this._page.QuerySelectorAsync("button:has-text('Apply')");
+        Assert.IsNotNull(applyBtn, "Apply button should exist");
+
+        var clearBtn = await this._page.QuerySelectorAsync("button:has-text('Clear')");
+        Assert.IsNotNull(clearBtn, "Clear button should exist");
+
+        await applyBtn.ClickAsync();
+        await this._page.WaitForTimeoutAsync(700);
+
+        var title = await this._page.TitleAsync();
+        Assert.IsNotNull(title, "Page should remain functional after applying filter");
+    }
+
+    [Test]
+    public async Task SearchInput_WithNonMatchingTerm_ShouldShowEmptyStateAsync()
+    {
+        await this._page.GotoAsync("http://localhost:5000/{entity}");
+        await this._page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+        await this._page.WaitForTimeoutAsync(2000);
+
+        var searchInput = await this._page.QuerySelectorAsync(
+            "input[placeholder*='Search']");
+        await searchInput.FillAsync("NONEXISTENT_FILTER_VALUE_999");
+
+        var applyBtn = await this._page.QuerySelectorAsync("button:has-text('Apply')");
+        await applyBtn.ClickAsync();
+        await this._page.WaitForTimeoutAsync(1000);
+
+        var emptyState = await this._page.QuerySelectorAsync(".empty-state");
+        var rows = await this._page.QuerySelectorAllAsync(".e-gridcontent tr.e-row");
+        Assert.That(emptyState != null || rows.Count == 0,
+            "No-match filter should result in empty list or empty state");
+    }
 }
 ```
 
-### Filter Integration Testing
-- **Filter Combination Testing**: Test AND/OR combinations between different filters
-- **Filter Performance Testing**: Test filter performance with large datasets
-- **Filter State Persistence**: Test save/restore of filter states
-- **Filter Validation**: Test filter input validation and error handling
+### Integration Testing
+- **Full Filter Workflow**: Test complete filter/search workflow via Playwright including apply and results
+- **Filter State Persistence**: Test that filter state is maintained during navigation
+- **Sort Integration**: Test column sort interactions via Playwright
 
 ## Best Practices
 

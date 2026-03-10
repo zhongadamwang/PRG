@@ -19,8 +19,23 @@ description: Generate edit/modify operation handlers with inline editing, bulk u
 
 ## Description
 
-**Testing Requirement:**
-After implementing any edit/modify functionality, add corresponding unit tests and Playwright UI tests (C#) to validate the edit operations. Playwright tests should cover edit button interactions, inline editing, form navigation, validation handling, concurrency conflict resolution, and bulk edit operations for Blazor pages.
+**Testing Requirement — MANDATORY:**
+After implementing any edit/modify functionality, you **MUST** also generate corresponding **Playwright UI tests (C#, NUnit)** in the project's existing Blazor test project (e.g. `src/Sanjel.RequestManagement.Blazor.Tests/`). These tests are a required output deliverable — the skill implementation is NOT complete until the tests are generated.
+
+**What to test (Playwright):**
+- Edit button is visible and clickable on each list row
+- Clicking edit navigates to the edit form page or opens the edit dialog
+- Edit form is pre-populated with the item's existing data
+- Form validation prevents saving invalid data
+- Saving valid changes updates the item in the list and shows a success toast
+- Cancel returns to the list without saving changes
+
+**Test file conventions:**
+- Add tests to the existing Playwright test file or create a new test class following the naming pattern `{Entity}EditPlaywrightTests.cs`
+- Use the same setup/teardown pattern as existing Playwright tests (see `RequestPagePlaywrightTests.cs` for reference)
+- Use NUnit `[TestFixture]` / `[Test]` attributes
+- Use `Microsoft.Playwright` for browser automation
+- Tests must be headless-compatible
 
 This skill acts as an **Edit Operations Specialist** for Blazor list pages. It implements the complete edit/modify functionality by:
 - **Automatically detecting and adapting to the current project's component library** (MudBlazor, Syncfusion, Bootstrap, etc.)
@@ -143,6 +158,81 @@ private async Task EditAsync(int id)
 - **Dirty State Tracking**: Track which records have unsaved changes
 - **Concurrency Conflict Resolution**: Handle version conflicts gracefully
 - **Error Recovery**: Provide clear paths to resolve edit errors
+
+### 6. **Playwright UI Tests (MANDATORY)**
+
+Generate Playwright tests that validate the edit workflow end-to-end in a real browser. Tests are placed in the Blazor test project alongside existing Playwright tests.
+
+```csharp
+using Microsoft.Playwright;
+using NUnit.Framework;
+
+namespace Sanjel.RequestManagement.Blazor.Tests
+{
+    [TestFixture]
+    public class RequestEditPlaywrightTests
+    {
+        private IBrowser _browser;
+        private IPage _page;
+        private IPlaywright _playwright;
+
+        [OneTimeSetUp]
+        public async Task SetupAsync()
+        {
+            this._playwright = await Playwright.CreateAsync();
+            this._browser = await this._playwright.Chromium.LaunchAsync(
+                new BrowserTypeLaunchOptions { Headless = true });
+            this._page = await this._browser.NewPageAsync();
+        }
+
+        [OneTimeTearDown]
+        public async Task TeardownAsync()
+        {
+            await this._browser.CloseAsync();
+            this._playwright.Dispose();
+        }
+
+        [Test]
+        public async Task EditButton_ShouldNavigateToEditFormAsync()
+        {
+            await this._page.GotoAsync("http://localhost:5000/request");
+            await this._page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+            await this._page.WaitForTimeoutAsync(2000);
+
+            var editBtn = await this._page.QuerySelectorAsync(
+                ".action-buttons button[title='Edit'], .e-edit");
+            Assert.IsNotNull(editBtn, "Edit button should exist on list rows");
+
+            await editBtn.ClickAsync();
+            await this._page.WaitForTimeoutAsync(500);
+
+            // Verify navigation to edit form
+            Assert.That(this._page.Url, Does.Contain("/edit/"));
+        }
+
+        [Test]
+        public async Task EditForm_ShouldBePrepopulatedAsync()
+        {
+            await this._page.GotoAsync("http://localhost:5000/request");
+            await this._page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+            await this._page.WaitForTimeoutAsync(2000);
+
+            var editBtn = await this._page.QuerySelectorAsync(
+                ".action-buttons button[title='Edit']");
+            await editBtn.ClickAsync();
+            await this._page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+            await this._page.WaitForTimeoutAsync(1000);
+
+            // Verify that form fields are not empty (pre-populated)
+            var inputs = await this._page.QuerySelectorAllAsync("input[type='text']:not([value=''])");
+            Assert.That(inputs.Count, Is.GreaterThan(0),
+                "Edit form fields should be pre-populated with existing data");
+        }
+    }
+}
+```
+
+**Key**: The test file **MUST** be generated as part of the skill output. Adapt selectors, URLs, and assertions to match the actual page being implemented.
 
 ## Functional Capabilities
 
@@ -618,52 +708,87 @@ private async Task<bool> OptimisticUpdateAsync(RequestEntity entity)
 
 ## Testing Strategies
 
-### Unit Testing
-```csharp
-[Test]
-public async Task EditAsync_InInlineMode_StartsInlineEdit()
-{
-    // Arrange
-    var entity = CreateTestEntity();
-    _component.Items.Add(entity);
-    _component.EditMode = EditMode.Inline;
-    
-    // Act
-    await _component.EditAsync(entity.Id);
-    
-    // Assert
-    Assert.That(entity.IsInEditMode, Is.True);
-    Assert.That(_component.EditingEntity, Is.EqualTo(entity));
-}
+### Playwright UI Tests (Primary — MANDATORY)
 
-[Test]
-public async Task SaveInlineEditAsync_WithValidChanges_UpdatesEntity()
+All edit/modify functionality **MUST** be validated with Playwright browser-based tests. These tests run against the real Blazor application in headless Chromium.
+
+**Required test coverage:**
+
+| Test Case | Description |
+|---|---|
+| Edit button renders | Verify edit button is present on each list row |
+| Edit navigates to form | Click edit button and verify navigation to edit URL or modal opens |
+| Form is pre-populated | Verify edit form fields contain existing item data |
+| Validation blocks save | Submit form with invalid data and verify validation messages |
+| Save updates item | Edit and save valid data, verify list reflects changes |
+| Cancel discards changes | Click cancel and verify navigation back, no changes saved |
+
+**Test structure:**
+```csharp
+[TestFixture]
+public class {Entity}EditPlaywrightTests
 {
-    // Arrange
-    var entity = CreateTestEntity();
-    _component.StartInlineEdit(entity);
-    entity.Title = "Updated Title";
-    
-    var updatedEntity = entity.Clone();
-    _service.Setup(s => s.UpdateAsync(It.IsAny<RequestEntity>()))
-           .ReturnsAsync(updatedEntity);
-    
-    // Act
-    await _component.SaveInlineEditAsync();
-    
-    // Assert
-    Assert.That(entity.IsInEditMode, Is.False);
-    Assert.That(_component.EditingEntity, Is.Null);
-    _service.Verify(s => s.UpdateAsync(It.Is<RequestEntity>(e => 
-        e.Title == "Updated Title")), Times.Once);
+    private IBrowser _browser;
+    private IPage _page;
+    private IPlaywright _playwright;
+
+    [OneTimeSetUp]
+    public async Task SetupAsync()
+    {
+        this._playwright = await Playwright.CreateAsync();
+        this._browser = await this._playwright.Chromium.LaunchAsync(
+            new BrowserTypeLaunchOptions { Headless = true });
+        this._page = await this._browser.NewPageAsync();
+    }
+
+    [OneTimeTearDown]
+    public async Task TeardownAsync()
+    {
+        await this._browser.CloseAsync();
+        this._playwright.Dispose();
+    }
+
+    [Test]
+    public async Task EditButton_ShouldNavigateToEditFormAsync()
+    {
+        await this._page.GotoAsync("http://localhost:5000/{entity}");
+        await this._page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+        await this._page.WaitForTimeoutAsync(2000);
+
+        var editBtn = await this._page.QuerySelectorAsync(
+            ".action-buttons button[title='Edit']");
+        Assert.IsNotNull(editBtn);
+        await editBtn.ClickAsync();
+        await this._page.WaitForTimeoutAsync(500);
+
+        Assert.That(this._page.Url, Does.Contain("/edit/"));
+    }
+
+    [Test]
+    public async Task EditForm_ShouldBePrepopulatedAsync()
+    {
+        await this._page.GotoAsync("http://localhost:5000/{entity}");
+        await this._page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+        await this._page.WaitForTimeoutAsync(2000);
+
+        var editBtn = await this._page.QuerySelectorAsync(
+            ".action-buttons button[title='Edit']");
+        await editBtn.ClickAsync();
+        await this._page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+        await this._page.WaitForTimeoutAsync(1000);
+
+        var filledInputs = await this._page.QuerySelectorAllAsync(
+            "input[type='text']:not([value=''])");
+        Assert.That(filledInputs.Count, Is.GreaterThan(0),
+            "Edit form should be pre-populated with item data");
+    }
 }
 ```
 
 ### Integration Testing
-- **Full Edit Workflow**: Test complete edit workflow from start to save
-- **Concurrency Scenarios**: Test concurrent edit conflict resolution
-- **Validation Integration**: Test form validation and error display
-- **Performance Testing**: Test edit performance with large datasets
+- **Full Edit Workflow**: Test complete edit workflow via Playwright including form fill, save, and list update
+- **Concurrency Scenarios**: Test concurrent edit conflict messaging via Playwright
+- **Validation Integration**: Test form validation error display via Playwright
 
 ## Best Practices
 

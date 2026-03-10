@@ -18,8 +18,23 @@ description: Generate strategic guidance and architectural recommendations for V
 
 ## Description
 
-**Testing Requirement:**
-After generating any ViewModel classes or validation strategies, add corresponding unit tests to validate the ViewModel functionality. Tests should cover property mapping, validation rules, data binding scenarios, error handling, and business rule enforcement for all generated ViewModels using NUnit framework.
+**Testing Requirement — MANDATORY:**
+After generating any ViewModel classes or validation strategies, you **MUST** also generate corresponding **NUnit unit tests (C#)** in the project's existing unit test project (e.g. `src/Sanjel.RequestManagement.Core.Tests/` or `Sanjel.RequestManagement.BusinessProcess.Tests/`). These tests are a required output deliverable — the skill implementation is NOT complete until the tests are generated.
+
+**What to test (NUnit unit tests):**
+- Default property values are correct after construction
+- Filter/search properties accept and store values correctly
+- Validation logic rejects invalid values and reports correct error messages
+- Validation logic accepts valid values without errors
+- `HasActiveFilters()` / `ResetFilters()` methods behave correctly
+- Pagination properties (`CurrentPage`, `PageSize`) default and validate correctly
+
+**Test file conventions:**
+- Create a new test class following the naming pattern `{Entity}ViewModelTests.cs`
+- Place the file in the existing unit test project alongside other ViewModel tests
+- Use NUnit `[TestFixture]` / `[Test]` / `[TestCase]` attributes
+- No browser or Playwright dependency — these are pure in-process unit tests
+- Use `Assert.That(...)` NUnit fluent assertions
 
 This skill acts as a Senior Data Model Architect specializing in ViewModel design and data validation for Blazor applications. It provides consultative guidance for creating robust ViewModel classes with comprehensive validation strategies using Data Annotations and modern MVVM patterns.
 
@@ -237,11 +252,74 @@ Generate strategic guidance and architectural recommendations for ViewModel clas
 
 ## Testing and Quality Assurance
 
-### ViewModel Testing Strategies
-- **Unit Testing**: Test validation logic in isolation
-- **Integration Testing**: Test ViewModel integration with UI components
-- **Performance Testing**: Validate ViewModel performance under load
-- **Accessibility Testing**: Ensure validation messages meet accessibility standards
+### ViewModel Testing Strategies (NUnit Unit Tests — MANDATORY)
+
+All generated ViewModel classes **MUST** be validated with NUnit unit tests. These tests run in-process with no browser dependency.
+
+**Required test coverage:**
+
+| Test Case | Description |
+|---|---|
+| Default values | Verify properties have expected default values after construction |
+| Filter properties | Verify filter and search properties accept and store values |
+| `HasActiveFilters()` | Returns `false` when no filters set; `true` when any filter is active |
+| `ResetFilters()` | All filter properties return to default state |
+| Validation valid | Valid values pass validation with no errors |
+| Validation invalid | Invalid values trigger expected validation error messages |
+
+**Test structure:**
+```csharp
+using NUnit.Framework;
+using Sanjel.RequestManagement.Blazor.Pages.Request.ViewModels;
+
+namespace Sanjel.RequestManagement.Core.Tests
+{
+    [TestFixture]
+    public class RequestListViewModelTests
+    {
+        [Test]
+        public void DefaultConstructor_ShouldSetSensibleDefaults()
+        {
+            var vm = new RequestListViewModel();
+
+            Assert.That(vm.CurrentPage, Is.EqualTo(1));
+            Assert.That(vm.PageSize, Is.GreaterThan(0));
+            Assert.That(vm.SearchTerm, Is.Null.Or.Empty);
+        }
+
+        [Test]
+        public void HasActiveFilters_WithNoFilters_ShouldReturnFalse()
+        {
+            var vm = new RequestListViewModel();
+
+            Assert.That(vm.HasActiveFilters(), Is.False);
+        }
+
+        [Test]
+        public void HasActiveFilters_WithSearchTerm_ShouldReturnTrue()
+        {
+            var vm = new RequestListViewModel { SearchTerm = "test" };
+
+            Assert.That(vm.HasActiveFilters(), Is.True);
+        }
+
+        [Test]
+        public void ResetFilters_ShouldClearAllFilters()
+        {
+            var vm = new RequestListViewModel
+            {
+                SearchTerm = "test",
+                CurrentPage = 3,
+            };
+
+            vm.ResetFilters();
+
+            Assert.That(vm.HasActiveFilters(), Is.False);
+            Assert.That(vm.CurrentPage, Is.EqualTo(1));
+        }
+    }
+}
+```
 
 ### Validation Testing Approaches
 - **Positive Testing**: Verify validation accepts valid input
