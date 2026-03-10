@@ -4,6 +4,7 @@ using Sanjel.RequestManagement.Blazor.Pages.Request.ViewModels;
 using Sanjel.RequestManagement.Entities.Entities;
 using Sanjel.RequestManagement.Repositories.Common;
 using Syncfusion.Blazor.Grids;
+using Syncfusion.Blazor.Popups;
 using RequestEntity = Sanjel.RequestManagement.Entities.Entities.Request;
 
 namespace Sanjel.RequestManagement.Blazor.Pages.Request;
@@ -41,6 +42,16 @@ public partial class Index
 	{
 		new GridSortColumn { Field = "CreatedDate", Direction = SortDirection.Descending },
 	};
+
+	// Dialog references
+	private SfDialog deleteDialog = null!;
+	private SfDialog errorDialog = null!;
+
+	// Dialog state
+	private bool isBatchDelete;
+	private string deleteTargetRequestId = string.Empty;
+	private string errorMessage = string.Empty;
+	private TaskCompletionSource<bool>? deleteConfirmationTcs;
 
 	private List<StatusEnumItem> statusOptionItems = Enum.GetValues<StatusEnum>()
 		.Select(status => new StatusEnumItem
@@ -207,6 +218,7 @@ public partial class Index
 		catch (Exception ex)
 		{
 			Console.WriteLine($"Error deleting request: {ex.Message}");
+			await this.ShowErrorDialogAsync($"Failed to delete request: {ex.Message}");
 		}
 		finally
 		{
@@ -242,6 +254,7 @@ public partial class Index
 		catch (Exception ex)
 		{
 			Console.WriteLine($"Error batch deleting requests: {ex.Message}");
+			await this.ShowErrorDialogAsync($"Failed to delete selected requests: {ex.Message}");
 		}
 		finally
 		{
@@ -251,16 +264,49 @@ public partial class Index
 
 	private Task<bool> ConfirmDeleteAsync(RequestEntity request)
 	{
-		// TODO: Implement proper confirmation dialog
-		Console.WriteLine($"Confirm delete request: {request.RequestId}");
-		return Task.FromResult(true);
+		this.deleteTargetRequestId = request.RequestId;
+		this.isBatchDelete = false;
+		this.deleteConfirmationTcs = new TaskCompletionSource<bool>();
+
+		_ = this.deleteDialog.ShowAsync();
+		_ = this.InvokeAsync(this.StateHasChanged);
+
+		return this.deleteConfirmationTcs.Task;
 	}
 
 	private Task<bool> ConfirmBatchDeleteAsync()
 	{
-		// TODO: Implement proper confirmation dialog
-		Console.WriteLine($"Confirm delete {this.selectedRequests.Count} requests");
-		return Task.FromResult(true);
+		this.isBatchDelete = true;
+		this.deleteTargetRequestId = string.Empty;
+		this.deleteConfirmationTcs = new TaskCompletionSource<bool>();
+
+		_ = this.deleteDialog.ShowAsync();
+		_ = this.InvokeAsync(this.StateHasChanged);
+
+		return this.deleteConfirmationTcs.Task;
+	}
+
+	private async Task ConfirmDelete()
+	{
+		this.deleteConfirmationTcs?.TrySetResult(true);
+		await this.deleteDialog.HideAsync();
+	}
+
+	private async Task CancelDelete()
+	{
+		this.deleteConfirmationTcs?.TrySetResult(false);
+		await this.deleteDialog.HideAsync();
+	}
+
+	private async Task CloseErrorDialog()
+	{
+		await this.errorDialog.HideAsync();
+	}
+
+	private async Task ShowErrorDialogAsync(string message)
+	{
+		this.errorMessage = message;
+		await this.errorDialog.ShowAsync();
 	}
 
 	private string GetDetailUrl(string? requestId)

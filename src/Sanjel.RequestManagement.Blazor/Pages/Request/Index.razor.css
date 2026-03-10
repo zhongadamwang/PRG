@@ -265,3 +265,46 @@
 		align-items: flex-start;
 	}
 }
+
+/* Dialog Styles */
+.dialog-header {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 18px;
+	font-weight: 600;
+	color: #333;
+}
+
+.dialog-header .e-dialog-icon {
+	font-size: 24px;
+	color: #f57c00;
+}
+
+.error-header .e-dialog-icon {
+	color: #c62828;
+}
+
+.dialog-content {
+	padding: 15px 0;
+	font-size: 14px;
+	line-height: 1.6;
+	color: #555;
+}
+
+.dialog-content .warning-text {
+	color: #c62828;
+	margin-top: 10px;
+	font-size: 13px;
+}
+
+.dialog-footer {
+	display: flex;
+	justify-content: flex-end;
+	gap: 10px;
+}
+
+.dialog-footer .e-danger {
+	background: #c62828;
+	border-color: #c62828;
+}

@@ -3,7 +3,7 @@
 @using Syncfusion.Blazor.Grids
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.DropDowns
-@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Popups
 @using Sanjel.RequestManagement.Entities.Entities
 @using Sanjel.RequestManagement.Repositories.Common
 @using Sanjel.RequestManagement.Blazor.Pages.Request.ViewModels
@@ -165,4 +165,58 @@
 			</SfButton>
 		</div>
 	</div>
+
+	@* Delete Confirmation Dialog *@
+	<SfDialog @ref="deleteDialog" Target="#target" Width="400px" IsModal="true" ShowCloseIcon="true" Visible="false">
+		<DialogTemplates>
+			<Header>
+				<div class="dialog-header">
+					<span class="e-icons e-warning e-dialog-icon"></span>
+					<span>Confirm Delete</span>
+				</div>
+			</Header>
+			<Content>
+				<div class="dialog-content">
+					@if (isBatchDelete)
+					{
+						<p>Are you sure you want to delete <strong>@selectedRequests.Count</strong> selected request(s)?</p>
+						<p class="warning-text">This action cannot be undone.</p>
+					}
+					else
+					{
+						<p>Are you sure you want to delete request <strong>@deleteTargetRequestId</strong>?</p>
+						<p class="warning-text">This action cannot be undone.</p>
+					}
+				</div>
+			</Content>
+			<FooterTemplate>
+				<div class="dialog-footer">
+					<SfButton CssClass="e-outline" OnClick="CancelDelete">Cancel</SfButton>
+					<SfButton CssClass="e-danger" OnClick="ConfirmDelete">Delete</SfButton>
+				</div>
+			</FooterTemplate>
+		</DialogTemplates>
+	</SfDialog>
+
+	@* Error Dialog *@
+	<SfDialog @ref="errorDialog" Target="#target" Width="450px" IsModal="true" ShowCloseIcon="true" Visible="false">
+		<DialogTemplates>
+			<Header>
+				<div class="dialog-header error-header">
+					<span class="e-icons e-error e-dialog-icon"></span>
+					<span>Delete Failed</span>
+				</div>
+			</Header>
+			<Content>
+				<div class="dialog-content">
+					<p>@errorMessage</p>
+				</div>
+			</Content>
+			<FooterTemplate>
+				<div class="dialog-footer">
+					<SfButton CssClass="e-primary" OnClick="CloseErrorDialog">OK</SfButton>
+				</div>
+			</FooterTemplate>
+		</DialogTemplates>
+	</SfDialog>
 </div>
