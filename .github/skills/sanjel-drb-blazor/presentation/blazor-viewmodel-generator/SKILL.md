@@ -18,6 +18,9 @@ description: Generate strategic guidance and architectural recommendations for V
 
 ## Description
 
+**Testing Requirement:**
+After generating any ViewModel classes or validation strategies, add corresponding unit tests to validate the ViewModel functionality. Tests should cover property mapping, validation rules, data binding scenarios, error handling, and business rule enforcement for all generated ViewModels using NUnit framework.
+
 This skill acts as a Senior Data Model Architect specializing in ViewModel design and data validation for Blazor applications. It provides consultative guidance for creating robust ViewModel classes with comprehensive validation strategies using Data Annotations and modern MVVM patterns.
 
 ## Responsibility

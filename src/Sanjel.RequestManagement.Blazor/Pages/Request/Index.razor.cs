@@ -8,6 +8,24 @@ using RequestEntity = Sanjel.RequestManagement.Entities.Entities.Request;
 
 namespace Sanjel.RequestManagement.Blazor.Pages.Request;
 
+/// <summary>
+/// Data structure for Status dropdown items
+/// </summary>
+public class StatusEnumItem
+{
+	public StatusEnum Value { get; set; }
+	public string Text { get; set; } = string.Empty;
+}
+
+/// <summary>
+/// Data structure for Priority dropdown items
+/// </summary>
+public class PriorityEnumItem
+{
+	public PriorityEnum Value { get; set; }
+	public string Text { get; set; } = string.Empty;
+}
+
 public partial class Index
 {
 	[Inject]
@@ -24,15 +42,59 @@ public partial class Index
 		new GridSortColumn { Field = "CreatedDate", Direction = SortDirection.Descending },
 	};
 
-	private List<StatusEnum> statusOptions = Enum.GetValues<StatusEnum>().ToList();
+	private List<StatusEnumItem> statusOptionItems = Enum.GetValues<StatusEnum>()
+		.Select(status => new StatusEnumItem
+		{
+			Value = status,
+			Text = GetStatusDisplayName(status),
+		}).ToList();
 
-	private List<PriorityEnum> priorityOptions = Enum.GetValues<PriorityEnum>().ToList();
+	private List<PriorityEnumItem> priorityOptionItems = Enum.GetValues<PriorityEnum>()
+		.Select(priority => new PriorityEnumItem
+		{
+			Value = priority,
+			Text = GetPriorityDisplayName(priority),
+		}).ToList();
 
 	protected override async Task OnInitializedAsync()
 	{
 		this.ViewModel.SortColumn = "CreatedDate";
 		this.ViewModel.SortDirection = "DESC";
 		await this.LoadDataAsync();
+	}
+
+	/// <summary>
+	/// Get user-friendly display name for status enum
+	/// </summary>
+	private static string GetStatusDisplayName(StatusEnum status)
+	{
+		return status switch
+		{
+			StatusEnum.Draft => "Draft",
+			StatusEnum.Submitted => "Submitted",
+			StatusEnum.InProgress => "In Progress",
+			StatusEnum.UnderReview => "Under Review",
+			StatusEnum.Approved => "Approved",
+			StatusEnum.Rejected => "Rejected",
+			StatusEnum.Completed => "Completed",
+			StatusEnum.Cancelled => "Cancelled",
+			_ => status.ToString()
+		};
+	}
+
+	/// <summary>
+	/// Get user-friendly display name for priority enum
+	/// </summary>
+	private static string GetPriorityDisplayName(PriorityEnum priority)
+	{
+		return priority switch
+		{
+			PriorityEnum.Low => "Low",
+			PriorityEnum.Normal => "Normal",
+			PriorityEnum.High => "High",
+			PriorityEnum.Critical => "Critical",
+			_ => priority.ToString()
+		};
 	}
 
 	private async Task LoadDataAsync()

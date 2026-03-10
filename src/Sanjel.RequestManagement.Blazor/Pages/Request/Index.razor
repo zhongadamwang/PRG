@@ -25,7 +25,26 @@
 	</div>
 
 	<div class="filter-panel">
-
+		<div class="filter-row">
+			<SfTextBox Placeholder="Request ID" @bind-Value="ViewModel.RequestIdFilter" Width="200px" />
+			<SfDropDownList TValue="StatusEnum?" TItem="StatusEnumItem" DataSource="@statusOptionItems" 
+								Placeholder="Status" @bind-Value="ViewModel.StatusFilter" Width="150px" 
+								AllowFiltering="false" ShowClearButton="true">
+				<DropDownListFieldSettings Value="Value" Text="Text" />
+			</SfDropDownList>
+			<SfDropDownList TValue="PriorityEnum?" TItem="PriorityEnumItem" DataSource="@priorityOptionItems" 
+								Placeholder="Priority" @bind-Value="ViewModel.PriorityFilter" Width="150px" 
+								AllowFiltering="false" ShowClearButton="true">
+				<DropDownListFieldSettings Value="Value" Text="Text" />
+			</SfDropDownList>
+			<SfTextBox Placeholder="Client ID" @bind-Value="ViewModel.ClientIdFilter" Width="150px" />
+			<SfTextBox Placeholder="Source Email" @bind-Value="ViewModel.SourceEmailFilter" Width="200px" />
+			<SfTextBox Placeholder="Assigned Engineer" @bind-Value="ViewModel.AssignedEngineerIdFilter" Width="150px" />
+			<SfTextBox Placeholder="Assigned By" @bind-Value="ViewModel.AssignedByFilter" Width="150px" />
+			<SfTextBox Placeholder="Search" @bind-Value="ViewModel.SearchTerm" Width="200px" />
+			<SfButton CssClass="e-primary" OnClick="ApplyFiltersAsync">Apply</SfButton>
+			<SfButton CssClass="e-outline" OnClick="ClearFiltersAsync">Clear</SfButton>
+		</div>
 	</div>
 
 	<div class="data-grid-container">

@@ -20,6 +20,9 @@ description: AI-driven list pattern generator for Blazor pages with comprehensiv
 
 ## Description
 
+**Testing Requirement:**
+After generating any list page structure, add corresponding unit tests and Playwright UI tests (C#) to validate the generated components. Playwright tests should cover UI structure validation, component rendering, pagination functionality, and data table interactions for Blazor list pages.
+
 This skill acts as a **List Page Structure Architect** specializing in list page layout and component integration for Blazor applications. It provides **STRUCTURAL ONLY** guidance for creating list pages with data tables, search/filter UI placeholders, pagination controls, and action button frameworks.
 
 **Component Library Auto-Detection**: This skill **automatically detects and adapts to the current project's component library** (MudBlazor, Syncfusion, Bootstrap, etc.) by analyzing project dependencies and existing code patterns to generate appropriate component usage.

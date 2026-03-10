@@ -19,6 +19,9 @@ description: Generate delete operation handlers with confirmation dialogs, batch
 
 ## Description
 
+**Testing Requirement:**
+After implementing any delete functionality, add corresponding unit tests and Playwright UI tests (C#) to validate the delete operations. Playwright tests should cover delete button interactions, confirmation dialogs, batch delete operations, error handling, and list refresh functionality for Blazor pages.
+
 This skill acts as a **Delete Operations Specialist** for Blazor list pages. It implements the complete delete functionality by:
 - **Automatically detecting and adapting to the current project's component library** (MudBlazor, Syncfusion, Bootstrap, etc.)
 - Taking the structural framework from `blazor-list-pattern-generator`

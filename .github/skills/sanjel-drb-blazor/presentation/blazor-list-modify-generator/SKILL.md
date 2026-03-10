@@ -19,6 +19,9 @@ description: Generate edit/modify operation handlers with inline editing, bulk u
 
 ## Description
 
+**Testing Requirement:**
+After implementing any edit/modify functionality, add corresponding unit tests and Playwright UI tests (C#) to validate the edit operations. Playwright tests should cover edit button interactions, inline editing, form navigation, validation handling, concurrency conflict resolution, and bulk edit operations for Blazor pages.
+
 This skill acts as an **Edit Operations Specialist** for Blazor list pages. It implements the complete edit/modify functionality by:
 - **Automatically detecting and adapting to the current project's component library** (MudBlazor, Syncfusion, Bootstrap, etc.)
 - Taking the structural framework from `blazor-list-pattern-generator`
