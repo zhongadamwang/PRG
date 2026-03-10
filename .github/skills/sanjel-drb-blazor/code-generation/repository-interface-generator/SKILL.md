@@ -1,6 +1,6 @@
 ---
 name: repository-interface-generator
-description: AI-driven architectural consultant for designing and generating repository interface contracts based on different data provider strategies (EF Core, SanjelData, or custom). Provides intelligent guidance on choosing the optimal data provider and generates repository interfaces adapted to the selected provider.
+description: AI-driven architectural consultant for designing and generating repository interface contracts and their corresponding adapter implementations based on different data provider strategies (EF Core, SanjelData, or custom). Provides intelligent guidance on choosing the optimal data provider, generates repository interfaces, and produces concrete adapter classes that implement those interfaces for the selected provider.
 license: MIT
 ---
 
@@ -8,7 +8,7 @@ license: MIT
 
 ## Description
 
-AI-driven architectural consultant for designing and generating repository interface contracts based on different data provider strategies. This skill provides intelligent guidance on choosing the optimal data provider (EF Core, SanjelData, or custom) and generates repository interfaces adapted to the selected provider.
+AI-driven architectural consultant for designing and generating repository interface contracts **and their corresponding adapter implementations** based on different data provider strategies. This skill provides intelligent guidance on choosing the optimal data provider (EF Core, SanjelData, or custom), generates repository interfaces adapted to the selected provider, and produces concrete adapter classes that implement those interfaces.
 
 ## When To Use
 
@@ -53,6 +53,7 @@ This skill uses AI-driven consultation to guide you through repository interface
 **Generated Artifacts:**
 - Repository interface files for each entity
 - Base repository interface template (`IRepository<TEntity>`)
+- **Adapter implementation classes** for each entity interface (concrete classes implementing the interfaces using the selected provider)
 - Data provider configuration documentation
 - Provider-specific implementation guidance
 - DI registration recommendations
@@ -100,6 +101,26 @@ Every `IRepository<TEntity>` interface includes these 12 standard methods:
 - Standard base with provider-specific extensions
 - Adapter pattern guidance for provider quirks
 - Custom query method recommendations
+
+### Generated Adapter Implementations
+
+For every generated interface, a corresponding adapter class is also generated using the naming convention `<Entity>Repository` (e.g., `RequestRepository : IRequestRepository`).
+
+The adapter is a **thin wrapper** — it does not re-implement any data access logic. The underlying provider library (SanjelData, EF Core, etc.) already contains the full implementation. The adapter simply delegates each interface method call to the corresponding provider method:
+
+**SanjelData Adapter** (`RequestRepository : IRequestRepository`):
+- Injects the corresponding SanjelData service (e.g., `IProgramRequestService`)
+- Each method delegates directly to the matching SanjelData service method
+- No custom query logic is written inside the adapter
+
+**EF Core Adapter** (`RequestRepository : IRequestRepository`):
+- Injects `DbContext` and delegates to the appropriate `DbSet<TEntity>` and EF Core methods
+- No custom query logic is written inside the adapter
+
+**Custom Adapter** (`RequestRepository : IRequestRepository`):
+- Injects the custom provider client or service
+- Each method delegates directly to the provider's existing methods
+- No bespoke logic is added inside the adapter itself
 
 ## AI-Driven Consultation Approach
 
@@ -177,18 +198,17 @@ After consultation agreement, the AI generates:
 
 1. **Base Interface**: `IRepository<TEntity>` with standard methods
 2. **Entity Interfaces**: `IRequestRepository`, `IDataElementRepository`, etc.
-3. **Provider Documentation**: Setup and configuration guides
-4. **DI Configuration**: Service registration patterns
-5. **Implementation Guidance**: Step-by-step implementation steps
+3. **Adapter Implementations**: Concrete adapter classes implementing each entity interface using the naming convention `<Entity>Repository` (e.g., `RequestRepository : IRequestRepository`) — thin wrappers that delegate to the selected provider's existing methods
+4. **Base Adapter Class**: Shared `RepositoryBase<TEntity>` with common delegation logic where applicable
+5. **Provider Documentation**: Setup and configuration guides
+6. **DI Configuration**: Service registration patterns (registering adapters against their interfaces)
+7. **Implementation Guidance**: Step-by-step implementation steps
 
 ## Integration with Other Skills
 
 - **domain-model-parser**: Provides entity type information for interface generation
 - **efcore-repository-generator**: Consumes interfaces for EF Core implementations (if EF Core chosen)
-- **sanjeldata-repository-generator** (NEW): Consumes interfaces for SanjelData adapters (if SanjelData chosen)
-- **custom-repository-generator** (NEW): Consumes interfaces for custom provider implementations (if Custom chosen)
 - **service-generator**: Repository interfaces are injected into generated services
-- **blazor-data-integration-generator**: Uses repository interfaces for data access layer
 
 ## What This Skill DOES
 
@@ -196,19 +216,19 @@ After consultation agreement, the AI generates:
 - Analyze project requirements and recommend optimal provider strategy
 - Generate standard repository interface contracts (`IRepository<TEntity>`)
 - Generate entity-specific repository interfaces (e.g., `IRequestRepository`)
+- **Generate concrete adapter implementations** for each interface using `<Entity>Repository` naming (e.g., `RequestRepository : IRequestRepository`) — thin wrappers that delegate to the existing provider library
+- **Generate a shared base adapter class** (`RepositoryBase<TEntity>`) with common delegation logic
 - Create provider-specific implementation guidance
 - Document provider-specific patterns and considerations
-- Provide DI registration recommendations
+- Provide DI registration recommendations (mapping adapters to interfaces)
 - Explain architectural trade-offs and decision rationale
 
 ## What This Skill DOES NOT DO
 
-- Does NOT generate repository implementations
-- Does NOT generate database-specific code (DbContext, migrations, etc.)
-- Does NOT generate query implementations
-- Does NOT generate provider-specific adapter code
-- Does NOT create concrete repository classes
-- These implementation details are handled by separate, provider-specific skills
+- Does NOT generate database schema migrations
+- Does NOT generate `DbContext` configuration code
+- Does NOT generate business service layer code (handled by `service-generator`)
+- Does NOT generate UI or API layer code
 
 ## Data Provider Strategies Overview
 
@@ -241,13 +261,13 @@ After consultation agreement, the AI generates:
 ## Example Scenarios
 
 ### Scenario 1: New Project with EF Core
-User selects EF Core → AI generates standard interfaces with LINQ-friendly signatures → `efcore-repository-generator` implements them
+User selects EF Core → AI generates standard interfaces **and** `<Entity>Repository` adapter classes (e.g., `RequestRepository`) that delegate to EF Core's existing `DbSet<TEntity>` methods → DI registration maps adapters to interfaces
 
 ### Scenario 2: SanjelData Integration
-User selects SanjelData → AI generates standard interfaces + optional query service → `sanjeldata-repository-generator` implements adapters
+User selects SanjelData → AI generates standard interfaces **and** `<Entity>Repository` adapter classes that delegate directly to SanjelData service methods (no re-implementation of query logic)
 
 ### Scenario 3: External API Integration
-User selects Custom provider → AI generates standard interfaces + custom extensions → `custom-repository-generator` implements adapters
+User selects Custom provider → AI generates standard interfaces **and** `<Entity>Repository` adapter classes that delegate to the existing provider's methods
 
 ## Dependencies
 
