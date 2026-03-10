@@ -106,6 +106,28 @@ public class RequestService
 	}
 
 	/// <summary>
+	/// Updates an existing request asynchronously.
+	/// </summary>
+	/// <param name="request">The request to update.</param>
+	/// <param name="cancellationToken">Cancellation token.</param>
+	/// <returns>The updated request.</returns>
+	public Task<RequestEntity> UpdateAsync(RequestEntity request, CancellationToken cancellationToken = default)
+	{
+		this._logger.LogInformation("Updating request: {RequestId}", request.RequestId);
+		try
+		{
+			var updated = this._repository.Update(request);
+			this._logger.LogInformation("Successfully updated request: {RequestId}", request.RequestId);
+			return Task.FromResult(updated);
+		}
+		catch (Exception ex)
+		{
+			this._logger.LogError(ex, "Error updating request: {RequestId}", request.RequestId);
+			throw;
+		}
+	}
+
+	/// <summary>
 	/// Deletes a request.
 	/// </summary>
 	/// <param name="requestId">The request ID.</param>

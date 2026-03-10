@@ -46,10 +46,17 @@ public partial class Index
 
 	private SfDialog deleteConfirmDialog = null!;
 	private SfDialog batchDeleteConfirmDialog = null!;
+	private SfDialog formDialog = null!;
 	private SfToast toastRef = null!;
 	private string deleteTargetRequestId = string.Empty;
 	private TaskCompletionSource<bool>? _deleteConfirmTcs;
 	private TaskCompletionSource<bool>? _batchDeleteConfirmTcs;
+
+	// Form dialog state
+	private RequestFormViewModel formViewModel = new();
+	private bool isEditMode;
+	private bool isFormSaving;
+	private string formErrorMessage = string.Empty;
 
 	private List<StatusEnumItem> statusOptionItems = Enum.GetValues<StatusEnum>()
 		.Select(status => new StatusEnumItem
@@ -160,10 +167,12 @@ public partial class Index
 		// We'll need to sync with our ViewModel through PageChanged event
 	}
 
-	private void CreateNewRequest()
+	private async Task CreateNewRequestAsync()
 	{
-		// TODO: Navigate to create page
-		Console.WriteLine("Create new request");
+		this.isEditMode = false;
+		this.formViewModel = new RequestFormViewModel();
+		this.formErrorMessage = string.Empty;
+		await this.formDialog.ShowAsync();
 	}
 
 	private void ViewDetail(RequestEntity? request)
@@ -178,16 +187,97 @@ public partial class Index
 		Console.WriteLine($"Navigate to: {url}");
 	}
 
-	private void EditRequest(RequestEntity? request)
+	private async Task EditRequestAsync(RequestEntity? request)
 	{
 		if (request == null)
 		{
 			return;
 		}
 
-		var url = $"/request/edit/{request.RequestId}";
-		// TODO: Navigate to edit page
-		Console.WriteLine($"Navigate to: {url}");
+		this.isEditMode = true;
+		this.formViewModel = new RequestFormViewModel
+		{
+			RequestId = request.RequestId,
+			Status = request.Status,
+			Priority = request.Priority,
+			ClientId = request.ClientId,
+			SourceEmail = request.SourceEmail,
+			AssignedEngineerId = request.AssignedEngineerId,
+			AssignedBy = request.AssignedBy,
+			AcknowledgmentDate = request.AcknowledgmentDate == default ? null : request.AcknowledgmentDate,
+			CompletionDate = request.CompletionDate == default ? null : request.CompletionDate,
+		};
+		this.formErrorMessage = string.Empty;
+		await this.formDialog.ShowAsync();
+	}
+
+	private async Task SaveFormAsync()
+	{
+		this.isFormSaving = true;
+		this.formErrorMessage = string.Empty;
+		try
+		{
+			if (this.isEditMode)
+			{
+				var entity = await this.RequestService.GetByIdAsync(this.formViewModel.RequestId);
+				if (entity == null)
+				{
+					this.formErrorMessage = "Request not found. It may have been deleted.";
+					return;
+				}
+
+				entity.Status = this.formViewModel.Status;
+				entity.Priority = this.formViewModel.Priority;
+				entity.ClientId = this.formViewModel.ClientId;
+				entity.SourceEmail = this.formViewModel.SourceEmail;
+				entity.AssignedEngineerId = this.formViewModel.AssignedEngineerId;
+				entity.AssignedBy = this.formViewModel.AssignedBy;
+				entity.AcknowledgmentDate = this.formViewModel.AcknowledgmentDate ?? default;
+				entity.CompletionDate = this.formViewModel.CompletionDate ?? default;
+				await this.RequestService.UpdateAsync(entity);
+				await this.formDialog.HideAsync();
+				await this.LoadDataAsync();
+				await this.ShowSuccessToastAsync($"Request '{entity.RequestId}' updated successfully.");
+			}
+			else
+			{
+				var entity = new RequestEntity
+				{
+					RequestId = this.formViewModel.RequestId,
+					Status = this.formViewModel.Status,
+					Priority = this.formViewModel.Priority,
+					ClientId = this.formViewModel.ClientId,
+					SourceEmail = this.formViewModel.SourceEmail,
+					AssignedEngineerId = this.formViewModel.AssignedEngineerId,
+					AssignedBy = this.formViewModel.AssignedBy,
+					CreatedDate = DateTime.UtcNow,
+					AcknowledgmentDate = this.formViewModel.AcknowledgmentDate ?? default,
+					CompletionDate = this.formViewModel.CompletionDate ?? default,
+				};
+				await this.RequestService.CreateAsync(entity);
+				await this.formDialog.HideAsync();
+				await this.LoadDataAsync();
+				await this.ShowSuccessToastAsync($"Request '{entity.RequestId}' created successfully.");
+			}
+		}
+		catch (Exception ex)
+		{
+			this.formErrorMessage = $"Failed to save: {ex.Message}";
+		}
+		finally
+		{
+			this.isFormSaving = false;
+		}
+	}
+
+	private async Task CloseFormDialogAsync()
+	{
+		await this.formDialog.HideAsync();
+	}
+
+	private void OnFormDialogClosed()
+	{
+		this.formErrorMessage = string.Empty;
 	}
 
 	private async Task DeleteRequestAsync(RequestEntity? request)

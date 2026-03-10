@@ -5,6 +5,7 @@
 @using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.Notifications
+@using Syncfusion.Blazor.Calendars
 @using Sanjel.RequestManagement.Entities.Entities
 @using Sanjel.RequestManagement.Repositories.Common
 @using Sanjel.RequestManagement.Blazor.Pages.Request.ViewModels
@@ -198,6 +199,84 @@
 		<DialogButton Content="Cancel" OnClick="@OnBatchDeleteCancelledAsync" CssClass="e-outline" />
 		<DialogButton Content="Delete All" OnClick="@OnBatchDeleteConfirmedAsync" CssClass="e-danger" IsPrimary="true" />
 	</DialogButtons>
+</SfDialog>
+
+@* Create / Edit Request Dialog *@
+<SfDialog @ref="formDialog" Width="760px" IsModal="true" ShowCloseIcon="true" Visible="false">
+	<DialogEvents Closed="OnFormDialogClosed"></DialogEvents>
+	<DialogTemplates>
+		<Header>@(isEditMode ? $"Edit Request: {formViewModel.RequestId}" : "New Request")</Header>
+		<Content>
+			<EditForm Model="@formViewModel" OnValidSubmit="SaveFormAsync">
+				<DataAnnotationsValidator />
+				<div class="form-dialog-grid">
+					@if (!isEditMode)
+					{
+						<div class="form-dialog-group">
+							<label>Request ID <span class="req">*</span></label>
+							<SfTextBox @bind-Value="formViewModel.RequestId" Placeholder="Enter request ID" />
+							<ValidationMessage For="@(() => formViewModel.RequestId)" />
+						</div>
+					}
+					<div class="form-dialog-group">
+						<label>Client ID <span class="req">*</span></label>
+						<SfTextBox @bind-Value="formViewModel.ClientId" Placeholder="Enter client ID" />
+						<ValidationMessage For="@(() => formViewModel.ClientId)" />
+					</div>
+					<div class="form-dialog-group">
+						<label>Source Email <span class="req">*</span></label>
+						<SfTextBox @bind-Value="formViewModel.SourceEmail" Placeholder="Enter source email" />
+						<ValidationMessage For="@(() => formViewModel.SourceEmail)" />
+					</div>
+					<div class="form-dialog-group">
+						<label>Status</label>
+						<SfDropDownList TValue="StatusEnum" TItem="StatusEnumItem"
+							DataSource="@statusOptionItems" @bind-Value="formViewModel.Status">
+							<DropDownListFieldSettings Value="Value" Text="Text" />
+						</SfDropDownList>
+					</div>
+					<div class="form-dialog-group">
+						<label>Priority</label>
+						<SfDropDownList TValue="PriorityEnum" TItem="PriorityEnumItem"
+							DataSource="@priorityOptionItems" @bind-Value="formViewModel.Priority">
+							<DropDownListFieldSettings Value="Value" Text="Text" />
+						</SfDropDownList>
+					</div>
+					<div class="form-dialog-group">
+						<label>Assigned Engineer <span class="req">*</span></label>
+						<SfTextBox @bind-Value="formViewModel.AssignedEngineerId" Placeholder="Enter engineer ID" />
+						<ValidationMessage For="@(() => formViewModel.AssignedEngineerId)" />
+					</div>
+					<div class="form-dialog-group">
+						<label>Assigned By <span class="req">*</span></label>
+						<SfTextBox @bind-Value="formViewModel.AssignedBy" Placeholder="Enter assigned by" />
+						<ValidationMessage For="@(() => formViewModel.AssignedBy)" />
+					</div>
+					<div class="form-dialog-group">
+						<label>Acknowledgment Date</label>
+						<SfDatePicker TValue="DateTime?" @bind-Value="formViewModel.AcknowledgmentDate"
+							Format="yyyy-MM-dd" Placeholder="Select date" />
+					</div>
+					<div class="form-dialog-group">
+						<label>Completion Date</label>
+						<SfDatePicker TValue="DateTime?" @bind-Value="formViewModel.CompletionDate"
+							Format="yyyy-MM-dd" Placeholder="Select date" />
+					</div>
+				</div>
+				@if (!string.IsNullOrEmpty(formErrorMessage))
+				{
+					<div class="form-dialog-error">@formErrorMessage</div>
+				}
+				<div class="form-dialog-actions">
+					<SfButton CssClass="e-outline" OnClick="CloseFormDialogAsync" type="button"
+						Disabled="isFormSaving">Cancel</SfButton>
+					<SfButton CssClass="e-primary" type="submit" Disabled="isFormSaving">
+						@(isFormSaving ? "Saving..." : "Save")
+					</SfButton>
+				</div>
+			</EditForm>
+		</Content>
+	</DialogTemplates>
 </SfDialog>
 
 @* Toast Notifications *@
