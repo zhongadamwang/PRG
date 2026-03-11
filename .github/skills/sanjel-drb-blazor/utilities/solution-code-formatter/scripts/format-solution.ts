@@ -104,6 +104,7 @@ function formatSolution(solutionPath?: string): FormattingSummary {
 
 	// Prepare formatting commands
 	const formatCommands = [
+		`dotnet build "${targetSolutionPath}"`,
 		`dotnet format "${targetSolutionPath}"`,
 		`dotnet format style "${targetSolutionPath}"`
 	];
@@ -175,6 +176,7 @@ function formatProjects(projectPaths: string[]): FormattingSummary {
 
 		const projectDir = dirname(projectPath);
 		const formatCommands = [
+			`dotnet build "${projectPath}"`,
 			`dotnet format "${projectPath}"`,
 			`dotnet format style "${projectPath}"`
 		];

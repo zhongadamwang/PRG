@@ -318,3 +318,10 @@ The generated setup includes theme customization capabilities:
 2. Are there only the essential 3 files (package refs + component + example)?
 3. Does the component do exactly ONE thing (display data with MudBlazor)?
 4. Is there ZERO unnecessary complexity?
+
+## Final Step: Code Formatting
+
+After generating all MudBlazor architecture components and configuration, the skill calls `solution-code-formatter` to ensure all generated code follows proper formatting standards:
+```bash
+bun run ../../../utilities/solution-code-formatter/scripts/format-solution.ts [solution-path]
+```

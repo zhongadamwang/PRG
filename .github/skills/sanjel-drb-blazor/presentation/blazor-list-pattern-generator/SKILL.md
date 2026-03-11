@@ -727,6 +727,13 @@ FINAL RESULT: Complete, functional list page
 4. **Responsive Everywhere**: Work on all screen sizes
 5. **Component Library Agnostic**: Adapt to available component library
 
+## Final Step: Code Formatting
+
+After generating list page structure and Playwright tests, the skill calls `solution-code-formatter` to ensure all generated code follows proper formatting standards:
+```bash
+bun run ../../utilities/solution-code-formatter/scripts/format-solution.ts [solution-path]
+```
+
 ## What This Skill DOES
 
 ✅ Generate complete list page **STRUCTURE** with data table

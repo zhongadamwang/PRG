@@ -308,6 +308,13 @@ When installing Syncfusion dependencies, only install these two essential packag
 3. Does the component do exactly ONE thing (display grid)?
 4. Is there ZERO unnecessary complexity?
 
+## Final Step: Code Formatting
+
+After generating all Syncfusion architecture components and configuration, the skill calls `solution-code-formatter` to ensure all generated code follows proper formatting standards:
+```bash
+bun run ../../../utilities/solution-code-formatter/scripts/format-solution.ts [solution-path]
+```
+
 **Performance First:**
 - **Virtual Scrolling**: Enable for grids by default
 - **Pagination**: Use reasonable page sizes (25-50 items)

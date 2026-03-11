@@ -1546,6 +1546,13 @@ public class {Entity}FilterPlaywrightTests
 6. **Error Resilient**: Handle search errors gracefully with clear user feedback
 7. **Data-Driven**: Generate filter UI dynamically based on discovered entity metadata and user selections
 
+## Final Step: Code Formatting
+
+After implementing all search, sort, and filter functionality and generating Playwright tests, the skill calls `solution-code-formatter` to ensure all generated code follows proper formatting standards:
+```bash
+bun run ../../utilities/solution-code-formatter/scripts/format-solution.ts [solution-path]
+```
+
 ## Discovery and Configuration Examples
 
 ### Example 1: Standard Entity Discovery

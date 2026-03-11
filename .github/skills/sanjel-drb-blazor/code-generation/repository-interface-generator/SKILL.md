@@ -306,3 +306,10 @@ A: The AI consultation will address this. SanjelData adapters may need `Task.Run
 - Educational approach helps you understand the decisions
 - Interfaces are provider-agnostic, implementations are provider-specific
 - Use this skill when starting a project or reconsidering data access strategy
+
+## Final Step: Code Formatting
+
+After generating all repository interfaces and adapter implementations, the skill calls `solution-code-formatter` to ensure all generated code follows proper formatting standards:
+```bash
+bun run ../../utilities/solution-code-formatter/scripts/format-solution.ts [solution-path]
+```

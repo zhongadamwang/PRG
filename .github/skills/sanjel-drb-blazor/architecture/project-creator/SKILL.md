@@ -61,6 +61,12 @@ bun run create-project.ts RequestManagement Sanjel /sanjel/project
 4. **Replace Content** - Updates all `{Prg}.{ProjectName}` references in code to your project name
 5. **Preserve Structure** - Maintains all file relationships and dependencies
 
+**Step 3: Format Code**
+After project creation, the skill calls `solution-code-formatter` to ensure all generated code follows proper formatting standards:
+```bash
+bun run ../utilities/solution-code-formatter/scripts/format-solution.ts <solution-path>
+```
+
 ## Template Structure
 
 The `templates/` directory contains a complete project with:

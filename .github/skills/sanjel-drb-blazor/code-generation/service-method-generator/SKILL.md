@@ -328,3 +328,10 @@ AI: Analyzes domain model, implements validation rules, uses UpdateAsync for sta
 - Tests should verify Result<T> return patterns
 - Tests should validate business logic implementation
 - Tests should be in the `src/[ProjectName].Blazor.Tests` project
+
+## Final Step: Code Formatting
+
+After generating all service methods, the skill calls `solution-code-formatter` to ensure all generated code follows proper formatting standards:
+```bash
+bun run ../../utilities/solution-code-formatter/scripts/format-solution.ts [solution-path]
+```

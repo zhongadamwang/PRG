@@ -708,3 +708,10 @@ public class {Entity}DeletePlaywrightTests
 3. **Error Resilience**: Handle all error scenarios gracefully with recovery options
 4. **Performance Conscious**: Optimize for responsive delete operations
 5. **Audit Compliance**: Ensure all delete operations are properly logged and trackable
+
+## Final Step: Code Formatting
+
+After implementing all delete operations and generating Playwright tests, the skill calls `solution-code-formatter` to ensure all generated code follows proper formatting standards:
+```bash
+bun run ../../utilities/solution-code-formatter/scripts/format-solution.ts [solution-path]
+```

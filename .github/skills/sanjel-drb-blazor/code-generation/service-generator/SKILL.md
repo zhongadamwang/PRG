@@ -139,6 +139,13 @@ AI generates: `src/{Prg}.{ProjectName}.Blazor/Pages/ProgramRequest/Services/Prog
 User requests: "Generate a service for handling Request entities in the Assignment page"
 AI generates: `src/{Prg}.{ProjectName}.Blazor/Pages/Assignment/Services/AssignmentService.cs` with IRequestRepository injection
 
+## Validation Standards
+- **Compilation Required**: Generated code MUST pass project compilation (`dotnet build`) without errors before the output is considered complete. If compilation fails, fix all errors before delivering the result.
+- Validates that entity metadata is available
+- Checks that repository interfaces exist
+- Validates output directory structure
+- Provides clear error messages with suggestions
+
 ## Error Handling
 - Validates that entity metadata is available
 - Checks that repository interfaces exist
@@ -163,3 +170,10 @@ AI generates: `src/{Prg}.{ProjectName}.Blazor/Pages/Assignment/Services/Assignme
 - Unit tests should be added when methods are added to the service
 - For the base service architecture, focus on DI registration and constructor validation
 - Tests should be in the `src/[ProjectName].Blazor.Tests` project
+
+## Final Step: Code Formatting
+
+After generating the service architecture shell, the skill calls `solution-code-formatter` to ensure all generated code follows proper formatting standards:
+```bash
+bun run ../../utilities/solution-code-formatter/scripts/format-solution.ts [solution-path]
+```

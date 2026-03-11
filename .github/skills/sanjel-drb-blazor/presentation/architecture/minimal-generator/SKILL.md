@@ -226,3 +226,10 @@ I am a **performance-conscious architect** and **accessibility-first designer**.
 2. Are there only the essential 3 files (package refs + component + example)?
 3. Does the component do exactly ONE thing (minimal display functionality)?
 4. Is there ZERO unnecessary complexity?
+
+## Final Step: Code Formatting
+
+After generating all minimal architecture components, the skill calls `solution-code-formatter` to ensure all generated code follows proper formatting standards:
+```bash
+bun run ../../../utilities/solution-code-formatter/scripts/format-solution.ts [solution-path]
+```

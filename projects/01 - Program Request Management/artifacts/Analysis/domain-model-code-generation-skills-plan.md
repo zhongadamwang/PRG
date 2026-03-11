@@ -3,7 +3,7 @@
 **Document ID**: ANA-02
 **Project**: 01 - Program Request Management
 **Created**: February 28, 2026
-**Last Updated**: March 8, 2026
+**Last Updated**: March 11, 2026
 **Status**: Planning Phase
 
 ## 🆕 **Critical Architecture Update (March 5, 2026)**
@@ -287,7 +287,7 @@ This layer provides a simplified, modern approach to CRUD operations using a sin
 - Provides guidance for complex validation scenarios and business rules
 - **Output**: Expert ViewModel design guidance + validation architecture recommendations
 
-#### Skill 8a7: `blazor-crud-page-generator` ✅ **New** [Priority 1.7] **🤖 AI-Driven**
+#### Skill 8a7: `blazor-page-generator` ✅ **New** [Priority 1.7] **🤖 AI-Driven**
 **Responsibility**: Senior UI/UX Architect for single-page CRUD interface design
 **Input**: Entity metadata + ViewModel design + UI layout requirements + User experience goals
 **Output**: Strategic guidance for single-page CRUD architecture and responsive design
@@ -479,6 +479,23 @@ This layer provides a simplified, modern approach to CRUD operations using a sin
 - Configure database connection and options
 - Add audit fields and soft delete configurations
 
+### Skill 9: `domain-model-sql-generator` 📋 **Planned** **🔧 Script-Driven**
+**Responsibility**: Generate SQL Server DDL scripts from domain model entity metadata
+**Input**: Entity metadata JSON (output of `domain-model-parser`)
+**Output**: SQL Server `CREATE TABLE` scripts with constraints, indexes, and relationships
+
+**Script**: `generate-sql-schema.ts` (run with bun)
+- Generate `CREATE TABLE` statements for all entities
+- Map C# / domain types to SQL Server data types (e.g., `string` → `NVARCHAR`, `DateTime` → `DATETIME2`)
+- Add `PRIMARY KEY`, `FOREIGN KEY`, and `UNIQUE` constraints
+- Generate `NONCLUSTERED INDEX` for commonly queried foreign key columns
+- Include standard audit columns (`CreatedAt`, `UpdatedAt`, `CreatedBy`, `UpdatedBy`, `IsDeleted`)
+- Support soft-delete pattern with `IsDeleted BIT` column
+- Output a single ordered `.sql` file respecting dependency order (parent tables before child tables)
+- **Formatting handled by script output directly (no `solution-code-formatter` needed)**
+
+---
+
 ### Skill 10: `model-change-detector`
 **Responsibility**: Detect changes in domain model files
 **Input**: Current and historical versions of domain models
@@ -547,11 +564,15 @@ This layer provides a simplified, modern approach to CRUD operations using a sin
 │       ├── SKILL.md
 │       └── scripts/
 │           └── orchestrate-workflow.ts
-├── domain-modeling/
+├── domain/
 │   ├── domain-model-parser/
 │   │   ├── SKILL.md
 │   │   └── scripts/
 │   │       └── parse-domain-model.ts
+│   ├── domain-model-sql-generator/
+│   │   ├── SKILL.md
+│   │   └── scripts/
+│   │       └── generate-sql-schema.ts
 │   └── model-change-detector/
 │       ├── SKILL.md
 │       └── scripts/
@@ -587,7 +608,7 @@ This layer provides a simplified, modern approach to CRUD operations using a sin
 │   │   └── SKILL.md
 │   ├── blazor-viewmodel-generator/
 │   │   └── SKILL.md
-│   ├── blazor-crud-page-generator/
+│   ├── blazor-page-generator/
 │   │   └── SKILL.md
 │   ├── blazor-form-dialog-generator/
 │   │   └── SKILL.md
@@ -834,7 +855,7 @@ const process = globalThis.process;
 **Phase 3: Single-Page CRUD Architecture**
 6. `blazor-architecture-generator` → Select component library (typically MudBlazor for modern design)
 7. `mudblazor-generator` → Set up Complete MudBlazor Material Design architecture
-8. `blazor-crud-page-generator` → **AI-Driven**: Consultative guidance for single-page CRUD design
+8. `blazor-page-generator` → **AI-Driven**: Consultative guidance for single-page CRUD design
    - Recommend data table layout and responsive design
    - Design action button placement and user interaction patterns
    - Optimize for performance with large datasets
@@ -954,8 +975,86 @@ After splitting larger skills into focused components, we achieve:
   - `minimal-generator` ✅ - Zero-dependency performance consultation
   - `blazor-page-generator` ✅ - Comprehensive CRUD page development consultation
 **Phase 4.5 (Single-Page Popup CRUD)**: Skills 8a6-8a10 - Single-page CRUD with popup dialogs 🆕 **NEW (March 8, 2026)** 📋 **PENDING**
+  - `blazor-viewmodel-generator` ✅ - ViewModel architecture consultation (Priority 1.6)
+  - `blazor-page-generator` ✅ - Single-page CRUD interface design consultation (Priority 1.7)
+  - `blazor-form-dialog-generator` 📋 - Form dialog architecture consultation (Priority 1.8)
+  - `blazor-detail-dialog-generator` 📋 - Detail view dialog design consultation (Priority 1.9)
+  - `blazor-delete-confirm-dialog-generator` 📋 - Safe deletion confirmation consultation (Priority 1.10)
+**Phase 5 (Data Integration)**: Skill 8b - Blazor data integration layer 📋 **PRIORITY UPDATED**
+**Phase 6 (Page Patterns)**: Skills 8c, 8d, 8d1-8d4, 8e, 8f - Abstract page pattern generation + List operation specialization 📋 **PARTIALLY READY**
+  - `blazor-list-pattern-generator` ✅ **DESIGN COMPLETE (AI-Driven)** - AI-driven list pattern architecture consultation
+  - `blazor-list-filter-generator` ✅ **IMPLEMENTED** - Search, sort, and filter functionality
+  - `blazor-list-form-generator` ✅ **IMPLEMENTED** - Create/add and edit/modify operation handlers (merged from `blazor-list-add-generator` + `blazor-list-modify-generator`)
+  - `blazor-list-delete-generator` ✅ **IMPLEMENTED** - Delete operation handlers with confirmation dialogs
+**Phase 7 (Service Implementation Guidance)**: Skill 7a1 - AI-driven service architecture consultation 📋 **NEW (AI-Driven)**
+**Phase 8 (Business Integration)**: Skill 7b - Service implementation based on page operations 📋 **REDESIGNED (AI-Driven)**
+**Phase 9 (Change Management)**: Skills 10, 11 - Model change detection and updates 📋 **PENDING**
+
+## New Architecture Advantages Comparison
+
+### 📊 Old Architecture vs New Architecture
+
+| Aspect                        | Old Architecture (Direct Component Generation) | New Architecture (Layered Adaptation)                  |
+| ----------------------------- | ---------------------------------------------- | ------------------------------------------------------ |
+| **Component Library Binding** | ✅ Tightly bound to MudBlazor/Syncfusion        | ✅ Flexible adaptation to different component libraries |
+| **Migration Cost**            | ❌ Complete code rewrite required               | ✅ Only adapter replacement needed                      |
+| **Business Logic Reuse**      | ❌ Tightly coupled with UI                      | ✅ Completely separated and reusable                    |
+| **Development Maintenance**   | ❌ Changes require modifying multiple skills    | ✅ Independent maintenance per layer                    |
+| **Technology Stack Choice**   | ❌ Limited to initial selection                 | ✅ Support for parallel multi-stack                     |
+| **Enterprise Adaptation**     | ❌ Difficult to meet different team needs       | ✅ Flexible adaptation to enterprise standards          |
+
+## Notes
+
+- All skills designed for VS Code Copilot integration
+- **Primary Approach**: AI-driven consultation and guidance (preferred for flexibility)
+- **Secondary Approach**: Script-driven automation (for well-defined, repetitive tasks only)
+- Script-driven skills use bun runtime for TypeScript execution
+- No third-party dependencies allowed in scripts (Node.js modules only)
+- Follows single responsibility principle (one skill = one focused task)
+- **Architecture Principle**: AI-first approach for maximum adaptability and learning value
+
+## Project Utilities Integration ✅ **Completed**
+
+Successfully extracted common functionality into a centralized `project-utilities` skill:
+
+**Benefits Achieved:**
+- ✅ Eliminated code duplication across 4+ skills
+- ✅ Centralized project structure detection logic
+- ✅ Standardized code formatting integration
+- ✅ Improved maintainability and consistency
+- ✅ Added auto-detection for domain model metadata files
+- ✅ Fixed formatting issues with proper .slnx file references
+- ✅ Removed unnecessary exports - skills communicate via Copilot, not direct imports
+
+**Refactored Skills:**
+
+
+**Phase 2 Skills:**
+- ✅ `repository-interface-generator` - Generated repository
+
+**Architecture Changes:**
+- ✅ Created `RequestManagementDbContext` with DbSet<T> properties
+- ✅ Modern `IRepository<TEntity>` interface with 16 standardized methods
+- ✅ `PagedResult<T>` class for advanced pagination with metadata
+- ✅ CancellationToken support throughout all async operations
+- ✅ IQueryable<T> exposure for advanced LINQ queries
+ject structure and configuration setup
+
+**Phase 1 (Foundation)**: Skills 1, 2, 3, 4a, 4b - Basic entity and database generation ✅ **Complete**
+**Phase 2 (Data Access)**: Skills 6a, 6b - Repository pattern implementation ✅ **Complete (6a Complete, 6b New)**
+  - `repository-interface-generator` ✅ - Repository contracts with modern async patterns
+  - `repository-mock-data-generator` 📋 - Mock data generator and mock repository implementation
+**Phase 3 (Service Contracts)**: Skill 7a - Service interface generation ✅ **Complete**
+**Phase 4 (Component Library Architecture)**: Skills 8a, 8a1-8a5 - Component library selection and generation ✅ **Complete (Redesigned)**
+  - `blazor-architecture-generator` ✅ - Intelligent selector and consultation
+  - `mudblazor-generator` ✅ - Material Design Blazor generation
+  - `syncfusion-generator` ✅ - Enterprise Syncfusion consultation 
+  - `bootstrap-generator` ✅ - Bootstrap 5 CSS framework consultation
+  - `minimal-generator` ✅ - Zero-dependency performance consultation
+  - `blazor-page-generator` ✅ - Comprehensive CRUD page development consultation
+**Phase 4.5 (Single-Page Popup CRUD)**: Skills 8a6-8a10 - Single-page CRUD with popup dialogs 🆕 **NEW (March 8, 2026)** 📋 **PENDING**
   - `blazor-viewmodel-generator` 📋 - ViewModel architecture consultation (Priority 1.6)
-  - `blazor-crud-page-generator` 📋 - Single-page CRUD interface design consultation (Priority 1.7)
+  - `blazor-page-generator` 📋 - Single-page CRUD interface design consultation (Priority 1.7)
   - `blazor-form-dialog-generator` 📋 - Form dialog architecture consultation (Priority 1.8)
   - `blazor-detail-dialog-generator` 📋 - Detail view dialog design consultation (Priority 1.9)
   - `blazor-delete-confirm-dialog-generator` 📋 - Safe deletion confirmation consultation (Priority 1.10)

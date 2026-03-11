@@ -90,6 +90,13 @@ This skill provides conversational guidance to help you select the optimal Blazo
 - 🎨 **Custom Design** - Build your own design system
 - 🧠 **Learning Focus** - Understand Blazor fundamentals
 
+## Final Step: Code Formatting
+
+After launching the selected generator skill and completing the architecture setup, the skill calls `solution-code-formatter` to ensure all generated code follows proper formatting standards:
+```bash
+bun run ../../utilities/solution-code-formatter/scripts/format-solution.ts [solution-path]
+```
+
 ## Selection Process
 
 I'll help you choose by:

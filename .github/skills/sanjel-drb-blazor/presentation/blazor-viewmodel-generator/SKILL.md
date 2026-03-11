@@ -19,7 +19,7 @@ description: Generate strategic guidance and architectural recommendations for V
 ## Description
 
 **Testing Requirement — MANDATORY:**
-After generating any ViewModel classes or validation strategies, you **MUST** also generate corresponding **NUnit unit tests (C#)** in the project's existing unit test project (e.g. `src/Sanjel.RequestManagement.Core.Tests/` or `Sanjel.RequestManagement.BusinessProcess.Tests/`). These tests are a required output deliverable — the skill implementation is NOT complete until the tests are generated.
+After generating any ViewModel classes or validation strategies, you **MUST** also generate corresponding **NUnit unit tests (C#)** in the project's Blazor test project (e.g. `src/Sanjel.RequestManagement.Blazor.Tests/`). These tests are a required output deliverable — the skill implementation is NOT complete until the tests are generated.
 
 **What to test (NUnit unit tests):**
 - Default property values are correct after construction
@@ -31,7 +31,7 @@ After generating any ViewModel classes or validation strategies, you **MUST** al
 
 **Test file conventions:**
 - Create a new test class following the naming pattern `{Entity}ViewModelTests.cs`
-- Place the file in the existing unit test project alongside other ViewModel tests
+- Place the file in the Blazor test project alongside other ViewModel tests
 - Use NUnit `[TestFixture]` / `[Test]` / `[TestCase]` attributes
 - No browser or Playwright dependency — these are pure in-process unit tests
 - Use `Assert.That(...)` NUnit fluent assertions
@@ -97,7 +97,7 @@ Generate strategic guidance and architectural recommendations for ViewModel clas
 
 ## Functional Capabilities
 
-### Core ViewModel Architecture Design
+### ViewModel Architecture Design
 - **Property Analysis**: Analyze entity properties and recommend appropriate ViewModel property types
 - **Validation Strategy**: Design comprehensive validation using Data Annotations
 - **Mapping Guidance**: Provide property mapping strategies between entities and ViewModels
@@ -127,6 +127,7 @@ Generate strategic guidance and architectural recommendations for ViewModel clas
 - **Service Interfaces**: Aligns with data transfer requirements
 - **Form Components**: Provides structured data for form validation
 - **Validation Services**: Integrates with validation infrastructure
+- **Blazor Pages**: ViewModels are generated in the Blazor project under appropriate namespaces (e.g., `Sanjel.RequestManagement.Blazor.Pages.{EntityName}.ViewModels`)
 
 ## Usage Scenarios
 
@@ -272,7 +273,7 @@ All generated ViewModel classes **MUST** be validated with NUnit unit tests. The
 using NUnit.Framework;
 using Sanjel.RequestManagement.Blazor.Pages.Request.ViewModels;
 
-namespace Sanjel.RequestManagement.Core.Tests
+namespace Sanjel.RequestManagement.Blazor.Tests
 {
     [TestFixture]
     public class RequestListViewModelTests
@@ -354,3 +355,31 @@ namespace Sanjel.RequestManagement.Core.Tests
 - **Best Practices Guides**: Detailed best practices documentation
 - **Common Patterns Library**: Reusable patterns for common scenarios
 - **Troubleshooting Guides**: Solutions for common implementation issues
+
+## ViewModel Output Location
+
+**IMPORTANT**: ViewModels are UI components and MUST be generated in the Blazor project, NOT in the Core project.
+
+### ViewModel File Location
+- **Project**: `src/Sanjel.RequestManagement.Blazor/`
+- **Namespace**: `Sanjel.RequestManagement.Blazor.Pages.{EntityName}s.ViewModels`
+- **File Path**: `src/Sanjel.RequestManagement.Blazor/Pages/{EntityName}s/ViewModels/{EntityName}ViewModel.cs`
+
+### Test File Location
+- **Project**: `src/Sanjel.RequestManagement.Blazor.Tests/`
+- **Namespace**: `Sanjel.RequestManagement.Blazor.Tests`
+- **File Path**: `src/Sanjel.RequestManagement.Blazor.Tests/{EntityName}ViewModelTests.cs`
+
+### Rationale
+ViewModels are data binding classes specifically designed for Blazor UI components. They:
+- Contain Data Annotations for form validation
+- Handle user input and UI state
+- Map between Blazor components and business entities
+- Are tightly coupled to Blazor's data binding mechanisms
+
+## Final Step: Code Formatting
+
+After generating all ViewModel classes and NUnit unit tests, the skill calls `solution-code-formatter` to ensure all generated code follows proper formatting standards:
+```bash
+bun run ../../utilities/solution-code-formatter/scripts/format-solution.ts [solution-path]
+```

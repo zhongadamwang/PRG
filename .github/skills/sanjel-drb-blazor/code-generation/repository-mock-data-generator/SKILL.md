@@ -413,3 +413,10 @@ A: Yes, create additional generation methods for specific scenarios.
 - Educational approach helps understand best practices for test data
 - Supports both development environment and testing scenarios
 - Ensure mock repositories are only used in non-production environments
+
+## Final Step: Code Formatting
+
+After generating all mock data and repository implementations, the skill calls `solution-code-formatter` to ensure all generated code follows proper formatting standards:
+```bash
+bun run ../../utilities/solution-code-formatter/scripts/format-solution.ts [solution-path]
+```
