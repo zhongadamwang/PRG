@@ -46,12 +46,5 @@ public class NotificationConfiguration : IEntityTypeConfiguration<Notification>
 			.HasColumnName("content")
 			.HasMaxLength(255)
 			.IsRequired();
-
-		// Relationship configurations
-		// One-to-one relationship with Request
-		builder.HasOne(e => e.Request)
-			.WithOne(r => r.Notification)
-			.HasForeignKey<Notification>(e => e.RequestId)
-			.OnDelete(DeleteBehavior.Cascade);
 	}
 }

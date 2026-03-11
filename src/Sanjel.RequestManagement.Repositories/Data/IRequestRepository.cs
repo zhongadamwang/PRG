@@ -29,21 +29,6 @@ public interface IRequestRepository : Sanjel.RequestManagement.Repositories.Comm
 	Task<List<Request>> GetByCompletionDateRangeAsync(DateTime startDate, DateTime endDate, CancellationToken cancellationToken = default);
 
 	/// <summary>
-	/// Gets Request entities related to a specific ReviewPackage.
-	/// </summary>
-	Task<List<Request>> GetByReviewPackageIdAsync(int reviewpackageId, CancellationToken cancellationToken = default);
-
-	/// <summary>
-	/// Gets Request entities related to a specific DataElement.
-	/// </summary>
-	Task<List<Request>> GetByDataElementIdAsync(int dataelementId, CancellationToken cancellationToken = default);
-
-	/// <summary>
-	/// Gets Request entities related to a specific Notification.
-	/// </summary>
-	Task<List<Request>> GetByNotificationIdAsync(int notificationId, CancellationToken cancellationToken = default);
-
-	/// <summary>
 	/// Gets a paged list of Request entities with custom ordering.
 	/// </summary>
 	Task<Sanjel.RequestManagement.Repositories.Common.PagedResult<Request>> GetPagedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default);

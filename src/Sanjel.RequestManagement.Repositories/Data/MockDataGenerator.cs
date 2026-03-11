@@ -35,18 +35,6 @@ public static class MockDataGenerator
 			var acknowledgmentDate = status >= StatusEnum.Submitted ? createdDate.AddDays(1) : DateTime.MinValue;
 			var completionDate = status >= StatusEnum.Completed ? createdDate.AddDays(7) : DateTime.MinValue;
 
-			var stateDiagram = new StateDiagram
-			{
-				DiagramId = $"DIAG-{i:D4}",
-				DiagramName = $"Diagram {i}",
-				FilePath = $"/path/to/diagram/{i}.pdf",
-				Version = "1.0",
-				ImportDate = DateTime.Now,
-				ParsingConfidence = 95.0m,
-				ClientId = $"{firstName}.{lastName}".ToLower(),
-				DiagramType = DiagramTypeEnum.ProcessFlow,
-			};
-
 			var request = new Request
 			{
 				RequestId = $"REQ-{i:D4}",
@@ -59,45 +47,6 @@ public static class MockDataGenerator
 				AssignedBy = $"MGR-{Random.Next(1, 5):D2}",
 				AcknowledgmentDate = acknowledgmentDate == DateTime.MinValue ? default : acknowledgmentDate,
 				CompletionDate = completionDate == DateTime.MinValue ? default : completionDate,
-				ReviewPackage = i % 3 == 0 ? new ReviewPackage
-				{
-					PackageId = $"PKG-{i:D4}",
-					RequestId = $"REQ-{i:D4}",
-					SubmittingEngineerId = $"ENG-{Random.Next(1, 20):D3}",
-					AssignedReviewerId = $"REV-{Random.Next(1, 10):D3}",
-					SubmissionDate = createdDate.AddDays(1),
-					ReviewStatus = ReviewStatusEnum.InProgress,
-					WorkSummary = $"Work summary for request {i}",
-					ReviewFeedback = "Pending review",
-				}
-				: null,
-				DataElement = i % 2 == 0 ? new List<DataElement>
-				{
-					new DataElement
-					{
-						ElementId = $"ELEM-{i:D4}",
-						RequestId = $"REQ-{i:D4}",
-						ElementType = ElementTypeEnum.Text,
-						RawValue = "100",
-						ValidatedValue = "100",
-						ValidationStatus = ValidationEnum.Valid,
-						SourceLocation = "Source A",
-						ValidationNotes = "Validated successfully",
-					},
-				}
-				: new List<DataElement>(),
-				Notification = i % 5 == 0 ? new Notification
-				{
-					NotificationId = $"NOTIF-{i:D4}",
-					RequestId = $"REQ-{i:D4}",
-					RecipientType = RecipientEnum.Engineer,
-					NotificationType = NotificationTypeEnum.Email,
-					DeliveryMethod = DeliveryEnum.Sent,
-					SentDate = createdDate.AddDays(-1),
-					Content = $"Notification content for request {i}",
-				}
-				: null,
-				StateDiagram = stateDiagram,
 			};
 
 			requests.Add(request);

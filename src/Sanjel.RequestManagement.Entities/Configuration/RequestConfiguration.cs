@@ -66,20 +66,5 @@ public class RequestConfiguration : IEntityTypeConfiguration<Request>
 		// Index on SourceEmail for performance
 		builder.HasIndex(e => e.SourceEmail)
 			.HasDatabaseName("IX_Request_SourceEmail");
-
-		// Relationship configurations
-		// One-to-one relationship with ReviewPackage
-		builder.HasOne(d => d.ReviewPackage)
-			.WithOne()
-			.HasForeignKey<ReviewPackage>("RequestId");
-		// One-to-many relationship with DataElement
-		builder.HasMany(d => d.DataElement)
-			.WithOne()
-			.HasForeignKey("RequestId")
-			.OnDelete(DeleteBehavior.Cascade);
-		// One-to-one relationship with Notification
-		builder.HasOne(d => d.Notification)
-			.WithOne()
-			.HasForeignKey<Notification>("RequestId");
 	}
 }

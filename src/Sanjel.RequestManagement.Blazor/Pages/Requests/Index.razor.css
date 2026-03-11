@@ -1,0 +1,28 @@
+.request-summary-card {
+	border: 0;
+	border-left: 0.35rem solid #0d6efd;
+}
+
+.request-summary-label {
+	color: #6c757d;
+	font-size: 0.8rem;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.request-summary-value {
+	color: #212529;
+	font-size: 1.85rem;
+	font-weight: 700;
+	line-height: 1;
+}
+
+.request-summary-detail {
+	color: #6c757d;
+	font-size: 0.95rem;
+}
+
+::deep .e-grid .e-headercell {
+	font-weight: 600;
+}

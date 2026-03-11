@@ -78,14 +78,4 @@ public class Request
 	/// </summary>
 	[Column("completion_date")]
 	public DateTime CompletionDate { get; set; }
-
-	// Navigation Properties
-
-	public virtual ReviewPackage? ReviewPackage { get; set; }
-
-	public virtual ICollection<DataElement> DataElement { get; set; } = new List<DataElement>();
-
-	public virtual Notification? Notification { get; set; }
-
-	public virtual StateDiagram? StateDiagram { get; set; }
 }

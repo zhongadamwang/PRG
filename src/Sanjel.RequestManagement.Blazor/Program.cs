@@ -25,24 +25,39 @@ else
 // Register HTTP Context Accessor
 builder.Services.AddHttpContextAccessor();
 
-var connectionString = builder.Configuration.GetConnectionString("SanjelMdm:DbConnectionString")
-	?? builder.Configuration["SanjelMdm:DbConnectionString"];
+var useMockData = builder.Configuration.GetValue<bool>("UseMockData");
+var connectionString = builder.Configuration["SanjelMdm:DbConnectionString"]
+	?? builder.Configuration.GetConnectionString("SanjelMdm");
 
-// Register RequestManagementDbContext
+// 添加调试信息
+Console.WriteLine($"=== DATABASE DEBUG INFO ===");
+Console.WriteLine($"Environment: {builder.Environment.EnvironmentName}");
+Console.WriteLine($"UseMockData: {useMockData}");
+Console.WriteLine($"Connection String: {connectionString}");
+Console.WriteLine($"================================");
+
+if (!useMockData && string.IsNullOrWhiteSpace(connectionString))
+{
+	throw new InvalidOperationException("Database connection string 'SanjelMdm:DbConnectionString' is required when UseMockData is false.");
+}
+
 builder.Services.AddDbContext<Sanjel.RequestManagement.Entities.Data.RequestManagementDbContext>(options =>
 {
-	options.UseSqlServer(connectionString);
+	if (!string.IsNullOrWhiteSpace(connectionString))
+	{
+		options.UseSqlServer(connectionString);
+	}
 });
 
-// Auto-register project dependencies using convention-based scanning
 var assemblies = new[]
 {
 	typeof(Sanjel.RequestManagement.Repositories.Common.IRepository<>).Assembly,  // Repositories
-	typeof(Sanjel.RequestManagement.Entities.Data.IDataAccess<>).Assembly,        // Entities/Data
+	typeof(Sanjel.RequestManagement.Entities.Data.IDataAccess<>).Assembly,         // Entities/DataAccess
 	typeof(Sanjel.RequestManagement.Core.Services.ICurrentUserService).Assembly, // Core
 	typeof(Sanjel.RequestManagement.Blazor.App).Assembly,                          // Blazor
 };
 
+// Use Scrutor for assembly scanning and auto-registration
 builder.Services.Scan(scan => scan
 	.FromAssemblies(assemblies)
 
@@ -69,8 +84,7 @@ builder.Services.Scan(scan => scan
 		.Where(type =>
 			type.Name.EndsWith("Repository") &&
 			type.IsClass &&
-			!type.IsAbstract &&
-			!type.Name.StartsWith("Mock"))) // Exclude Mock repositories from auto-registration
+			!type.IsAbstract))
 	.AsMatchingInterface()
 	.WithScopedLifetime()
 
@@ -79,8 +93,7 @@ builder.Services.Scan(scan => scan
 		.Where(type =>
 			type.Name.EndsWith("Repository") &&
 			type.IsClass &&
-			!type.IsAbstract &&
-			!type.Name.StartsWith("Mock"))) // Exclude Mock repositories from auto-registration
+			!type.IsAbstract))
 	.AsImplementedInterfaces()
 	.WithScopedLifetime()
 
@@ -107,11 +120,8 @@ builder.Services.Scan(scan => scan
 	.WithScopedLifetime()
 );
 
-// Configure Mock Repository based on appsettings
-var useMockData = builder.Configuration.GetValue<bool>("UseMockData");
 if (useMockData)
 {
-	// Override IRepository<Request> registration with Mock implementation
 	builder.Services.AddScoped<Sanjel.RequestManagement.Repositories.Data.IRequestRepository, Sanjel.RequestManagement.Repositories.Data.MockRequestRepository>();
 	Console.WriteLine(">>> Mock Repository enabled for development/testing");
 }

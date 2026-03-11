@@ -55,12 +55,5 @@ public class ReviewPackageConfiguration : IEntityTypeConfiguration<ReviewPackage
 	.HasColumnName("review_feedback")
 	.HasMaxLength(255)
 	.IsRequired();
-
-		// Relationship configurations
-		// One-to-one relationship with Request
-		builder.HasOne(e => e.Request)
-			.WithOne(r => r.ReviewPackage)
-			.HasForeignKey<ReviewPackage>(e => e.RequestId)
-			.OnDelete(DeleteBehavior.Cascade);
 	}
 }

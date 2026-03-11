@@ -1,0 +1,103 @@
+@using Sanjel.RequestManagement.Blazor.Pages.Requests.ViewModels
+@using Sanjel.RequestManagement.Entities.Entities
+@using Microsoft.AspNetCore.Components.Forms
+
+<EditForm EditContext="@EditContext" OnValidSubmit="HandleValidSubmitAsync">
+	<DataAnnotationsValidator />
+
+	<div class="row g-3">
+
+		<div class="col-12 col-md-6">
+			<label class="form-label fw-semibold" for="dlg-request-id">Request ID</label>
+			@if (IsEdit)
+			{
+				<input id="dlg-request-id" class="form-control" value="@ViewModel.RequestId" disabled />
+			}
+			else
+			{
+				<SfTextBox ID="dlg-request-id" Placeholder="e.g. REQ-0001" @bind-Value="ViewModel.RequestId" />
+				<ValidationMessage For="@(() => ViewModel.RequestId)" />
+			}
+		</div>
+
+		<div class="col-12 col-md-6">
+			<label class="form-label fw-semibold" for="dlg-client-id">Client ID</label>
+			<SfTextBox ID="dlg-client-id" Placeholder="e.g. CLIENT-001" @bind-Value="ViewModel.ClientId" />
+			<ValidationMessage For="@(() => ViewModel.ClientId)" />
+		</div>
+
+		<div class="col-12 col-md-6">
+			<label class="form-label fw-semibold" for="dlg-source-email">Source Email</label>
+			<SfTextBox ID="dlg-source-email" Placeholder="requestor@example.com" @bind-Value="ViewModel.SourceEmail" />
+			<ValidationMessage For="@(() => ViewModel.SourceEmail)" />
+		</div>
+
+		<div class="col-12 col-md-6">
+			<label class="form-label fw-semibold" for="dlg-engineer-id">Assigned Engineer ID</label>
+			<SfTextBox ID="dlg-engineer-id" Placeholder="e.g. ENG-001" @bind-Value="ViewModel.AssignedEngineerId" />
+			<ValidationMessage For="@(() => ViewModel.AssignedEngineerId)" />
+		</div>
+
+		<div class="col-12 col-md-6">
+			<label class="form-label fw-semibold" for="dlg-assigned-by">Assigned By</label>
+			<SfTextBox ID="dlg-assigned-by" Placeholder="e.g. MGR-001" @bind-Value="ViewModel.AssignedBy" />
+			<ValidationMessage For="@(() => ViewModel.AssignedBy)" />
+		</div>
+
+		<div class="col-12 col-md-6">
+			<label class="form-label fw-semibold">Status</label>
+			<SfDropDownList TValue="StatusEnum" TItem="EnumOption<StatusEnum>"                            DataSource="@StatusOptions"
+											@bind-Value="ViewModel.Status">
+				<DropDownListFieldSettings Text="label" Value="value" />
+			</SfDropDownList>
+			<ValidationMessage For="@(() => ViewModel.Status)" />
+		</div>
+
+		<div class="col-12 col-md-6">
+			<label class="form-label fw-semibold">Priority</label>
+			<SfDropDownList TValue="PriorityEnum" TItem="EnumOption<PriorityEnum>" DataSource="@PriorityOptions"
+											@bind-Value="ViewModel.Priority">
+				<DropDownListFieldSettings Text="label" Value="value" />
+			</SfDropDownList>
+			<ValidationMessage For="@(() => ViewModel.Priority)" />
+		</div>
+
+		<div class="col-12 col-md-6">
+			<label class="form-label fw-semibold">Created Date</label>
+			<SfDateTimePicker TValue="DateTime" @bind-Value="ViewModel.CreatedDate" />
+			<ValidationMessage For="@(() => ViewModel.CreatedDate)" />
+		</div>
+
+		<div class="col-12 col-md-6">
+			<label class="form-label fw-semibold">Acknowledgment Date</label>
+			<SfDateTimePicker TValue="DateTime" @bind-Value="ViewModel.AcknowledgmentDate" />
+			<ValidationMessage For="@(() => ViewModel.AcknowledgmentDate)" />
+		</div>
+
+		<div class="col-12 col-md-6">
+			<label class="form-label fw-semibold">Completion Date</label>
+			<SfDateTimePicker TValue="DateTime" @bind-Value="ViewModel.CompletionDate" />
+			<ValidationMessage For="@(() => ViewModel.CompletionDate)" />
+		</div>
+
+		@if (!string.IsNullOrWhiteSpace(FormError))
+		{
+			<div class="col-12">
+				<div class="alert alert-danger mb-0" role="alert">@FormError</div>
+			</div>
+		}
+
+		<div class="col-12 d-flex justify-content-end gap-2 pt-2">
+			<button type="button" class="btn btn-secondary" @onclick="HandleCancelAsync" disabled="@IsSaving">
+				Cancel
+			</button>
+			<button type="submit" class="btn btn-primary" disabled="@IsSaving">
+				@if (IsSaving)
+				{
+					<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+				}
+				@(IsEdit ? "Save Changes" : "Create Request")
+			</button>
+		</div>
+	</div>
+</EditForm>

@@ -11,6 +11,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="bunit" Version="1.24.10" />
 		<PackageReference Include="Microsoft.Playwright" Version="1.44.0" />
 		<PackageReference Include="Microsoft.Playwright.NUnit" Version="1.44.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.0" />
@@ -28,6 +29,8 @@
 	<ItemGroup>
 		<ProjectReference
 			Include="..\Sanjel.RequestManagement.Blazor\Sanjel.RequestManagement.Blazor.csproj" />
+		<ProjectReference
+			Include="..\Sanjel.RequestManagement.Entities\Sanjel.RequestManagement.Entities.csproj" />
 	</ItemGroup>
 
 </Project>

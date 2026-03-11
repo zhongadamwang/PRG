@@ -214,33 +214,6 @@ public class MockRequestRepository : IRequestRepository
 	}
 
 	/// <inheritdoc/>
-	public Task<List<Request>> GetByReviewPackageIdAsync(int reviewpackageId, CancellationToken cancellationToken = default)
-	{
-		cancellationToken.ThrowIfCancellationRequested();
-		// Mock implementation - filter by ReviewPackage navigation property
-		var requests = this._mockData.Where(r => r.ReviewPackage != null).ToList();
-		return Task.FromResult(requests);
-	}
-
-	/// <inheritdoc/>
-	public Task<List<Request>> GetByDataElementIdAsync(int dataelementId, CancellationToken cancellationToken = default)
-	{
-		cancellationToken.ThrowIfCancellationRequested();
-		// Mock implementation - filter by DataElement navigation property
-		var requests = this._mockData.Where(r => r.DataElement.Any(d => true)).ToList();
-		return Task.FromResult(requests);
-	}
-
-	/// <inheritdoc/>
-	public Task<List<Request>> GetByNotificationIdAsync(int notificationId, CancellationToken cancellationToken = default)
-	{
-		cancellationToken.ThrowIfCancellationRequested();
-		// Mock implementation - filter by Notification navigation property
-		var requests = this._mockData.Where(r => r.Notification != null).ToList();
-		return Task.FromResult(requests);
-	}
-
-	/// <inheritdoc/>
 	public Task<PagedResult<Request>> GetPagedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
 	{
 		var skip = (pageNumber - 1) * pageSize;

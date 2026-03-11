@@ -50,17 +50,5 @@ public class DataElementConfiguration : IEntityTypeConfiguration<DataElement>
 			.HasColumnName("validation_notes")
 			.HasMaxLength(255)
 			.IsRequired();
-
-		// Relationship configurations
-		// Foreign key reference to Request
-		builder.HasOne(e => e.Request)
-			.WithMany(r => r.DataElement)
-			.HasForeignKey(e => e.RequestId)
-			.OnDelete(DeleteBehavior.Cascade);
-
-		builder.HasOne(e => e.StateDiagram)
-			.WithMany()
-			.HasForeignKey(e => e.ElementId)
-			.OnDelete(DeleteBehavior.Restrict);
 	}
 }

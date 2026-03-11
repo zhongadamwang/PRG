@@ -50,15 +50,5 @@ public class StateDiagramConfiguration : IEntityTypeConfiguration<StateDiagram>
 
 		builder.Property(e => e.DiagramType)
 	.HasColumnName("diagram_type");
-
-		// Relationship configurations
-		// One-to-one relationship with DataElement
-		builder.HasOne(d => d.DataElement)
-			.WithOne()
-			.HasForeignKey<DataElement>("StateDiagramId");
-		// One-to-one relationship with Request
-		builder.HasOne(d => d.Request)
-			.WithOne()
-			.HasForeignKey<Request>("StateDiagramId");
 	}
 }

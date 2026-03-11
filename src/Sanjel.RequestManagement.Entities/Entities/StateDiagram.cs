@@ -63,9 +63,5 @@ public class StateDiagram
 	[Column("diagram_type")]
 	public DiagramTypeEnum DiagramType { get; set; }
 
-	// Navigation Properties
-
-	public virtual DataElement? DataElement { get; set; }
-
-	public virtual Request? Request { get; set; }
+	// Navigation Properties removed: StateDiagram does not own relationships to Request or DataElement.
 }
