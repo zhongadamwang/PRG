@@ -41,6 +41,25 @@ public partial class Index : ComponentBase
 		new("Completed", this.Requests.Count(request => request.Status == StatusEnum.Completed).ToString(), "Closed successfully"),
 	];
 
+	/// <summary>
+	/// Gets the CSS class for status badges in the delete confirmation dialog.
+	/// </summary>
+	protected static string GetStatusBadgeClass(StatusEnum status)
+	{
+		return status switch
+		{
+			StatusEnum.Draft => "bg-secondary",
+			StatusEnum.Submitted => "bg-primary",
+			StatusEnum.InProgress => "bg-warning text-dark",
+			StatusEnum.UnderReview => "bg-info text-dark",
+			StatusEnum.Approved => "bg-info",
+			StatusEnum.Rejected => "bg-danger",
+			StatusEnum.Completed => "bg-success",
+			StatusEnum.Cancelled => "bg-danger",
+			_ => "bg-secondary"
+		};
+	}
+
 	protected override async Task OnInitializedAsync()
 	{
 		this.IsDialogVisible = false;
@@ -141,6 +160,97 @@ public partial class Index : ComponentBase
 	protected void OnDialogCancel()
 	{
 		this.IsDialogVisible = false;
+	}
+
+	// Delete confirmation dialog state
+	protected bool IsDeleteConfirmationVisible { get; private set; } = false;
+
+	protected bool IsDeleting { get; private set; } = false;
+
+	protected Request? RequestToDelete { get; private set; }
+
+	protected string? DeleteConstraintMessage { get; private set; }
+
+	/// <summary>
+	/// Shows the delete confirmation dialog for the specified request.
+	/// </summary>
+	protected async Task ShowDeleteConfirmationAsync(Request? request)
+	{
+		if (request is null)
+		{
+			return;
+		}
+
+		this.RequestToDelete = request;
+		this.DeleteConstraintMessage = null;
+		this.ErrorMessage = null;
+		this.SuccessMessage = null;
+		this.IsDeleting = false;
+
+		// Validate delete constraints
+		try
+		{
+			var (canDelete, constraintMessage) = await this.RequestService.ValidateDeleteAsync(request.RequestId);
+			if (!canDelete)
+			{
+				this.DeleteConstraintMessage = constraintMessage;
+			}
+		}
+		catch (Exception ex)
+		{
+			this.DeleteConstraintMessage = $"Unable to validate delete operation: {ex.Message}";
+		}
+
+		this.IsDeleteConfirmationVisible = true;
+	}
+
+	/// <summary>
+	/// Handles the delete confirmation action.
+	/// </summary>
+	protected async Task OnDeleteConfirmAsync()
+	{
+		if (this.RequestToDelete is null || this.IsDeleting)
+		{
+			return;
+		}
+
+		this.IsDeleting = true;
+
+		try
+		{
+			// Perform delete operation
+			await this.RequestService.DeleteAsync(this.RequestToDelete);
+
+			// Remove from local collection for optimistic update
+			var list = this.Requests.ToList();
+			list.RemoveAll(r => r.RequestId == this.RequestToDelete.RequestId);
+			this.Requests = list;
+
+			this.SuccessMessage = $"Request '{this.RequestToDelete.RequestId}' deleted successfully.";
+			this.IsDeleteConfirmationVisible = false;
+			this.RequestToDelete = null;
+		}
+		catch (Exception ex)
+		{
+			this.ErrorMessage = $"Delete operation failed: {ex.Message}";
+			// Reload data to ensure consistency after error
+			await this.LoadRequestsAsync();
+		}
+		finally
+		{
+			this.IsDeleting = false;
+		}
+	}
+
+	/// <summary>
+	/// Handles the delete cancellation action.
+	/// </summary>
+	protected void OnDeleteCancel()
+	{
+		this.IsDeleteConfirmationVisible = false;
+		this.RequestToDelete = null;
+		this.DeleteConstraintMessage = null;
+		this.IsDeleting = false;
 	}
 
 	private async Task LoadRequestsAsync()

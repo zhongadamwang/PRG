@@ -46,7 +46,7 @@
 
 		<div class="col-12 col-md-6">
 			<label class="form-label fw-semibold">Status</label>
-			<SfDropDownList TValue="StatusEnum" TItem="EnumOption<StatusEnum>"                            DataSource="@StatusOptions"
+			<SfDropDownList TValue="StatusEnum" TItem="EnumOption<StatusEnum>" DataSource="@StatusOptions"
 											@bind-Value="ViewModel.Status">
 				<DropDownListFieldSettings Text="label" Value="value" />
 			</SfDropDownList>

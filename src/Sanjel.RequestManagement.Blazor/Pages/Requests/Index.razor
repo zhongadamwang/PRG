@@ -89,9 +89,15 @@
 										@{
 											var request = context as Request;
 										}
-										<button type="button" class="btn btn-sm btn-primary" @onclick="@(() => ShowEditDialog(request))">
-											Edit
-										</button>
+										<div class="d-flex gap-1">
+											<button type="button" class="btn btn-sm btn-primary" @onclick="@(() => ShowEditDialog(request))">
+												Edit
+											</button>
+											<button type="button" class="btn btn-sm btn-danger"
+															@onclick="@(() => ShowDeleteConfirmationAsync(request))">
+												Delete
+											</button>
+										</div>
 									</Template>
 								</GridColumn>
 							</GridColumns>
@@ -107,5 +113,80 @@
 					<RequestDialog ViewModel="DialogViewModel" IsEdit="IsEditMode" OnSave="OnDialogSaveAsync"
 												 OnCancel="OnDialogCancel" />
 				</Content>
+			</DialogTemplates>
+		</SfDialog>
+
+		<!-- Delete Confirmation Dialog -->
+		<SfDialog Width="500px" Visible="@IsDeleteConfirmationVisible" ShowCloseIcon="false" IsModal="true"
+							Header="Confirm Delete">
+			<DialogTemplates>
+				<Content>
+					@if (RequestToDelete != null)
+					{
+						<div class="p-3">
+							<div class="mb-3">
+								<i class="fas fa-exclamation-triangle text-warning me-2"></i>
+								<strong>Are you sure you want to delete this request?</strong>
+							</div>
+							<div class="mb-3">
+								<table class="table table-borderless table-sm">
+									<tbody>
+										<tr>
+											<td class="fw-bold">Request ID:</td>
+											<td>@RequestToDelete.RequestId</td>
+										</tr>
+										<tr>
+											<td class="fw-bold">Client:</td>
+											<td>@RequestToDelete.ClientId</td>
+										</tr>
+										<tr>
+											<td class="fw-bold">Status:</td>
+											<td>
+												<span class="badge @GetStatusBadgeClass(RequestToDelete.Status)">
+													@RequestToDelete.Status
+												</span>
+											</td>
+										</tr>
+										<tr>
+											<td class="fw-bold">Created:</td>
+											<td>@RequestToDelete.CreatedDate.ToString("MMM dd, yyyy")</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							@if (!string.IsNullOrWhiteSpace(DeleteConstraintMessage))
+							{
+								<div class="alert alert-danger mb-3" role="alert">
+									<i class="fas fa-ban me-2"></i>
+									@DeleteConstraintMessage
+								</div>
+							}
+							<div class="text-muted small">
+								<strong>Warning:</strong> This action cannot be undone. The request and all associated data will be
+								permanently removed.
+							</div>
+						</div>
+					}
+				</Content>
+				<FooterTemplate>
+					<div class="d-flex justify-content-end gap-2">
+						<button type="button" class="btn btn-secondary" @onclick="OnDeleteCancel" disabled="@IsDeleting">
+							Cancel
+						</button>
+						<button type="button" class="btn btn-danger" @onclick="OnDeleteConfirmAsync"
+										disabled="@(IsDeleting || !string.IsNullOrWhiteSpace(DeleteConstraintMessage))">>
+							@if (IsDeleting)
+							{
+								<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+								<span>Deleting...</span>
+							}
+							else
+							{
+								<i class="fas fa-trash me-2"></i>
+								<span>Delete Request</span>
+							}
+						</button>
+					</div>
+				</FooterTemplate>
 			</DialogTemplates>
 		</SfDialog>
