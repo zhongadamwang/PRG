@@ -1,0 +1,34 @@
+---
+name: {{name}}
+description: {{description}}
+---
+
+## Overview
+
+{{description}}
+
+## Actor
+
+{{actor}}
+
+## Type
+
+Orchestrator — coordinates multiple sub-skills to achieve the overall goal.
+
+## Flow
+
+```mermaid
+graph TB
+    Start([Start]) --> SK1[skill-01: ...]
+    SK1 --> SK2[skill-02: ...]
+    SK2 --> End([Done])
+```
+
+## Steps
+
+1. Read inputs: `in.json`
+2. Invoke **skill-01**: ...
+3. Invoke **skill-02**: ...
+4. Return outputs
+
+> For inputs and outputs, see [structure.json](structure.json).

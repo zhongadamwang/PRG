@@ -1,0 +1,34 @@
+---
+name: {{name}}
+description: {{description}}
+---
+
+## Overview
+
+{{description}}
+
+## Actor
+
+{{actor}}
+
+## Type
+
+Task — implements a specific, self-contained unit of work.
+
+## Flow
+
+```mermaid
+graph TB
+    Start([Start]) --> Step1[Read inputs]
+    Step1 --> Step2[Process / generate]
+    Step2 --> Step3[Write outputs]
+    Step3 --> End([Done])
+```
+
+## Steps
+
+1. Read inputs from `in.json`
+2. ...
+3. Write outputs
+
+> For inputs and outputs, see [structure.json](structure.json).
