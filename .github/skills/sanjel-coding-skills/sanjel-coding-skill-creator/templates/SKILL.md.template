@@ -5,7 +5,7 @@ description: {{description}}
 
 ## Overview
 
-{{description}}
+{{overview}}
 
 ## Actor
 
@@ -19,16 +19,31 @@ Task — implements a specific, self-contained unit of work.
 
 ```mermaid
 graph TB
-    Start([Start]) --> Step1[Read inputs]
-    Step1 --> Step2[Process / generate]
-    Step2 --> Step3[Write outputs]
-    Step3 --> End([Done])
+	Start([Start]) --> R[Read inputs from in.json]
+	R --> V[Validate inputs]
+	V --> P[Apply processing rules]
+	P --> G[Generate outputs based on rules]
+	G --> W[Write outputs to target files]
+	W --> End([Done])
+
+	classDef input fill:#dae8fc,stroke:#6c8ebf;
+	classDef process fill:#fff2cc,stroke:#d6b656;
+	classDef output fill:#d5e8d4,stroke:#82b366;
+
+	class R,V input;
+	class P,G process;
+	class W output;
 ```
 
 ## Steps
 
-1. Read inputs from `in.json`
-2. ...
-3. Write outputs
+1. Read inputs: `in.json` or other input files
+2. Validate inputs: check data completeness, types, and constraints
+3. Apply processing rules: [describe the specific rules/logic to apply]
+  - Rule 1: [description]
+  - Rule 2: [description]
+  - Rule 3: [description]
+4. Generate outputs: transform validated inputs according to rules
+5. Write outputs: save results to [output file paths]
 
 > For inputs and outputs, see [structure.json](structure.json).

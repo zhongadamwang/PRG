@@ -1,0 +1,18 @@
+{
+	"name": {
+		"type": "string",
+		"description": "Skill name (kebab-case recommended)"
+	},
+	"type": {
+		"type": "enum",
+		"values": [ "Orchestrator", "Task" ]
+	},
+	"actor": {
+		"type": "enum",
+		"values": [ ".NET Senior Developer", "Frontend Engineer", "Full Stack Developer" ]
+	},
+	"AIDriven": {
+		"type": "boolean",
+		"description": "Whether this task skill is AI-driven (only applies to Task type)"
+	}
+}

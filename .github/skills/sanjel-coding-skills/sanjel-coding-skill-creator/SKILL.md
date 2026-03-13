@@ -5,7 +5,7 @@ description: Creates a new sanjel-coding skill with a consistent structure, incl
 
 ## Overview
 
-Scaffolds a new skill under `.github/skills/` following the standard sanjel-coding-skills structure. Given a skill definition in `in.json`, it generates all required files based on the skill's **type**: `Orchestrator` or `Task`.
+Scaffolds a new skill under `.github/skills/` following the standard sanjel-coding-skills structure. Prompts the user for required values, uses AI to generate descriptions, then invokes a script to create all required files based on the selected **type**: `Orchestrator` or `Task`.
 
 ## Actor
 
@@ -19,30 +19,39 @@ Task
 
 All skills belong to one of two categories:
 
-| Type | Role | Key Characteristics |
-|---|---|---|
-| **Orchestrator** | Coordinates multiple sub-skills by invoking them in sequence according to a flow | Flow diagram shows sub-skill invocations; minimal or no script logic; ships with `in.json` and optional `media.json` |
-| **Task** | Executes a specific, self-contained unit of work | Detailed Steps section; uses `scripts/` and `templates/` directories for implementation |
+| Type | Role | Key Characteristics | Required Files/Directories |
+|---|---|---|---|
+| **Orchestrator** | Orchestrator - coordinates multiple sub-skills by invoking them in sequence | Flow diagram shows sub-skill invocations; minimal or no script logic; ships with `SKILL.md`, `structure.json`, `in.json` (placeholder) and optional `media.json` | `SKILL.md`, `structure.json`, `in.json`, `media.json` (optional) |
+| **Task** | Task - executes a specific, self-contained unit of work | Detailed Steps section; requires `scripts/*.ts` if non-AI driven; typically includes `templates/*` for code generation | `SKILL.md`, `structure.json`, `templates/*`, `scripts/*.ts` (if non-AI driven), `in.json` (optional) |
 
 ## Flow
 
 ```mermaid
 graph TB
-    Start([Start]) --> R[Read in.json]
-    R --> T{type?}
-    T -->|Orchestrator| RO["Render SKILL.orchestrator.md.template\nCreate in.json placeholder"]
-    T -->|Task| RT["Render SKILL.md.template\nScaffold scripts/ and templates/"]
-    RO --> SJ[Render structure.json from template]
-    RT --> SJ
-    SJ --> End([New skill directory created])
+  Start([Start]) --> R[Read in.json to get promptable fields]
+  R --> P[Prompt user for values]
+  P --> G[Generate description and overview using AI based on name and type]
+  G --> CS[Invoke script: bun scripts/create-skill.ts <params>]
+  CS --> End([New skill directory created])
 ```
 
 ## Steps
 
-1. Read `in.json` for the new skill's `name`, `description`, `type`, `actor`, `ins`, and `outs`
-2. Based on `type`:
-   - **Orchestrator**: render `SKILL.md` from `templates/SKILL.orchestrator.md.template`; create an empty `in.json` placeholder
-   - **Task**: render `SKILL.md` from `templates/SKILL.md.template`; scaffold empty `scripts/` and `templates/` directories
-3. Render `structure.json` from `templates/structure.json.template` for both types
+1. Read `in.json` to get promptable field definitions
+2. Prompt user for values based on the field definitions
+3. Use AI to generate `description` and `overview` based on `name` and `type`
+4. Invoke script with all parameters: `bun scripts/create-skill.ts <name> <type> <actor> <AIDriven> <description> <overview> <ins> <outs>`
+5. Script creates the skill directory and files based on type and AIDriven flag
 
-> For inputs and outputs, see [structure.json](structure.json).
+## File Structure
+
+### Standard Skill Directory Layout
+```
+skill-name/
+├── SKILL.md           # Skill definition with overview, actor, type, flow, and steps
+├── structure.json     # Defines inputs (ins), outputs (outs), and optional media reference
+├── media.json         # (Optional) Media assets referenced in the skill
+├── in.json            # (Optional) Input data for skill execution; required for Orchestrator
+├── scripts/           # (Task type, optional) TypeScript scripts for non-AI driven execution
+└── templates/         # (Task type, optional) Template files for code generation
+```

@@ -1,8 +1,6 @@
 {
 	"name": "{{name}}",
-	"description": "{{description}}",
-	"type": "{{type}}",
-	"actor": "{{actor}}",
 	"ins": {{ins}},
+	"media": "media.json",
 	"outs": {{outs}}
 }

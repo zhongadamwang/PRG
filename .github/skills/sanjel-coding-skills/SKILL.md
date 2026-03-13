@@ -19,10 +19,10 @@ Orchestrator - coordinates multiple skills and subprocesses to achieve the overa
 
 ```mermaid
 graph TB
-	Start([Start]) --> S01[skill-01: System Architecture Generation]
-	S01 --> S02[skill-02: Entity Class Generation]
-	S02 --> S03[skill-03: page-coding-skills]
-	click S03 "./page-generation/plan.md"
+	Start([Start]) --> S01[system-architecture-generation]
+	S01 --> S02[entity-class-generation]
+	S02 --> S03[page-coding-skills]
+	click S03 "./page-generation/SKILL.md"
 
 	S03 --> End([Complete Code Files])
 
@@ -33,13 +33,5 @@ graph TB
 	class S01 arch;
 	class S02,S03 core;
 ```
-
-## Steps
-
-1. Read inputs: `domain-model.json`
-2. Invoke **system-architecture-generation** → generates solution file and project folder structure
-3. Invoke **entity-class-generation** → generates `Entities/*.cs` from system-architecture-generation output
-4. Invoke **page-generation** subprocess → generates repositories, page components, form pages, and list pages
-5. Return all generated code files
 
 > For inputs and outputs, see [structure.json](structure.json).

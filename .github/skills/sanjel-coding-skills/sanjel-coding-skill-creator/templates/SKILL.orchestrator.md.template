@@ -5,7 +5,7 @@ description: {{description}}
 
 ## Overview
 
-{{description}}
+{{overview}}
 
 ## Actor
 
@@ -19,16 +19,30 @@ Orchestrator — coordinates multiple sub-skills to achieve the overall goal.
 
 ```mermaid
 graph TB
-    Start([Start]) --> SK1[skill-01: ...]
-    SK1 --> SK2[skill-02: ...]
-    SK2 --> End([Done])
+	Start([Start]) --> R[Read inputs from in.json]
+	R --> SK1[skill-01]
+	SK1 --> C1{condition?}
+	C1 -->|true| SK2[skill-02]
+	C1 -->|false| SK3[skill-03]
+	SK2 --> SK4[skill-04]
+	SK3 --> SK4
+	SK4 --> End([Done])
+
+	classDef skill fill:#dae8fc,stroke:#6c8ebf;
+	classDef condition fill:#fff2cc,stroke:#d6b656;
+
+	class SK1,SK2,SK3,SK4 skill;
+	class C1 condition;
 ```
 
 ## Steps
 
 1. Read inputs: `in.json`
-2. Invoke **skill-01**: ...
-3. Invoke **skill-02**: ...
-4. Return outputs
+2. Invoke **skill-01**: [description of what this skill does]
+3. Evaluate condition: [description of the decision point]
+  - If [condition is true]: invoke **skill-02**: [description]
+  - If [condition is false]: invoke **skill-03**: [description]
+4. Invoke **skill-04**: [description of final skill]
+5. Return outputs from all invoked skills
 
 > For inputs and outputs, see [structure.json](structure.json).
