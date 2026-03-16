@@ -1,0 +1,22 @@
+{
+	"domainModelPath": {
+		"type": "string",
+		"description": "Path to the domain model markdown file. Required when metadataPath is not provided."
+	},
+	"metadataPath": {
+		"type": "string",
+		"description": "Optional path to an existing metadata JSON file. When provided, markdown parsing is skipped."
+	},
+	"metadataOutputPath": {
+		"type": "string",
+		"description": "Optional output path for generated metadata JSON when markdown parsing runs."
+	},
+	"entityFilter": {
+		"type": "string",
+		"description": "Comma-separated list of entity names to focus markdown parsing on (optional)."
+	},
+	"schemaOutputPath": {
+		"type": "string",
+		"description": "Optional output path for generated SQL DDL. When provided, the dispatcher invokes domain-model-sql-generator."
+	}
+}

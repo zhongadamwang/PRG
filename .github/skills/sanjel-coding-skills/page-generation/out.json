@@ -1,0 +1,22 @@
+{
+	"repositoryInterfacePaths": {
+		"type": "array",
+		"description": "Generated repository interface file paths."
+	},
+	"sharedComponentPaths": {
+		"type": "array",
+		"description": "Generated shared layout, navigation, or base component file paths."
+	},
+	"formPagePaths": {
+		"type": "array",
+		"description": "Generated Create, Edit, Details, and Delete page file paths."
+	},
+	"listPagePaths": {
+		"type": "array",
+		"description": "Generated list or index page file paths."
+	},
+	"generatedPageArtifacts": {
+		"type": "array",
+		"description": "Aggregate list of page-layer artifacts produced across all coordinated stages."
+	}
+}

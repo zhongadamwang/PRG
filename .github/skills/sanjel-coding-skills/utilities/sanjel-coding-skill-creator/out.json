@@ -1,0 +1,23 @@
+{
+	"skillDirectory": {
+		"type": "string",
+		"description": "Path to the scaffolded skill directory."
+	},
+	"createdPaths": {
+		"type": "array",
+		"description": "List of created files and directories relative to the scaffolded skill directory."
+	},
+	"inputContractPath": {
+		"type": "string",
+		"description": "Path to the generated in.json file."
+	},
+	"outputContractPath": {
+		"type": "string",
+		"description": "Path to the generated out.json file."
+	},
+	"executionMode": {
+		"type": "enum",
+		"values": [ "coordination-only", "AI-driven", "script-driven" ],
+		"description": "Execution mode recorded for the generated skill."
+	}
+}

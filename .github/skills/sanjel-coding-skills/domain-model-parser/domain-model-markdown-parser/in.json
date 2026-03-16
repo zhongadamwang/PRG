@@ -1,0 +1,14 @@
+{
+	"domainModelPath": {
+		"type": "string",
+		"description": "Path to the domain model markdown file (e.g. orgModel/.../domain-model.md)"
+	},
+	"outputPath": {
+		"type": "string",
+		"description": "Output path for the generated JSON metadata file (optional, defaults to same directory as input)"
+	},
+	"entityFilter": {
+		"type": "string",
+		"description": "Comma-separated list of entity names to focus parsing on (optional, parses all entities if omitted)"
+	}
+}

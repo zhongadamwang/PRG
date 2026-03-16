@@ -1,0 +1,59 @@
+---
+name: {{name}}
+description: {{description}}
+---
+
+## Overview
+
+{{overview}}
+
+## Actor
+
+{{actor}}
+
+## Type
+
+Task - implements one concrete, self-contained unit of business logic.
+
+## Responsibility
+
+{{responsibility}}
+
+## Contracts
+
+- The authoritative input contract is defined in [in.json](in.json).
+- The authoritative output contract is defined in [out.json](out.json).
+
+## Flow Intent
+
+{{flowSummary}}
+
+## Flow
+
+```mermaid
+graph TB
+
+Start([Start]) --> R[Read input values that conform to in.json]
+R --> V[Validate required fields and constraints]
+V --> P[Execute the core business logic]
+P --> O[Emit outputs that conform to out.json]
+O --> End([Done])
+
+classDef input fill:#dae8fc,stroke:#6c8ebf;
+classDef process fill:#fff2cc,stroke:#d6b656;
+classDef output fill:#d5e8d4,stroke:#82b366;
+
+class R,V input;
+class P process;
+class O output;
+```
+
+## Execution Guidance
+
+1. Read runtime input values using the schema defined in [in.json](in.json).
+2. Keep the skill focused on one concrete responsibility: {{responsibility}}
+3. Use this section to document validation rules, transformation rules, edge cases, and missing-input handling that are not obvious from the flow diagram.
+4. If the work is deterministic, implement it in `scripts/*.ts` and run it with Bun.
+5. If reusable output patterns are needed, load them from `templates/`.
+6. When a script is used, pass inputs through command-line arguments and emit structured outputs through standard output in a format aligned with [out.json](out.json).
+7. If required input values are missing and cannot be derived from available context, ask the user for the missing information. Prefer constrained choices over free-text input when possible.

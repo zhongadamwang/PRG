@@ -1,1 +1,26 @@
-{ }
+{
+	"domainModelPath": {
+		"type": "string",
+		"description": "Path to the domain model markdown file that starts the overall workflow."
+	},
+	"metadataPath": {
+		"type": "string",
+		"description": "Optional path to an existing metadata JSON file. If omitted, the workflow should run domain-model-parser first."
+	},
+	"entityDirectoryPath": {
+		"type": "string",
+		"description": "Path to the generated entity classes consumed by page-generation. Required when the upstream entity generation stage runs outside this skill suite."
+	},
+	"schemaOutputPath": {
+		"type": "string",
+		"description": "Optional target path for the generated SQL DDL file."
+	},
+	"solutionPath": {
+		"type": "string",
+		"description": "Optional path to the solution file used by solution-code-formatter."
+	},
+	"formatSolution": {
+		"type": "boolean",
+		"description": "Whether to invoke solution-code-formatter after generation completes."
+	}
+}

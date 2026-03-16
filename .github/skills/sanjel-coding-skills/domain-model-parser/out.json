@@ -1,0 +1,18 @@
+{
+	"metadataPath": {
+		"type": "string",
+		"description": "Resolved metadata JSON path used by downstream stages."
+	},
+	"schemaPath": {
+		"type": "string",
+		"description": "Generated SQL DDL path when schemaOutputPath is provided; omitted otherwise."
+	},
+	"metadataSource": {
+		"type": "string",
+		"description": "How metadataPath was resolved: provided-input or generated-by-domain-model-markdown-parser."
+	},
+	"schemaGenerated": {
+		"type": "boolean",
+		"description": "Whether domain-model-sql-generator was invoked in this dispatch run."
+	}
+}

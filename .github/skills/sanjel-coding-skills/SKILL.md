@@ -1,37 +1,53 @@
 ---
 name: sanjel-coding-skills
-description: Top-level orchestrator that generates a complete Blazor project from a domain model, by sequentially invoking architecture, entity, and page-generation skills.
+description: Orchestrates the sanjel-coding skill suite from domain model parsing through page-layer generation and optional solution formatting.
 ---
 
 ## Overview
 
-Top-level orchestrator skill that drives full Blazor project code generation from a domain model. It sequentially invokes system-architecture-generation and entity-class-generation, then delegates page generation to the `page-generation` subprocess.
+Coordinates the sanjel-coding skill suite that transforms a domain model into downstream artifacts such as metadata JSON, SQL schema, page-layer files, and optional formatting results. This orchestrator manages contract hand-offs between the skills in this subtree and allows upstream architecture or entity generation stages to be provided externally when they are not implemented as local skills.
 
 ## Actor
 
-Senior .NET Architect - responsible for overseeing the entire code generation process, ensuring that each skill is executed in the correct sequence, and that the final output meets architectural and coding standards.
+Senior .NET Architect
 
 ## Type
 
-Orchestrator - coordinates multiple skills and subprocesses to achieve the overall goal of generating a complete Blazor project.
+Orchestrator
+
+## Responsibility
+
+Coordinate the sanjel-coding skill suite and manage the contract hand-offs between domain parsing, database schema generation, page generation, and optional solution formatting.
+
+## Contracts
+
+- The authoritative input contract is defined in [in.json](in.json).
+- The authoritative output contract is defined in [out.json](out.json).
+
+## Flow Intent
+
+Start from a domain model markdown file, derive reusable metadata, generate an optional SQL schema, hand off generated entities to page-generation, and optionally format the solution at the end of the workflow.
 
 ## Flow
 
 ```mermaid
-graph TB
-	Start([Start]) --> S01[system-architecture-generation]
-	S01 --> S02[entity-class-generation]
-	S02 --> S03[page-coding-skills]
-	click S03 "./page-generation/SKILL.md"
+flowchart TB
 
-	S03 --> End([Complete Code Files])
+Start([Start]) --> P["`[domain-model-parser](./domain-model-parser/SKILL.md)`"]
 
-	classDef arch fill:#f8cecc,stroke:#b85450;
-	classDef core fill:#dae8fc,stroke:#6c8ebf;
-	classDef page fill:#fff2cc,stroke:#d6b656;
-
-	class S01 arch;
-	class S02,S03 core;
+P --> E[Upstream entity-generation stage]
+E --> G["`[page-generation](./page-generation/SKILL.md)`"]
+G --> F{Format solution?}
+F -->|Yes| Q[solution-code-formatter]
+F -->|No| End([Workflow complete])
+Q --> End
 ```
 
-> For inputs and outputs, see [structure.json](structure.json).
+## Execution Guidance
+
+1. Resolve `domainModelPath`, `metadataPath`, `entityDirectoryPath`, `schemaOutputPath`, `solutionPath`, and `formatSolution` from [in.json](in.json).
+2. Invoke `domain-model-parser` when metadata is not already available; this dispatch skill also coordinates optional SQL schema generation when `schemaOutputPath` is provided.
+3. Treat architecture and entity generation as an upstream hand-off when those stages are implemented outside this skill subtree; the resulting entity directory becomes the input contract for `page-generation`.
+4. Invoke `page-generation` only after the entity directory is available and map its outputs into this skill's `pageArtifactPaths` and `generatedArtifacts`.
+5. Invoke `solution-code-formatter` only when `formatSolution` is true and a solution path is available or auto-detectable.
+6. If a downstream stage requires information that cannot be derived from upstream outputs, ask the user for the missing values before continuing.

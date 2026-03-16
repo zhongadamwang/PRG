@@ -1,0 +1,64 @@
+---
+name: {{name}}
+description: {{description}}
+---
+
+## Overview
+
+{{overview}}
+
+## Actor
+
+{{actor}}
+
+## Type
+
+Orchestrator - coordinates other skills to achieve an overall goal without implementing business logic directly.
+
+## Responsibility
+
+{{responsibility}}
+
+## Contracts
+
+- The authoritative input contract is defined in [in.json](in.json).
+- The authoritative output contract is defined in [out.json](out.json).
+
+## Flow Intent
+
+{{flowSummary}}
+
+## Flow
+
+```mermaid
+graph TB
+
+Start([Start]) --> R[Read input values that conform to in.json]
+R --> SK1[skill-01]
+SK1 --> M1[Map skill-01 outputs to the next input contract]
+M1 --> C1{Need more user input?}
+C1 -->|Yes| U[Ask user for missing values]
+C1 -->|No| SK2[skill-02]
+U --> SK2
+SK2 --> O[Return outputs that conform to out.json]
+O --> End([Done])
+
+classDef skill fill:#dae8fc,stroke:#6c8ebf;
+classDef condition fill:#fff2cc,stroke:#d6b656;
+classDef mapping fill:#d5e8d4,stroke:#82b366;
+classDef prompt fill:#f8cecc,stroke:#b85450;
+
+class SK1,SK2 skill;
+class C1 condition;
+class M1,O mapping;
+class U prompt;
+```
+
+## Execution Guidance
+
+1. Orchestrate the sub-skills in the order shown by the flow. Do not implement business logic directly in this skill.
+2. For each transition, derive the next skill's inputs by combining the previous skill's `out.json`, the previous skill's actual outputs, and the next skill's `in.json` contract.
+3. Use this section to document mapping rules, branching conditions, fallback behavior, and follow-up questions instead of repeating the flow diagram.
+4. If a downstream input cannot be derived from upstream outputs, ask the user for the missing value. Prefer constrained choices when practical.
+5. Emit final outputs that conform to [out.json](out.json).
+6. If deterministic transformation code is unavoidable, keep it limited to contract adaptation rather than domain logic.

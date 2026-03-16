@@ -1,0 +1,18 @@
+{
+	"entityDirectoryPath": {
+		"type": "string",
+		"description": "Path to the directory containing generated entity classes."
+	},
+	"repositoryOutputPath": {
+		"type": "string",
+		"description": "Optional output directory for generated repository interfaces."
+	},
+	"pageOutputPath": {
+		"type": "string",
+		"description": "Optional output directory for generated shared components and page files."
+	},
+	"projectName": {
+		"type": "string",
+		"description": "Optional project name used to resolve namespaces and output folders."
+	}
+}

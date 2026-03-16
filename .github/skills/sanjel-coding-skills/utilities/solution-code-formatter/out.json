@@ -1,0 +1,26 @@
+{
+	"overallSuccess": {
+		"type": "boolean",
+		"description": "Whether all formatting commands completed successfully."
+	},
+	"totalCommands": {
+		"type": "number",
+		"description": "Total number of build and format commands executed."
+	},
+	"successfulCommands": {
+		"type": "number",
+		"description": "Number of commands that completed successfully."
+	},
+	"failedCommands": {
+		"type": "number",
+		"description": "Number of commands that failed."
+	},
+	"totalDuration": {
+		"type": "number",
+		"description": "Total runtime of the formatting workflow in milliseconds."
+	},
+	"commands": {
+		"type": "array",
+		"description": "Per-command formatting results including the command text, success flag, duration, and any captured error output."
+	}
+}

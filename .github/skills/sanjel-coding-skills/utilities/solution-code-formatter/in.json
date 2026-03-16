@@ -1,0 +1,15 @@
+{
+	"formatMode": {
+		"type": "enum",
+		"values": [ "auto-detect", "solution", "projects" ],
+		"description": "How the formatter should resolve the target to format."
+	},
+	"solutionPath": {
+		"type": "string",
+		"description": "Path to the .slnx solution file to format. Optional when auto-detection is used."
+	},
+	"projectPaths": {
+		"type": "array",
+		"description": "List of project file paths for selective formatting. When provided, use --projects mode instead of solution mode."
+	}
+}

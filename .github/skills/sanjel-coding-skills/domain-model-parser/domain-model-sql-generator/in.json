@@ -1,0 +1,10 @@
+{
+	"metadataPath": {
+		"type": "string",
+		"description": "Path to the JSON metadata file produced by domain-model-parser"
+	},
+	"outputPath": {
+		"type": "string",
+		"description": "Output path for the generated .sql DDL file (optional, defaults to <metadataPath>.sql)"
+	}
+}

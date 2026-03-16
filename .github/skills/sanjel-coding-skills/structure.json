@@ -1,9 +1,0 @@
-{
-	"name": "sanjel-coding-skills",
-	"ins": [
-		"domain-model.json",
-		"in.json"
-	],
-	"media": "media.json",
-	"outs": [ ]
-}

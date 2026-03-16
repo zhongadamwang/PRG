@@ -1,0 +1,40 @@
+{
+	"name": {
+		"type": "string",
+		"description": "Skill name (kebab-case recommended)"
+	},
+	"type": {
+		"type": "enum",
+		"values": [ "Orchestrator", "Task" ],
+		"description": "Skill classification. Orchestrator coordinates other skills; Task completes one concrete unit of work."
+	},
+	"actor": {
+		"type": "enum",
+		"values": [ ".NET Senior Developer", "Frontend Engineer", "Full Stack Developer" ],
+		"description": "Primary role responsible for owning or executing the generated skill."
+	},
+	"AIDriven": {
+		"type": "boolean",
+		"description": "Whether the new Task skill relies primarily on AI instead of deterministic scripts. Ignored for Orchestrator skills."
+	},
+	"usesTemplates": {
+		"type": "boolean",
+		"description": "Whether the new skill needs reusable files under templates/. Typically applies to Task skills."
+	},
+	"responsibility": {
+		"type": "string",
+		"description": "A single-sentence statement of the new skill's core responsibility."
+	},
+	"flowSummary": {
+		"type": "string",
+		"description": "Brief summary of the main flow. For Orchestrator skills, list the sub-skill sequence and major decision points. For Task skills, list the major processing stages."
+	},
+	"inputContractJson": {
+		"type": "string",
+		"description": "JSON object to write into the new skill's in.json. This object must describe the input schema, not runtime input values."
+	},
+	"outputContractJson": {
+		"type": "string",
+		"description": "JSON object to write into the new skill's out.json. This object must describe the output schema, not runtime output values."
+	}
+}

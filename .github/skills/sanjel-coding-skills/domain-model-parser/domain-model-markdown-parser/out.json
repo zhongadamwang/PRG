@@ -1,0 +1,22 @@
+{
+	"metadataPath": {
+		"type": "string",
+		"description": "Path to the generated metadata JSON file."
+	},
+	"sourceFile": {
+		"type": "string",
+		"description": "Path to the source domain model markdown file that was parsed."
+	},
+	"metadata": {
+		"type": "object",
+		"description": "Parsed metadata object containing entities, relationships, enums, and summary statistics."
+	},
+	"statistics": {
+		"type": "object",
+		"description": "Summary counts for entities, relationships, enums, and attributes in the emitted metadata."
+	},
+	"appliedEntityFilter": {
+		"type": "string",
+		"description": "Comma-separated entity filter applied to the output. Empty or omitted when the full model is emitted."
+	}
+}

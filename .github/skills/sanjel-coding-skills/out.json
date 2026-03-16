@@ -1,0 +1,30 @@
+{
+	"metadataPath": {
+		"type": "string",
+		"description": "Path to the metadata JSON produced or consumed by the workflow."
+	},
+	"schemaPath": {
+		"type": "string",
+		"description": "Path to the SQL DDL file produced by domain-model-parser dispatch when requested."
+	},
+	"entityDirectoryPath": {
+		"type": "string",
+		"description": "Path to the entity directory handed to page-generation."
+	},
+	"repositoryInterfacePaths": {
+		"type": "array",
+		"description": "Repository interface files produced during page generation."
+	},
+	"pageArtifactPaths": {
+		"type": "array",
+		"description": "Generated page-layer files produced by page-generation."
+	},
+	"formattedSolutionPath": {
+		"type": "string",
+		"description": "Path to the formatted solution file when solution-code-formatter is invoked."
+	},
+	"generatedArtifacts": {
+		"type": "array",
+		"description": "Aggregate list of important artifacts produced across the workflow."
+	}
+}

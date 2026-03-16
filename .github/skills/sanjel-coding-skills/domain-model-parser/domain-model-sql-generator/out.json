@@ -1,0 +1,26 @@
+{
+	"ddlPath": {
+		"type": "string",
+		"description": "Path to the generated SQL DDL file."
+	},
+	"sourceMetadataPath": {
+		"type": "string",
+		"description": "Path to the metadata JSON file used as input."
+	},
+	"entityTableCount": {
+		"type": "number",
+		"description": "Number of entity or actor tables emitted into the DDL script."
+	},
+	"enumLookupTableCount": {
+		"type": "number",
+		"description": "Number of enum lookup tables emitted into the DDL script."
+	},
+	"arrayTableCount": {
+		"type": "number",
+		"description": "Number of array-value tables emitted into the DDL script."
+	},
+	"foreignKeyConstraintCount": {
+		"type": "number",
+		"description": "Number of foreign key constraints emitted into the DDL script."
+	}
+}

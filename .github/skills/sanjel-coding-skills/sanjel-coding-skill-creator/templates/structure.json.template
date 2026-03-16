@@ -1,6 +1,0 @@
-{
-	"name": "{{name}}",
-	"ins": {{ins}},
-	"media": "media.json",
-	"outs": {{outs}}
-}
