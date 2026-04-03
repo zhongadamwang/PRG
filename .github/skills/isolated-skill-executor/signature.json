@@ -1,0 +1,105 @@
+{
+	"schemaVersion": "skill-signature/v1",
+	"skillId": "sanjel-isolated-skill-executor-v1-0-0",
+	"skillVersion": "1.0.0",
+	"input": {
+		"type": "object",
+		"properties": {
+			"targetSkillId": {
+				"type": "string",
+				"description": "Skill ID of the target skill to execute."
+			},
+			"targetSkillPath": {
+				"type": "string",
+				"description": "Optional explicit path to the target skill folder or skill.json."
+			},
+			"targetSkillVersion": {
+				"type": "string",
+				"description": "Optional explicit version match for the target skill."
+			},
+			"targetInvocationId": {
+				"type": "string",
+				"description": "Optional explicit invocation ID for the target skill."
+			},
+			"targetInput": {
+				"description": "Actual input payload passed to the target skill."
+			},
+			"inputSources": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				},
+				"description": "Optional declared source references that explain where target input came from."
+			},
+			"isolationMode": {
+				"type": "string",
+				"enum": [
+					"isolated-session"
+				]
+			}
+		},
+		"additionalProperties": false
+	},
+	"success": {
+		"type": "object",
+		"required": [
+			"rootInvocationId",
+			"targetInvocationId",
+			"targetSkillId",
+			"stepFolder",
+			"resultPath",
+			"sessionClosed"
+		],
+		"properties": {
+			"rootInvocationId": {
+				"type": "string"
+			},
+			"targetInvocationId": {
+				"type": "string"
+			},
+			"targetSkillId": {
+				"type": "string"
+			},
+			"stepFolder": {
+				"type": "string"
+			},
+			"resultPath": {
+				"type": "string"
+			},
+			"tracePath": {
+				"type": "string"
+			},
+			"sessionClosed": {
+				"type": "boolean"
+			}
+		},
+		"additionalProperties": false
+	},
+	"errorDetails": {
+		"type": "object",
+		"properties": {
+			"targetSkillId": {
+				"type": "string"
+			},
+			"targetSkillPath": {
+				"type": "string"
+			},
+			"targetInvocationId": {
+				"type": "string"
+			},
+			"resultPath": {
+				"type": "string"
+			},
+			"stderr": {
+				"type": "string"
+			},
+			"validationErrors": {
+				"type": "array",
+				"items": {
+					"type": "string"
+				}
+			}
+		},
+		"additionalProperties": true
+	}
+}

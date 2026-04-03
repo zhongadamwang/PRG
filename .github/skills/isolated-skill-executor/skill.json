@@ -1,0 +1,31 @@
+{
+	"schemaVersion": "skill-manifest/v1",
+	"skillId": "sanjel-isolated-skill-executor-v1-0-0",
+	"author": "sanjel",
+	"skillName": "isolated-skill-executor",
+	"name": "Isolated Skill Executor",
+	"version": "1.0.0",
+	"description": "Execute a target skill in a fresh Bun session and persist only standardized invocation and result artifacts.",
+	"entry": {
+		"kind": "bun-script",
+		"script": "scripts/execute-skill.ts",
+		"runtime": "bun"
+	},
+	"timeoutMs": 300000,
+	"idempotent": false,
+	"sideEffects": [
+		"filesystem.write",
+		"process.spawn"
+	],
+	"permissions": {
+		"filesystem": "workspace",
+		"network": false,
+		"environment": [
+			"PATH",
+			"HOME",
+			"TMPDIR"
+		]
+	},
+	"allowsChildSkills": true,
+	"maxChildCallDepth": 64
+}

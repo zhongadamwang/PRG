@@ -6,6 +6,7 @@ Complete navigation guide for EDPS (Evolutionary Development Process System) ski
 
 ### 🚀 Getting Started
 - **[Main Skills README](README.md)** - Overview and quick start guide
+- **[Skill Mechanism Specification](skill-mechanism-spec.md)** - Standard contract, runtime envelopes, and composition rules
 - **[Prompt Patterns Reference](examples/prompt-patterns-reference.md)** - Quick reference for common prompt patterns  
 - **[Best Practices Guide](examples/best-practices-guide.md)** - Expert guidance and troubleshooting
 
@@ -114,6 +115,7 @@ Complete navigation guide for EDPS (Evolutionary Development Process System) ski
 | Skill | Purpose | Documentation |
 |-------|---------|---------------|
 | **edps-skill-navigator** | Navigate and orchestrate skills | [Individual skill docs](.github/skills/edps-skill-navigator/SKILL.md) |
+| **isolated-skill-executor** | Execute script-driven skills in isolated Bun sessions with standardized run artifacts | [Individual skill docs](.github/skills/isolated-skill-executor/SKILL.md) |
 | **skill-creator** | Create new EDPS skills | [Individual skill docs](.github/skills/skill-creator/SKILL.md) |
 | **integration-testing** | Comprehensive testing and validation of all EDPS skills | [Individual skill docs](.github/skills/integration-testing/SKILL.md) |
 | **orgmodel-update** | Update organizational model documents and folder structures | [Individual skill docs](.github/skills/orgmodel-update/SKILL.md) |

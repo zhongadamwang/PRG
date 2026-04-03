@@ -55,6 +55,7 @@ Project ID: [YOUR-PROJECT-ID]
 | Skill | Purpose | Input | Output | Next Step |
 |-------|---------|-------|---------|-----------|
 | `edps-skill-navigator` | Navigate and orchestrate skills | Natural language task description | Skill execution plan | → Execute recommended skills |
+| `isolated-skill-executor` | Execute script-driven skills in fresh isolated Bun sessions | target skill ID/path + target input | standardized run tree + executor result | → Inspect or chain target result |
 | `skill-creator` | Create new EDPS skills | Skill requirements | New skill structure | → Implement skill |
 
 ## Common Workflows
