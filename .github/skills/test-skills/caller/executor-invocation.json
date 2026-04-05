@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "skill-executor-invocation/v1",
+  "invocationId": "test_run_caller_001",
+  "input": {
+    "targetSkillPath": ".github/skills/test-skills/caller",
+    "targetInput": { "a": 5, "b": 7 }
+  }
+}

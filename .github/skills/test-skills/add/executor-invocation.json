@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "skill-executor-invocation/v1",
+  "invocationId": "test_run_add_001",
+  "input": {
+    "targetSkillPath": ".github/skills/test-skills/add",
+    "targetInput": { "a": 2, "b": 3 }
+  }
+}

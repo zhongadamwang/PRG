@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "skill-signature/v1",
+  "skillId": "taoqf-factorial-v0-0-1",
+  "skillVersion": "0.0.1",
+  "input": { "type": "object", "required": ["n"], "properties": { "n": { "type": "integer", "minimum": 0 } }, "additionalProperties": false },
+  "success": { "type": "object", "required": ["factorial"], "properties": { "factorial": { "type": "integer", "minimum": 0 } }, "additionalProperties": false },
+  "errorDetails": { "type": "object", "properties": { "message": { "type": "string" } }, "additionalProperties": false }
+}

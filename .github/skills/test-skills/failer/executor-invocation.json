@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "skill-executor-invocation/v1",
+  "invocationId": "test_run_failer_001",
+  "input": {
+    "targetSkillPath": ".github/skills/test-skills/failer",
+    "targetInput": { "reason": "test-intentional-failure" }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "skill-manifest/v1",
+  "skillId": "taoqf-is-even-v0-0-1",
+  "author": "taoqf",
+  "skillName": "is-even",
+  "name": "Is Even",
+  "version": "0.0.1",
+  "description": "Return whether integer n is even",
+  "entry": { "kind": "prompt-skill" },
+  "allowsChildSkills": false
+}

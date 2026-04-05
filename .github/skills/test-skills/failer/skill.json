@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "skill-manifest/v1",
+  "skillId": "taoqf-failer-v0-0-1",
+  "author": "taoqf",
+  "skillName": "failer",
+  "name": "Failer",
+  "version": "0.0.1",
+  "description": "Always fails for testing",
+  "entry": { "kind": "prompt-skill" },
+  "allowsChildSkills": false
+}

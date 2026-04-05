@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "skill-signature/v1",
+  "skillId": "taoqf-is-even-v0-0-1",
+  "skillVersion": "0.0.1",
+  "input": { "type": "object", "required": ["n"], "properties": { "n": { "type": "integer" } }, "additionalProperties": false },
+  "success": { "type": "object", "required": ["isEven"], "properties": { "isEven": { "type": "boolean" } }, "additionalProperties": false },
+  "errorDetails": { "type": "object", "properties": { "message": { "type": "string" } }, "additionalProperties": false }
+}

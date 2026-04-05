@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "skill-manifest/v1",
+  "skillId": "taoqf-factorial-v0-0-1",
+  "author": "taoqf",
+  "skillName": "factorial",
+  "name": "Factorial",
+  "version": "0.0.1",
+  "description": "Compute factorial recursively",
+  "entry": { "kind": "prompt-skill" },
+  "allowsChildSkills": true,
+  "maxChildCallDepth": 16
+}

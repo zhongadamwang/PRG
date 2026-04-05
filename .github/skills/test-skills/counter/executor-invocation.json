@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "skill-executor-invocation/v1",
+  "invocationId": "test_run_counter_001",
+  "input": {
+    "targetSkillPath": ".github/skills/test-skills/counter",
+    "targetInput": { "n": 4 }
+  }
+}

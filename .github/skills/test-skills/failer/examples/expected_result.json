@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "skill-result/v1",
+  "invocationId": "inv_example_failer_01",
+  "skillId": "taoqf-failer-v0-0-1",
+  "finishedAt": "2026-04-03T00:00:00Z",
+  "durationMs": 1,
+  "ok": false,
+  "value": null,
+  "error": {
+    "code": "INTENTIONAL_FAILURE",
+    "message": "This skill always fails for tests",
+    "retryable": false
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "skill-executor-invocation/v1",
+  "invocationId": "test_run_factorial_001",
+  "input": {
+    "targetSkillPath": ".github/skills/test-skills/factorial",
+    "targetInput": { "n": 5 }
+  }
+}

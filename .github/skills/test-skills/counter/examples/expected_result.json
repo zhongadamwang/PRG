@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "skill-result/v1",
+  "invocationId": "inv_example_counter_01",
+  "skillId": "taoqf-counter-v0-0-1",
+  "finishedAt": "2026-04-03T00:00:00Z",
+  "durationMs": 1,
+  "ok": true,
+  "value": { "values": [0, 1, 2, 3] },
+  "error": null
+}

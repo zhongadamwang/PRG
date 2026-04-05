@@ -139,7 +139,6 @@ Every skill should declare a stable identity in `skill.json`.
 
 ```json
 {
-  "timeoutMs": 300000,
   "idempotent": true,
   "sideEffects": [
     "filesystem.write"
@@ -466,10 +465,6 @@ Example:
   "context": {
     "workspace": "/repo",
     "traceId": "trace_01JQ7N4A8Y"
-  },
-  "limits": {
-    "timeoutMs": 300000,
-    "maxChildCallDepth": 8
   }
 }
 ```

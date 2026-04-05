@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "skill-signature/v1",
+  "skillId": "taoqf-add-v0-0-1",
+  "skillVersion": "0.0.1",
+  "input": {
+    "type": "object",
+    "required": ["a", "b"],
+    "properties": {
+      "a": { "type": "number" },
+      "b": { "type": "number" }
+    },
+    "additionalProperties": false
+  },
+  "success": {
+    "type": "object",
+    "required": ["sum"],
+    "properties": { "sum": { "type": "number" } },
+    "additionalProperties": false
+  },
+  "errorDetails": {
+    "type": "object",
+    "properties": {
+      "code": { "type": "string" },
+      "message": { "type": "string" }
+    },
+    "additionalProperties": false
+  }
+}

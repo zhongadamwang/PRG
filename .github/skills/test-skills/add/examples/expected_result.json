@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "skill-result/v1",
+  "invocationId": "inv_example_add_01",
+  "skillId": "taoqf-add-v0-0-1",
+  "finishedAt": "2026-04-03T00:00:00Z",
+  "durationMs": 1,
+  "ok": true,
+  "value": { "sum": 5 },
+  "error": null
+}

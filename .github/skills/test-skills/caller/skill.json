@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "skill-manifest/v1",
+  "skillId": "taoqf-caller-v0-0-1",
+  "author": "taoqf",
+  "skillName": "caller",
+  "name": "Caller",
+  "version": "0.0.1",
+  "description": "Calls add and is-even skills",
+  "entry": { "kind": "prompt-skill" },
+  "allowsChildSkills": true,
+  "maxChildCallDepth": 8
+}

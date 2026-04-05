@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "skill-manifest/v1",
+  "skillId": "taoqf-add-v0-0-1",
+  "author": "taoqf",
+  "skillName": "add",
+  "name": "Add",
+  "version": "0.0.1",
+  "description": "Add two numbers",
+  "entry": { "kind": "prompt-skill" },
+  "allowsChildSkills": false
+}

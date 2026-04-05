@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "skill-signature/v1",
+  "skillId": "taoqf-caller-v0-0-1",
+  "skillVersion": "0.0.1",
+  "input": { "type": "object", "required": ["a","b"], "properties": { "a": { "type": "number" }, "b": { "type": "number" } }, "additionalProperties": false },
+  "success": { "type": "object", "required": ["sum","isEven"], "properties": { "sum": { "type": "number" }, "isEven": { "type": "boolean" } }, "additionalProperties": false },
+  "errorDetails": { "type": "object", "properties": { "message": { "type": "string" } }, "additionalProperties": false }
+}

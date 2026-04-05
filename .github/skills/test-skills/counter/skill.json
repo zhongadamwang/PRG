@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "skill-manifest/v1",
+  "skillId": "taoqf-counter-v0-0-1",
+  "author": "taoqf",
+  "skillName": "counter",
+  "name": "Counter",
+  "version": "0.0.1",
+  "description": "Return sequence 0..n-1",
+  "entry": { "kind": "prompt-skill" },
+  "allowsChildSkills": false
+}
